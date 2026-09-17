@@ -148,6 +148,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <div aria-hidden="true" data-zoomin className="contact-glow" />
           <div aria-hidden="true" data-zoomin className="stars contact-field" />
           <div aria-hidden="true" data-zoomin className="stars contact-core" />
+          <div aria-hidden="true" data-zoomin className="contact-warp">
+            <div className="stars warp warp-a" />
+            <div className="stars warp warp-b" />
+            <div className="stars warp warp-c" />
+          </div>
           <div className="contact-copy">
             <h2 id="contact-title" data-reveal data-zoom-trigger>{t.contact.title}</h2>
             <address data-reveal className="contact-cta">

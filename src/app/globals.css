@@ -679,9 +679,16 @@ address {
 }
 .contact-glow,
 .contact-field,
-.contact-core {
+.contact-core,
+.contact-warp {
   z-index: 0;
   transition: opacity 1.8s var(--ease), scale 2.2s var(--ease), filter 2s var(--ease);
+}
+/* The fade lives on the wrapper, not on the sheets: vv-warp animates their own
+   opacity, and an animation would win over a transition set on the same box. */
+.contact-warp.is-zoom-pending {
+  opacity: 0;
+  scale: 0.78;
 }
 .contact-glow.is-zoom-pending {
   opacity: 0;
