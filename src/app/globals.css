@@ -96,7 +96,10 @@ address {
 @keyframes vv-zoom-text { 0%, 100% { transform: translateY(-6vh) scale(0.9); } 50% { transform: translateY(-6vh) scale(1); } }
 @keyframes vv-warp { 0% { transform: translate(-50%, -50%) scale(0.45); opacity: 0; } 18% { opacity: 0.8; } 65% { opacity: 0.55; } 100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; } }
 @keyframes vv-hole { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.9); } }
-@keyframes vv-breathe-text { 0%, 100% { filter: blur(1.7px); color: rgba(255,255,255,0.8); font-weight: 300; } 50% { filter: blur(0px); color: rgba(255,255,255,1); font-weight: 400; } }
+/* No font-weight here: the CJK face ships as discrete 300/400/500 instances, so an
+   interpolated weight renders as Light until it hits exactly 400 and then snaps.
+   Blur and colour carry the "comes into focus" beat; the weight stays constant. */
+@keyframes vv-breathe-text { 0%, 100% { filter: blur(1.7px); color: rgba(255,255,255,0.8); } 50% { filter: blur(0px); color: rgba(255,255,255,1); } }
 @keyframes vv-breathe-weight { 0%, 100% { font-weight: 300; } 50% { font-weight: 400; } }
 @keyframes vv-spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 @keyframes vv-twinkle { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
@@ -292,7 +295,8 @@ address {
 .hero-title {
   margin: 40px 0 0;
   font-family: var(--sans);
-  font-weight: 300;
+  /* 400 = where the intro used to land, now held for the whole animation. */
+  font-weight: 400;
   font-size: clamp(32px, 5vw, 66px);
   letter-spacing: 0.14em;
   padding-left: 0.14em;
