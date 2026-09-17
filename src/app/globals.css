@@ -254,6 +254,11 @@ address {
 
 /* ---------- Hero ---------- */
 .hero {
+  /* The design ships no box-sizing reset, so its 100vh min-height stacks on top
+     of the 120/586 padding: the hero is 1619px tall at a 913px viewport, not
+     1084px. Every decor layer sits at top: 30% OF THAT height, so switching to
+     the global border-box silently lifts the whole composition ~160px. */
+  box-sizing: content-box;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
@@ -264,15 +269,11 @@ address {
   text-align: center;
   padding: 120px 24px 586px;
   background: radial-gradient(circle at 50% 50%, #04060c 0%, #04060c 42%, #0a1830 100%);
-  /* Pushes the halo, stars and headline down so the glow clears the fixed
-     header instead of sitting behind it. Scales with the halo's radius. */
-  --hero-shift: calc(min(44vh, 47vw) * 0.62 + 36px);
 }
 .hero-copy {
   position: relative;
   z-index: 2;
   max-width: 1000px;
-  translate: 0 var(--hero-shift);
   transform: translateY(-6vh);
   animation: vv-zoom-text 11s ease-in-out 0.5 forwards;
 }

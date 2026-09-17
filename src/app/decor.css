@@ -3,7 +3,7 @@
 .hero-halo {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(88vh, 94vw);
   height: min(88vh, 94vw);
   transform: translate(-50%, -50%);
@@ -15,7 +15,7 @@
 .hero-ring {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(92vh, 98vw);
   height: min(92vh, 98vw);
   transform: translate(-50%, -50%);
@@ -30,7 +30,7 @@
 .hero-hole {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(44vh, 47vw);
   height: min(44vh, 47vw);
   transform: translate(-50%, -50%);
@@ -42,7 +42,7 @@
 .warp-a {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(90vh, 96vw);
   height: min(90vh, 96vw);
   transform: translate(-50%, -50%);
@@ -55,7 +55,7 @@
 .warp-b {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(90vh, 96vw);
   height: min(90vh, 96vw);
   transform: translate(-50%, -50%);
@@ -68,7 +68,7 @@
 .warp-c {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(90vh, 96vw);
   height: min(90vh, 96vw);
   transform: translate(-50%, -50%);
@@ -81,7 +81,7 @@
 .field-twinkle {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(116vh, 118vw);
   height: min(116vh, 118vw);
   transform: translate(-50%, -50%);
@@ -94,7 +94,7 @@
 .field-out {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(104vh, 108vw);
   height: min(104vh, 108vw);
   transform: translate(-50%, -50%);
@@ -107,7 +107,7 @@
 .field-in {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(64vh, 70vw);
   height: min(64vh, 70vw);
   transform: translate(-50%, -50%);
@@ -120,7 +120,7 @@
 .field-in2 {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--hero-shift, 0px));
+  top: 30%;
   width: min(56vh, 62vw);
   height: min(56vh, 62vw);
   transform: translate(-50%, -50%);
