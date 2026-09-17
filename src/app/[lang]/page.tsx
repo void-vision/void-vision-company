@@ -63,7 +63,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               {t.hero.title[1]}
             </h1>
             {t.hero.sub && (
-              <p className="hero-sub enter" style={{ "--i": 3 } as CSSProperties} lang="en">
+              <p className="hero-sub enter" style={{ "--i": 3 } as CSSProperties} lang={other}>
                 {t.hero.sub[0]}
                 <br />
                 {t.hero.sub[1]}

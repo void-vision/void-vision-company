@@ -222,7 +222,7 @@ const en: Dictionary = {
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
-  hero: { kicker: "Sydney · Est. 2026", title: ["See the unseen", "in the void"], cta: "Explore" },
+  hero: { kicker: "Sydney · Est. 2026", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
   about:
     "Void Vision was founded in Sydney in 2026. We believe the best products are born in empty space — seeing a future worth reaching where no one has looked. Today our three products serve more than ten thousand users worldwide.",
   stats: [

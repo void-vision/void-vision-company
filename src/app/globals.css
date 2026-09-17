@@ -310,6 +310,9 @@ address {
   margin: 32px 0 0;
   font-size: clamp(12px, 1.25vw, 17px);
   font-weight: 300;
+  /* Pinned so the Latin and CJK sub-lines occupy the same two line boxes;
+     `normal` gives CJK a ~25% taller box and knocks the two locales out of sync. */
+  line-height: 1.18;
   letter-spacing: 0.3em;
   padding-left: 0.3em;
   color: #c4cede;
