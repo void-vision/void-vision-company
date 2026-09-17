@@ -153,8 +153,14 @@
 }
 .contact-glow {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 52% 48% at 50% 46%, rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.13) 40%, rgba(152,176,224,0.3) 42.5%, rgba(152,176,224,0.52) 45%, rgba(152,176,224,0.72) 47%, rgba(152,176,224,0.84) 48.8%, rgba(152,176,224,0.88) 50%, rgba(152,176,224,0.82) 51.5%, rgba(152,176,224,0.66) 53.5%, rgba(152,176,224,0.48) 56%, rgba(152,176,224,0.32) 59%, rgba(152,176,224,0.2) 62.5%, rgba(152,176,224,0.11) 67%, rgba(152,176,224,0.06) 72%, rgba(152,176,224,0.025) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
+  left: 50%;
+  top: 46%;
+  /* Square box + `circle`, like .hero-halo: the section is far wider than it is
+     tall, so an `ellipse NN% NN%` sized off it came out ~2.7:1 flat. */
+  width: min(66vh, 78vw);
+  height: min(66vh, 78vw);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 50% 50%, rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.13) 40%, rgba(152,176,224,0.3) 42.5%, rgba(152,176,224,0.52) 45%, rgba(152,176,224,0.72) 47%, rgba(152,176,224,0.84) 48.8%, rgba(152,176,224,0.88) 50%, rgba(152,176,224,0.82) 51.5%, rgba(152,176,224,0.66) 53.5%, rgba(152,176,224,0.48) 56%, rgba(152,176,224,0.32) 59%, rgba(152,176,224,0.2) 62.5%, rgba(152,176,224,0.11) 67%, rgba(152,176,224,0.06) 72%, rgba(152,176,224,0.025) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
   filter: blur(52px);
 }
 .contact-field {
