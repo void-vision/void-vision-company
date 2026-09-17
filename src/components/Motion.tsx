@@ -14,16 +14,10 @@ export function Motion() {
     const bar = document.querySelector<HTMLElement>("[data-progress]");
 
     // Chrome's own scroll restoration lands ~10px below where you left off on
-    // this page, and the error compounds on every reload. Take it over: remember
-    // the offset per URL and write it back verbatim, so 0 stays 0.
+    // this page and the error compounds on every reload, so the inline script at
+    // the end of <body> restores the offset before first paint. All this side has
+    // to do is keep the stored value fresh.
     const scrollKey = `vv:scroll:${location.pathname}`;
-    const readScroll = () => {
-      try {
-        return Number(sessionStorage.getItem(scrollKey));
-      } catch {
-        return NaN;
-      }
-    };
     const saveScroll = () => {
       try {
         sessionStorage.setItem(scrollKey, String(Math.round(window.scrollY)));
@@ -31,12 +25,6 @@ export function Motion() {
         /* private mode / storage disabled: fall back to no restoration */
       }
     };
-    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-    const entry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
-    if (entry && (entry.type === "reload" || entry.type === "back_forward")) {
-      const saved = readScroll();
-      if (Number.isFinite(saved) && saved >= 0) window.scrollTo({ top: saved, left: 0, behavior: "instant" });
-    }
     window.addEventListener("pagehide", saveScroll);
 
     const zoomPending: HTMLElement[] = [];
