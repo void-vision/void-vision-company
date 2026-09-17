@@ -670,7 +670,10 @@ address {
   /* No clip here on purpose: the glow is allowed to spill over the section above
      and the footer below, which is what keeps its outer falloff from ending on a
      straight cut. Horizontal overflow is already handled by `body`. */
-  padding: clamp(150px, 22vw, 300px) 24px 0;
+  /* Top space is a little tighter than the bottom on purpose: it lifts the
+     title + button pair onto the centre of the glow ellipse (which sits at 46%
+     of this section) without changing the section's overall height. */
+  padding: clamp(140px, 20vw, 270px) 24px 0;
   text-align: center;
 }
 .contact-copy {
@@ -691,7 +694,7 @@ address {
   justify-content: center;
 }
 .contact-rule {
-  margin-top: clamp(150px, 22vw, 300px);
+  margin-top: clamp(160px, 24vw, 330px);
   height: 1px;
   background: linear-gradient(90deg, rgba(190, 210, 240, 0) 0%, rgba(190, 210, 240, 0.14) 50%, rgba(190, 210, 240, 0) 100%);
 }
