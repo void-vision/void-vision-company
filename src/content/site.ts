@@ -155,7 +155,7 @@ const zh: Dictionary = {
       { image: "/images/team/team-4.png", name: "钱易宇", altName: "Yiyu Qian", role: "工程 · 数据与训练", jobTitle: "工程师", chips: ["戴尔", "RMIT 博士"], bio: "皇家墨尔本理工大学计算机博士，曾在戴尔任软件工程师，负责数据管线与模型训练相关工程。" },
     ],
   },
-  contact: { title: "一起看见未来。" },
+  contact: { title: "一起看见未来" },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "隐私政策" },
   privacy: {
     metaTitle: "隐私政策 · Void Vision",
@@ -270,7 +270,7 @@ const en: Dictionary = {
       { image: "/images/team/team-4.png", name: "Yiyu Qian", altName: "钱易宇", role: "Engineering · Data & Training", jobTitle: "Engineer", chips: ["Dell", "PhD RMIT"], bio: "PhD in Computer Science from RMIT and former software engineer at Dell; builds the data pipelines and model-training infrastructure." },
     ],
   },
-  contact: { title: "See the future with us." },
+  contact: { title: "See the future with us" },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "Privacy" },
   privacy: {
     metaTitle: "Privacy Policy · Void Vision",

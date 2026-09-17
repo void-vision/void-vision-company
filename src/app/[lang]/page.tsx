@@ -145,13 +145,18 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </section>
 
         <section id="contact" className="contact" aria-labelledby="contact-title">
-          <div aria-hidden="true" data-zoomin className="contact-glow" />
-          <div aria-hidden="true" data-zoomin className="stars contact-field" />
-          <div aria-hidden="true" data-zoomin className="stars contact-core" />
-          <div aria-hidden="true" data-zoomin className="contact-warp">
-            <div className="stars warp warp-a" />
-            <div className="stars warp warp-b" />
-            <div className="stars warp warp-c" />
+          <div aria-hidden="true" className="contact-decor">
+            <div data-zoomin className="contact-glow" />
+            <div className="contact-stars">
+              <div data-zoomin className="stars contact-field" />
+              <div data-zoomin className="stars contact-core" />
+              <div data-zoomin className="contact-warp">
+                <div className="stars warp warp-a" />
+                <div className="stars warp warp-b" />
+                <div className="stars warp warp-c" />
+              </div>
+            </div>
+            <div data-hole className="contact-hole" />
           </div>
           <div className="contact-copy">
             <h2 id="contact-title" data-reveal data-zoom-trigger>{t.contact.title}</h2>

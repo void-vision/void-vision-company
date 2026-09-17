@@ -51,6 +51,7 @@ export function Motion() {
     });
 
     const trigger = document.querySelector<HTMLElement>("[data-zoom-trigger]");
+    const hole = document.querySelector<HTMLElement>("[data-hole]");
     const phoneRows = Array.from(document.querySelectorAll<HTMLElement>("[data-phones]"));
     let raf = 0;
 
@@ -68,6 +69,14 @@ export function Motion() {
         if (r.top < vh * 0.72 && r.bottom > vh * 0.1) {
           zoomPending.splice(0).forEach((el) => el.classList.remove("is-zoom-pending"));
         }
+      }
+      if (hole) {
+        // The void widens over the last stretch of the page and is fully open at
+        // the bottom. The CSS reads --hole; it degrades to the resting size at 0.
+        const max = document.documentElement.scrollHeight - vh;
+        const span = Math.min(vh * 0.9, 700);
+        const p = max > 0 ? Math.min(1, Math.max(0, (y - (max - span)) / span)) : 1;
+        hole.style.setProperty("--hole", p.toFixed(3));
       }
       for (const row of phoneRows) {
         const r = row.getBoundingClientRect();

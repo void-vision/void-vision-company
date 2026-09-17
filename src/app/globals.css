@@ -460,6 +460,22 @@ address {
 .phones-4 .phone-slot {
   width: clamp(168px, 19vw, 238px);
 }
+/* Hover lift. The scroll parallax owns `translate` on this element, so the lift
+   rides on `transform`, which composes with it instead of fighting it. */
+@media (hover: hover) and (pointer: fine) {
+  .phone-slot {
+    transition: transform 1.2s var(--ease);
+  }
+  .phone-slot:hover {
+    transform: translateY(-14px);
+  }
+  .phone-body {
+    transition: filter 1.2s var(--ease);
+  }
+  .phone-slot:hover .phone-body {
+    filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.55));
+  }
+}
 
 /* Phone frame */
 .phone {
@@ -651,8 +667,10 @@ address {
 /* ---------- Contact ---------- */
 .contact {
   position: relative;
-  overflow: hidden;
-  padding: clamp(110px, 14vw, 190px) 24px 0;
+  /* No clip here on purpose: the glow is allowed to spill over the section above
+     and the footer below, which is what keeps its outer falloff from ending on a
+     straight cut. Horizontal overflow is already handled by `body`. */
+  padding: clamp(150px, 22vw, 300px) 24px 0;
   text-align: center;
 }
 .contact-copy {
@@ -663,7 +681,7 @@ address {
   margin: 0;
   font-family: var(--cjk);
   font-weight: 300;
-  font-size: clamp(30px, 4.4vw, 62px);
+  font-size: clamp(26px, 3.4vw, 48px);
   letter-spacing: 0.12em;
   color: #ffffff;
 }
@@ -673,7 +691,7 @@ address {
   justify-content: center;
 }
 .contact-rule {
-  margin-top: clamp(120px, 16vw, 200px);
+  margin-top: clamp(150px, 22vw, 300px);
   height: 1px;
   background: linear-gradient(90deg, rgba(190, 210, 240, 0) 0%, rgba(190, 210, 240, 0.14) 50%, rgba(190, 210, 240, 0) 100%);
 }
