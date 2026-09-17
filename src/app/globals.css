@@ -259,6 +259,10 @@ address {
      1084px. Every decor layer sits at top: 30% OF THAT height, so switching to
      the global border-box silently lifts the whole composition ~160px. */
   box-sizing: content-box;
+  /* Hand-tuned nudge, NOT from the design: drops the halo/stars 8px so the ring
+     sits slightly below the headline's optical centre. Decor layers only --
+     .hero-copy deliberately does not use it. */
+  --halo-offset: 8px;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
