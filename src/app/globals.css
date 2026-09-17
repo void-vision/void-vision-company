@@ -936,32 +936,3 @@ address {
     display: none;
   }
 }
-
-/* ---------- Reduced motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .hero-ring,
-  .warp,
-  .field-twinkle,
-  .contact-field,
-  .contact-core {
-    animation: none;
-  }
-  .hero-halo,
-  .hero-hole,
-  .field-out,
-  .field-in,
-  .field-in2,
-  .hero-copy,
-  .hero-title,
-  .hero-sub,
-  .enter {
-    animation-duration: 1ms !important;
-    animation-delay: 0s !important;
-  }
-  .warp {
-    opacity: 0.4;
-  }
-}

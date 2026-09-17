@@ -6,40 +6,35 @@ import { useEffect } from "react";
  * Progressive-enhancement motion layer ported from the Void Vision v2 design.
  * All content is server-rendered and visible without JS; this only hides
  * below-the-fold blocks until they scroll in, and drives the nav, progress
- * bar, phone parallax and contact zoom. Disabled for reduced-motion users.
+ * bar, phone parallax and contact zoom. Like the design, it runs for everyone.
  */
 export function Motion() {
   useEffect(() => {
     const nav = document.querySelector<HTMLElement>("[data-nav]");
     const bar = document.querySelector<HTMLElement>("[data-progress]");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let io: IntersectionObserver | null = null;
     const zoomPending: HTMLElement[] = [];
-
-    if (!reduce) {
-      const vh = window.innerHeight;
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue;
-            e.target.classList.remove("is-pending");
-            io?.unobserve(e.target);
-          }
-        },
-        { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
-      );
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.top < vh * 0.95 && r.bottom > 0) return;
-        el.classList.add("is-pending");
-        io?.observe(el);
-      });
-      document.querySelectorAll<HTMLElement>("[data-zoomin]").forEach((el) => {
-        el.classList.add("is-zoom-pending");
-        zoomPending.push(el);
-      });
-    }
+    const vh0 = window.innerHeight;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.remove("is-pending");
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
+    );
+    document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh0 * 0.95 && r.bottom > 0) return;
+      el.classList.add("is-pending");
+      io.observe(el);
+    });
+    document.querySelectorAll<HTMLElement>("[data-zoomin]").forEach((el) => {
+      el.classList.add("is-zoom-pending");
+      zoomPending.push(el);
+    });
 
     const trigger = document.querySelector<HTMLElement>("[data-zoom-trigger]");
     const phoneRows = Array.from(document.querySelectorAll<HTMLElement>("[data-phones]"));
@@ -54,7 +49,6 @@ export function Motion() {
         const max = document.documentElement.scrollHeight - vh;
         bar.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, y / max)) : 0})`;
       }
-      if (reduce) return;
       if (trigger && zoomPending.length) {
         const r = trigger.getBoundingClientRect();
         if (r.top < vh * 0.72 && r.bottom > vh * 0.1) {
@@ -81,7 +75,7 @@ export function Motion() {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       if (raf) cancelAnimationFrame(raf);
-      io?.disconnect();
+      io.disconnect();
     };
   }, []);
 
