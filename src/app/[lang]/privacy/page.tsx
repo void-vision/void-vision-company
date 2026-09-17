@@ -59,7 +59,7 @@ export default async function Privacy({ params }: PageProps<"/[lang]/privacy">) 
 
             <section className="legal-contact">
               <span>{p.contactLabel}</span>
-              <a href={`mailto:${company.email}`} className="btn-outline">{company.email} →</a>
+              <a href={`mailto:${company.email}`} className="btn-outline"><span className="btn-label">{company.email}</span><span aria-hidden="true" className="btn-arrow">→</span></a>
             </section>
           </div>
         </article>

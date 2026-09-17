@@ -70,7 +70,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               </p>
             )}
             <div className="enter hero-cta" style={{ "--i": 4 } as CSSProperties}>
-              <a href="#products" className="btn-outline">{t.hero.cta} →</a>
+              <a href="#products" className="btn-outline"><span className="btn-label">{t.hero.cta}</span><span aria-hidden="true" className="btn-arrow">→</span></a>
             </div>
           </div>
         </header>
@@ -151,7 +151,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <div className="contact-copy">
             <h2 id="contact-title" data-reveal data-zoom-trigger>{t.contact.title}</h2>
             <address data-reveal className="contact-cta">
-              <a href={`mailto:${company.email}`} className="btn-outline btn-lg">{company.email} →</a>
+              <a href={`mailto:${company.email}`} className="btn-outline btn-lg"><span className="btn-label">{company.email}</span><span aria-hidden="true" className="btn-arrow">→</span></a>
             </address>
             <div aria-hidden="true" className="contact-rule" />
           </div>

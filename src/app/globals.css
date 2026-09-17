@@ -218,6 +218,17 @@ address {
   color: #05080f;
   border-color: #ffffff;
 }
+.btn-label,
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-outline:hover .btn-label,
+.btn-outline:hover .btn-arrow,
+.btn-outline:focus-visible .btn-label,
+.btn-outline:focus-visible .btn-arrow {
+  transform: translateX(6px);
+}
 .btn-lg {
   font-size: clamp(14px, 1.6vw, 18px);
   letter-spacing: 0.08em;
