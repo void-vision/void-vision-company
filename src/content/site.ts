@@ -32,6 +32,8 @@ export type Product = {
   category: string;
   links: { label: string; href: string; primary?: boolean }[];
   status?: string;
+  /** Former name, shown next to the store links while a listing still carries it. */
+  alias?: string;
   screens: Screen[];
   accent: "green" | "rose" | "cyan";
 };
@@ -122,6 +124,7 @@ const zh: Dictionary = {
       tagline: "信息如海，知识成粒。",
       description: "AI 阅读应用。把你关注的每一条视频、播客与 newsletter，由 AI 浓缩成一篇三分钟的阅读。",
       category: "AI 阅读应用 · iOS",
+      alias: "原 GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
         { label: "grainbook.app", href: productUrls.voidbook.site },
@@ -158,56 +161,36 @@ const zh: Dictionary = {
   contact: { title: "一起看见未来" },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "隐私政策" },
   privacy: {
-    metaTitle: "隐私政策 · Void Vision",
-    metaDescription: "Void Vision Pty Ltd 隐私政策：说明 VoidBook、Airfluence 与优渡 Unilinx 收集哪些信息、如何使用与保存，以及你可以行使的权利。",
-    kicker: "隐私政策",
-    title: "我们如何处理你的数据",
-    intro: "Void Vision Pty Ltd（“我们”）开发并运营 VoidBook、Airfluence 与优渡 Unilinx。本政策说明我们在提供这些产品与本网站服务时，会收集哪些信息、如何使用与保存，以及你可以行使的权利。",
-    updated: "更新于 2026 年 9 月 11 日",
-    updatedISO: "2026-09-11",
+    metaTitle: "网站隐私声明 · Void Vision",
+    metaDescription:
+      "voidvision.ai 不做统计分析、没有埋点与表单，也不向第三方发起请求。本页说明本站使用的浏览器本地存储，以及各产品隐私政策的所在位置。",
+    kicker: "网站隐私声明",
+    title: "这个网站如何处理你的数据",
+    intro:
+      "本站是 Void Vision Pty Ltd 的公司官网。它不做统计分析、没有埋点，没有表单和账号，也不向任何第三方发起请求。我们参与开发的产品各自由其运营方发布隐私政策，见第 03 节。",
+    updated: "更新于 2026 年 9 月 18 日",
+    updatedISO: "2026-09-18",
     entity: "Void Vision Pty Ltd · 悉尼",
     contactLabel: "隐私相关问询",
     back: "返回首页",
     sections: [
-      { no: "01", h: "我们收集的信息", p: [
-        "账户信息：注册与登录时提供的邮箱、昵称、头像，以及第三方登录返回的基础标识。",
-        "内容与使用信息：你在产品内保存、订阅或生成的内容（例如 VoidBook 中的订阅源与摘要记录、Airfluence 中的合作与消息记录、Unilinx 中的服务需求与行程信息），以及功能使用记录。",
-        "设备与日志信息：设备型号、操作系统版本、语言、崩溃日志与访问时间，用于稳定性与安全排查。",
+      { no: "01", h: "我们不收集什么", p: [
+        "本站没有接入任何统计分析或用户行为分析服务，没有第三方埋点、像素或广告 SDK，也没有表单、注册与登录。",
+        "字体与图片全部由本站自行托管，浏览页面时不会向 Google 等第三方发出请求。",
+        "托管服务商在提供服务的过程中会生成标准的访问日志（通常包含 IP 地址与 User-Agent），我们不使用这些日志做分析、画像或广告。",
       ] },
-      { no: "02", h: "我们如何使用信息", p: [
-        "提供并维持产品功能，包括内容摘要、匹配推荐、订单与服务流程。",
-        "改进产品质量：分析功能使用与失败情况，修复缺陷、优化性能。",
-        "沟通：发送与服务相关的通知；仅在你同意的情况下发送产品资讯。",
-        "安全与合规：识别滥用行为、防范欺诈，并履行适用法律要求。",
+      { no: "02", h: "浏览器本地存储", p: [
+        "vv-locale（cookie，有效期一年）：记住你选择的语言，避免每次访问都重新判断。",
+        "vv-breath 与 vv:scroll:*（sessionStorage，关闭标签页即失效）：记住开场音效是否已经播放过，以及刷新后回到你原来的滚动位置。",
+        "这三项只存在于你自己的浏览器中，不会发送给我们，也不会发送给任何第三方。",
       ] },
-      { no: "03", h: "AI 处理", p: [
-        "我们的产品使用第三方大模型服务生成摘要、匹配与推荐结果。相关内容会在处理过程中传输至这些服务提供方。",
-        "我们不会将你的个人内容用于训练我们自有模型，除非你另行明确同意。",
+      { no: "03", h: "产品的隐私政策", p: [
+        "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
+        "Airfluence 与优渡 Unilinx 的隐私政策由各自的运营方发布。Void Vision 参与这两款产品的开发，不是其运营主体，也不控制其用户数据；与这两款产品相关的隐私问题，请联系对应的运营方。",
       ] },
-      { no: "04", h: "第三方服务", p: [
-        "我们使用云托管、身份认证、支付、错误监控与统计分析等第三方服务，仅向其提供实现相应功能所必需的数据。",
-        "当你通过第三方平台授权连接账号（例如内容源或社交账号）时，我们仅获取该平台在授权范围内提供的信息。",
-      ] },
-      { no: "05", h: "数据存储与安全", p: [
-        "数据存储于位于澳大利亚及其他地区的云服务器。传输过程使用加密连接，静态数据依托云服务商的加密与访问控制机制保护。",
-        "我们对内部访问实行最小必要原则，但任何系统都无法保证绝对安全。",
-      ] },
-      { no: "06", h: "数据保留与删除", p: [
-        "账户存续期间我们保留必要数据；你注销账户后，我们将在合理期限内删除或匿名化处理，法律要求保留的除外。",
-        "你可以随时通过应用内设置或联系邮箱申请删除账户与相关数据。",
-      ] },
-      { no: "07", h: "你的权利", p: [
-        "你有权访问、更正、导出或删除你的个人信息，也可以撤回此前给予的同意。",
-        "如你位于欧洲经济区、英国或其他适用地区，还可依据当地法律行使限制处理与反对处理的权利。",
-      ] },
-      { no: "08", h: "跨境传输", p: [
-        "我们的服务面向全球用户，你的数据可能被传输至你所在国家或地区以外的服务器进行处理。我们会采取合同与技术措施，确保传输过程符合适用法律要求。",
-      ] },
-      { no: "09", h: "未成年人", p: [
-        "我们的产品不面向 13 岁以下（或当地法律规定的更高年龄）的儿童。若我们发现在未获得监护人同意的情况下收集了相关信息，将予以删除。",
-      ] },
-      { no: "10", h: "政策变更", p: [
-        "本政策更新时，我们会在本页面更新日期；涉及重大变更的，我们会通过应用内或邮件提示。",
+      { no: "04", h: "联系与变更", p: [
+        "与本站有关的隐私问题，可以发邮件到 hello@voidvision.ai。",
+        "本声明如有变更，我们会更新页首的日期。",
       ] },
     ],
   },
@@ -237,6 +220,7 @@ const en: Dictionary = {
       tagline: "An ocean of noise. One grain of knowledge.",
       description: "An AI reading app. Every video, podcast and newsletter you follow — distilled by AI into a three-minute read.",
       category: "AI reading app · iOS",
+      alias: "Formerly GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
         { label: "grainbook.app", href: productUrls.voidbook.site },
@@ -273,56 +257,36 @@ const en: Dictionary = {
   contact: { title: "See the future with us" },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "Privacy" },
   privacy: {
-    metaTitle: "Privacy Policy · Void Vision",
-    metaDescription: "Void Vision Pty Ltd privacy policy: what VoidBook, Airfluence and Unilinx collect, how it is used and stored, and the rights you can exercise.",
-    kicker: "Privacy Policy",
-    title: "How we handle your data",
-    intro: "Void Vision Pty Ltd (“we”) builds and operates VoidBook, Airfluence and Unilinx. This policy explains what we collect when you use those products and this website, how we use and store it, and the rights you can exercise.",
-    updated: "Last updated 11 September 2026",
-    updatedISO: "2026-09-11",
+    metaTitle: "Website Privacy Notice · Void Vision",
+    metaDescription:
+      "voidvision.ai runs no analytics, no tracking and no forms, and makes no third-party requests. This page covers the browser storage the site uses and where each product's privacy policy lives.",
+    kicker: "Website Privacy Notice",
+    title: "How this website handles your data",
+    intro:
+      "This is the corporate website of Void Vision Pty Ltd. It runs no analytics, carries no tracking, has no forms or accounts, and makes no requests to third parties. The products we help build publish their own privacy policies — see section 03.",
+    updated: "Updated 18 September 2026",
+    updatedISO: "2026-09-18",
     entity: "Void Vision Pty Ltd · Sydney",
     contactLabel: "Privacy enquiries",
     back: "Back to home",
     sections: [
-      { no: "01", h: "Information we collect", p: [
-        "Account information: the email, display name and avatar you provide at sign-up, plus the basic identifiers returned by third-party sign-in.",
-        "Content and usage: what you save, subscribe to or generate inside the products (feeds and summaries in VoidBook, campaigns and messages in Airfluence, service requests and itineraries in Unilinx), along with records of how features are used.",
-        "Device and log data: device model, OS version, language, crash logs and access times, used for stability and security investigation.",
+      { no: "01", h: "What we do not collect", p: [
+        "This site has no analytics or behavioural tracking of any kind, no third-party pixels or advertising SDKs, and no forms, sign-up or login.",
+        "Fonts and images are served from this site itself, so viewing a page makes no request to Google or any other third party.",
+        "Our hosting provider generates standard access logs in the course of serving the site, typically an IP address and user agent. We do not use those logs for analytics, profiling or advertising.",
       ] },
-      { no: "02", h: "How we use information", p: [
-        "To provide and maintain product functionality, including summarisation, matching and service workflows.",
-        "To improve quality: analysing feature usage and failures to fix defects and tune performance.",
-        "To communicate: service notices always; product news only with your consent.",
-        "For safety and compliance: detecting abuse, preventing fraud and meeting legal obligations.",
+      { no: "02", h: "Browser storage", p: [
+        "vv-locale (cookie, one year): remembers the language you chose, so the site does not have to guess on every visit.",
+        "vv-breath and vv:scroll:* (sessionStorage, cleared when you close the tab): remember whether the opening sound has played, and return you to your scroll position after a reload.",
+        "All three live only in your own browser. They are never sent to us or to anyone else.",
       ] },
-      { no: "03", h: "AI processing", p: [
-        "Our products use third-party large language model services to generate summaries, matches and recommendations. The relevant content is transmitted to those providers during processing.",
-        "We do not use your personal content to train our own models unless you explicitly agree.",
+      { no: "03", h: "Product privacy policies", p: [
+        "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",
+        "Airfluence and Unilinx publish their own privacy policies through their respective operators. Void Vision contributes engineering to both products but does not operate them and does not control their user data; please direct privacy questions about those products to their operators.",
       ] },
-      { no: "04", h: "Third-party services", p: [
-        "We rely on third parties for cloud hosting, authentication, payments, error monitoring and analytics, and share only the data needed for those functions.",
-        "When you connect an external account (a content source or social platform), we receive only what that platform provides within the scope you authorise.",
-      ] },
-      { no: "05", h: "Storage and security", p: [
-        "Data is stored on cloud servers in Australia and other regions. Traffic is encrypted in transit, and data at rest is protected by our providers' encryption and access controls.",
-        "Internal access follows the principle of least privilege, though no system can be guaranteed absolutely secure.",
-      ] },
-      { no: "06", h: "Retention and deletion", p: [
-        "We keep data for as long as your account is active. After you close it, we delete or anonymise your data within a reasonable period, except where retention is legally required.",
-        "You can request deletion of your account and associated data at any time, in-app or by email.",
-      ] },
-      { no: "07", h: "Your rights", p: [
-        "You may access, correct, export or delete your personal information, and withdraw consent you previously gave.",
-        "If you are in the EEA, the UK or another applicable jurisdiction, you may also restrict or object to processing under local law.",
-      ] },
-      { no: "08", h: "International transfers", p: [
-        "Our services are used worldwide, so your data may be processed on servers outside your country. We apply contractual and technical safeguards so those transfers meet applicable legal requirements.",
-      ] },
-      { no: "09", h: "Children", p: [
-        "Our products are not directed to children under 13, or a higher age where local law requires it. If we learn we have collected such information without guardian consent, we delete it.",
-      ] },
-      { no: "10", h: "Changes to this policy", p: [
-        "When this policy changes we update the date on this page, and for material changes we notify you in-app or by email.",
+      { no: "04", h: "Contact and changes", p: [
+        "For privacy questions about this website, email hello@voidvision.ai.",
+        "If this notice changes, we will update the date at the top of the page.",
       ] },
     ],
   },

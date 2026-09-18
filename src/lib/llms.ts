@@ -27,8 +27,8 @@ export function llmsTxt() {
     "",
     `- [Home (English)](${absolute("/en")}): company overview, products, team and contact`,
     `- [首页（中文）](${absolute("/zh")}): 公司介绍、产品、团队与联系方式`,
-    `- [Privacy Policy](${absolute("/en/privacy")}): what our products collect and your rights`,
-    `- [隐私政策](${absolute("/zh/privacy")})`,
+    `- [Website Privacy Notice](${absolute("/en/privacy")}): what this site does and does not collect, and where each product's policy lives`,
+    `- [网站隐私声明](${absolute("/zh/privacy")})`,
     "",
     "## Optional",
     "",
@@ -56,6 +56,7 @@ function localeFull(locale: Locale) {
   for (const p of t.products) {
     lines.push(`### ${p.name}`, "", `*${p.tagline}*`, "", p.description, "", `- ${p.category}`);
     for (const l of p.links) lines.push(`- ${l.label}: ${l.href}`);
+    if (p.alias) lines.push(`- ${p.alias}`);
     if (p.status) lines.push(`- ${p.status}`);
     lines.push("");
   }

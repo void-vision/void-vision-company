@@ -106,6 +106,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                       {l.label}
                     </a>
                   ))}
+                  {p.alias && <span className="pill pill-muted">{p.alias}</span>}
                   {p.status && <span className="pill pill-muted">{p.status}</span>}
                 </div>
               </div>

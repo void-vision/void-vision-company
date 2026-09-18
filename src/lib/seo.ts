@@ -146,7 +146,8 @@ export function homeJsonLd(locale: Locale) {
     const base = {
       "@id": ids.product(p.id),
       name: p.name,
-      alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : undefined,
+      // The App Store listing still reads GrainBook while the account migration is in flight.
+      alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : p.id === "voidbook" ? ["GrainBook"] : undefined,
       description: `${p.tagline} ${p.description}`,
       applicationCategory: p.id === "voidbook" ? "EducationApplication" : "BusinessApplication",
       publisher: { "@id": ids.org },
