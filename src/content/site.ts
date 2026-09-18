@@ -34,6 +34,8 @@ export type Product = {
   status?: string;
   /** Former name, shown next to the store links while a listing still carries it. */
   alias?: string;
+  /** Our relationship to the product: our own, or delivered for a client. */
+  role?: string;
   screens: Screen[];
   accent: "green" | "rose" | "cyan";
 };
@@ -104,26 +106,27 @@ const zh: Dictionary = {
   meta: {
     title: "Void Vision · 从虚空中看见未来 | 悉尼 AI 产品公司",
     description:
-      "Void Vision 是一家 2026 年成立于悉尼的 AI 产品公司，旗下自研 VoidBook（AI 阅读应用）、Airfluence（AI 达人与品牌合作平台）与优渡 Unilinx（留学生落地服务平台），服务全球超过一万名用户。",
+      "Void Vision 是一家 2026 年成立于悉尼的 AI 产品公司：自研 AI 阅读应用 VoidBook，并为客户交付了 Airfluence（AI 达人与品牌合作平台）与优渡 Unilinx（留学生落地服务平台），累计服务全球超过一万名用户。",
     keywords: ["Void Vision", "VoidBook", "Airfluence", "优渡", "Unilinx", "AI 阅读", "AI 摘要", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
   nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
   hero: { kicker: "Sydney · Est. 2026", title: ["从虚空中", "看见未来"], sub: ["See the unseen", "in the void"], cta: "查看产品" },
   about:
-    "Void Vision 成立于 2026 年，总部位于悉尼。我们相信最好的产品诞生于空白之处——在无人涉足的地方，看见值得抵达的未来。目前三款自研产品服务全球超过一万名用户。",
+    "Void Vision 成立于 2026 年，总部位于悉尼。我们相信最好的产品诞生于空白之处——在无人涉足的地方，看见值得抵达的未来。目前已上线三款产品：一款自研，两款为客户交付，累计服务全球超过一万名用户。",
   stats: [
     { value: "2026", label: "成立于悉尼" },
-    { value: "3", label: "自研产品" },
-    { value: "10,000+", label: "全球用户" },
+    { value: "3", label: "上线产品 · 1 自研 2 交付" },
+    { value: "10,000+", label: "累计服务用户" },
   ],
-  productsHeading: "我们的产品",
+  productsHeading: "产品与交付案例",
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
       tagline: "信息如海，知识成粒。",
       description: "AI 阅读应用。把你关注的每一条视频、播客与 newsletter，由 AI 浓缩成一篇三分钟的阅读。",
       category: "AI 阅读应用 · iOS",
+      role: "自研产品",
       alias: "原 GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
@@ -136,6 +139,7 @@ const zh: Dictionary = {
       tagline: "Where influence flows through AI.",
       description: "AI 驱动的达人与品牌合作平台——智能匹配博主、管理活动排期与合作沟通、追踪数据表现，一站完成。",
       category: "AI 达人营销平台",
+      role: "为客户交付",
       links: [{ label: "airfluence.ai", href: productUrls.airfluence.site, primary: true }],
       screens: screens.airfluence(["Airfluence 登录界面", "Airfluence 博主发现与 AI 匹配界面", "Airfluence 博主主页与收益界面", "Airfluence 合作消息收件箱"]),
     },
@@ -144,6 +148,7 @@ const zh: Dictionary = {
       tagline: "落地无忧，有人接你。",
       description: "面向留学生的落地服务平台——新生落地无忧套餐、海外翻译与旅游陪同，由认证学长姐一对一接应，管家全程托管。",
       category: "留学生落地服务平台",
+      role: "为客户交付",
       links: [],
       screens: screens.unilinx(["优渡 Unilinx 认证学长姐大厅", "优渡 Unilinx 落地服务首页", "优渡 Unilinx 任务大厅"]),
     },
@@ -200,26 +205,27 @@ const en: Dictionary = {
   meta: {
     title: "Void Vision · See the unseen in the void | AI product studio in Sydney",
     description:
-      "Void Vision is an AI product company founded in Sydney in 2026. We build VoidBook (an AI reading app), Airfluence (an AI creator–brand platform) and Unilinx (arrival services for international students), serving more than 10,000 users worldwide.",
+      "Void Vision is an AI product studio founded in Sydney in 2026. We build our own AI reading app, VoidBook, and have delivered Airfluence (an AI creator–brand platform) and Unilinx (arrival services for international students), serving more than 10,000 users worldwide.",
     keywords: ["Void Vision", "VoidBook", "Airfluence", "Unilinx", "AI reading app", "AI summaries", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
   hero: { kicker: "Sydney · Est. 2026", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
   about:
-    "Void Vision was founded in Sydney in 2026. We believe the best products are born in empty space — seeing a future worth reaching where no one has looked. Today our three products serve more than ten thousand users worldwide.",
+    "Void Vision was founded in Sydney in 2026. We believe the best products are born in empty space — seeing a future worth reaching where no one has looked. Three products are live today: one of our own and two delivered for clients, together serving more than ten thousand users worldwide.",
   stats: [
     { value: "2026", label: "Founded in Sydney" },
-    { value: "3", label: "Products built" },
-    { value: "10,000+", label: "Users worldwide" },
+    { value: "3", label: "Shipped · 1 own, 2 for clients" },
+    { value: "10,000+", label: "Users served to date" },
   ],
-  productsHeading: "Our products",
+  productsHeading: "Products and client work",
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
       tagline: "An ocean of noise. One grain of knowledge.",
       description: "An AI reading app. Every video, podcast and newsletter you follow — distilled by AI into a three-minute read.",
       category: "AI reading app · iOS",
+      role: "Our own product",
       alias: "Formerly GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
@@ -232,6 +238,7 @@ const en: Dictionary = {
       tagline: "Where influence flows through AI.",
       description: "An AI-powered creator–brand platform: match with the right creators, run campaigns and conversations, and track performance — all in one place.",
       category: "AI creator marketing platform",
+      role: "Delivered for a client",
       links: [{ label: "airfluence.ai", href: productUrls.airfluence.site, primary: true }],
       screens: screens.airfluence(["Airfluence sign-in", "Airfluence creator discovery with AI Match", "Airfluence creator profile with earnings", "Airfluence campaign inbox"]),
     },
@@ -240,6 +247,7 @@ const en: Dictionary = {
       tagline: "Land softly. Someone is there for you.",
       description: "Arrival services for international students — landing packages, translation and travel companionship, delivered one-on-one by verified senior students with full concierge support.",
       category: "Arrival services for international students",
+      role: "Delivered for a client",
       links: [],
       screens: screens.unilinx(["Unilinx verified senior-student hall", "Unilinx arrival services home", "Unilinx task hall"]),
     },

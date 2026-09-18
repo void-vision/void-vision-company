@@ -56,6 +56,7 @@ function localeFull(locale: Locale) {
   for (const p of t.products) {
     lines.push(`### ${p.name}`, "", `*${p.tagline}*`, "", p.description, "", `- ${p.category}`);
     for (const l of p.links) lines.push(`- ${l.label}: ${l.href}`);
+    if (p.role) lines.push(`- ${p.role}`);
     if (p.alias) lines.push(`- ${p.alias}`);
     if (p.status) lines.push(`- ${p.status}`);
     lines.push("");

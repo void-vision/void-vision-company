@@ -150,7 +150,9 @@ export function homeJsonLd(locale: Locale) {
       alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : p.id === "voidbook" ? ["GrainBook"] : undefined,
       description: `${p.tagline} ${p.description}`,
       applicationCategory: p.id === "voidbook" ? "EducationApplication" : "BusinessApplication",
-      publisher: { "@id": ids.org },
+      // We engineered all three, but Airfluence and Unilinx are operated by their
+      // own entities, so only VoidBook gets us as publisher.
+      publisher: p.id === "voidbook" ? { "@id": ids.org } : undefined,
       creator: { "@id": ids.org },
       screenshot: p.screens.map((s) => absolute(s.src)),
       inLanguage,
