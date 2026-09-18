@@ -49,6 +49,20 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
           {lang === "zh" ? "跳到主要内容" : "Skip to content"}
         </a>
         {children}
+        {/* Restores the scroll offset BEFORE first paint. Doing it from a React
+            effect paints the top first and then jumps, which reads as a flash;
+            this runs at the end of <body>, after the render-blocking CSS, so the
+            document is already laid out. Motion.tsx writes the value on pagehide. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if('scrollRestoration' in history)history.scrollRestoration='manual';" +
+              "var n=performance.getEntriesByType('navigation')[0];" +
+              "if(!n||(n.type!=='reload'&&n.type!=='back_forward'))return;" +
+              "var y=parseInt(sessionStorage.getItem('vv:scroll:'+location.pathname),10);" +
+              "if(y>0)window.scrollTo({top:y,left:0,behavior:'instant'});}catch(e){}})();",
+          }}
+        />
       </body>
     </html>
   );

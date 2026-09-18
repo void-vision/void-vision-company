@@ -1,0 +1,10 @@
+When Cursor auto-generates a Git commit message (the sparkle button in Source Control):
+- Write in Simplified Chinese.
+- Follow Conventional Commits:
+  <type>(<scope>): <subject>
+
+  - <what changed>
+  - <what changed>
+- Subject: one concise line under 50 characters. Do not cram every file into the subject.
+- Body is required whenever more than one file changed, or the change is not obvious from the subject. Use 2–5 bullet points that name the actual files/areas and what changed. Do not write a one-line summary of everything.
+- Do not restate the diff line by line. Do not invent changes that are not in the staged diff.

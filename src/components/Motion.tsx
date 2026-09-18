@@ -6,42 +6,52 @@ import { useEffect } from "react";
  * Progressive-enhancement motion layer ported from the Void Vision v2 design.
  * All content is server-rendered and visible without JS; this only hides
  * below-the-fold blocks until they scroll in, and drives the nav, progress
- * bar, phone parallax and contact zoom. Disabled for reduced-motion users.
+ * bar, phone parallax and contact zoom. Like the design, it runs for everyone.
  */
 export function Motion() {
   useEffect(() => {
     const nav = document.querySelector<HTMLElement>("[data-nav]");
     const bar = document.querySelector<HTMLElement>("[data-progress]");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let io: IntersectionObserver | null = null;
+    // Chrome's own scroll restoration lands ~10px below where you left off on
+    // this page and the error compounds on every reload, so the inline script at
+    // the end of <body> restores the offset before first paint. All this side has
+    // to do is keep the stored value fresh.
+    const scrollKey = `vv:scroll:${location.pathname}`;
+    const saveScroll = () => {
+      try {
+        sessionStorage.setItem(scrollKey, String(Math.round(window.scrollY)));
+      } catch {
+        /* private mode / storage disabled: fall back to no restoration */
+      }
+    };
+    window.addEventListener("pagehide", saveScroll);
+
     const zoomPending: HTMLElement[] = [];
-
-    if (!reduce) {
-      const vh = window.innerHeight;
-      io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue;
-            e.target.classList.remove("is-pending");
-            io?.unobserve(e.target);
-          }
-        },
-        { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
-      );
-      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.top < vh * 0.95 && r.bottom > 0) return;
-        el.classList.add("is-pending");
-        io?.observe(el);
-      });
-      document.querySelectorAll<HTMLElement>("[data-zoomin]").forEach((el) => {
-        el.classList.add("is-zoom-pending");
-        zoomPending.push(el);
-      });
-    }
+    const vh0 = window.innerHeight;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.remove("is-pending");
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
+    );
+    document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh0 * 0.95 && r.bottom > 0) return;
+      el.classList.add("is-pending");
+      io.observe(el);
+    });
+    document.querySelectorAll<HTMLElement>("[data-zoomin]").forEach((el) => {
+      el.classList.add("is-zoom-pending");
+      zoomPending.push(el);
+    });
 
     const trigger = document.querySelector<HTMLElement>("[data-zoom-trigger]");
+    const hole = document.querySelector<HTMLElement>("[data-hole]");
     const phoneRows = Array.from(document.querySelectorAll<HTMLElement>("[data-phones]"));
     let raf = 0;
 
@@ -54,12 +64,19 @@ export function Motion() {
         const max = document.documentElement.scrollHeight - vh;
         bar.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, y / max)) : 0})`;
       }
-      if (reduce) return;
       if (trigger && zoomPending.length) {
         const r = trigger.getBoundingClientRect();
         if (r.top < vh * 0.72 && r.bottom > vh * 0.1) {
           zoomPending.splice(0).forEach((el) => el.classList.remove("is-zoom-pending"));
         }
+      }
+      if (hole) {
+        // The void widens over the last stretch of the page and is fully open at
+        // the bottom. The CSS reads --hole; it degrades to the resting size at 0.
+        const max = document.documentElement.scrollHeight - vh;
+        const span = Math.min(vh * 0.9, 700);
+        const p = max > 0 ? Math.min(1, Math.max(0, (y - (max - span)) / span)) : 1;
+        hole.style.setProperty("--hole", p.toFixed(3));
       }
       for (const row of phoneRows) {
         const r = row.getBoundingClientRect();
@@ -78,10 +95,11 @@ export function Motion() {
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule, { passive: true });
     return () => {
+      window.removeEventListener("pagehide", saveScroll);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       if (raf) cancelAnimationFrame(raf);
-      io?.disconnect();
+      io.disconnect();
     };
   }, []);
 

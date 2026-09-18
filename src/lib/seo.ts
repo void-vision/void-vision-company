@@ -146,10 +146,13 @@ export function homeJsonLd(locale: Locale) {
     const base = {
       "@id": ids.product(p.id),
       name: p.name,
-      alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : undefined,
+      // The App Store listing still reads GrainBook while the account migration is in flight.
+      alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : p.id === "voidbook" ? ["GrainBook"] : undefined,
       description: `${p.tagline} ${p.description}`,
       applicationCategory: p.id === "voidbook" ? "EducationApplication" : "BusinessApplication",
-      publisher: { "@id": ids.org },
+      // We build all three, but Airfluence and Unilinx are co-founded ventures run
+      // by their own entities, so only VoidBook gets us as publisher.
+      publisher: p.id === "voidbook" ? { "@id": ids.org } : undefined,
       creator: { "@id": ids.org },
       screenshot: p.screens.map((s) => absolute(s.src)),
       inLanguage,

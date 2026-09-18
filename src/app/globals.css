@@ -96,8 +96,10 @@ address {
 @keyframes vv-zoom-text { 0%, 100% { transform: translateY(-6vh) scale(0.9); } 50% { transform: translateY(-6vh) scale(1); } }
 @keyframes vv-warp { 0% { transform: translate(-50%, -50%) scale(0.45); opacity: 0; } 18% { opacity: 0.8; } 65% { opacity: 0.55; } 100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; } }
 @keyframes vv-hole { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.9); } }
-@keyframes vv-breathe-text { 0%, 100% { filter: blur(1.7px); color: rgba(255,255,255,0.8); font-weight: 300; } 50% { filter: blur(0px); color: rgba(255,255,255,1); font-weight: 400; } }
-@keyframes vv-breathe-weight { 0%, 100% { font-weight: 300; } 50% { font-weight: 400; } }
+/* No font-weight here: the CJK face ships as discrete 300/400/500 instances, so an
+   interpolated weight renders as Light until it hits exactly 400 and then snaps.
+   Blur and colour carry the "comes into focus" beat; the weight stays constant. */
+@keyframes vv-breathe-text { 0%, 100% { filter: blur(1.7px); color: rgba(255,255,255,0.8); } 50% { filter: blur(0px); color: rgba(255,255,255,1); } }
 @keyframes vv-spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 @keyframes vv-twinkle { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
 @keyframes vv-twinkle2 { 0%, 100% { opacity: 0.9; } 45% { opacity: 0.3; } }
@@ -150,7 +152,8 @@ address {
   right: 0;
   bottom: -1px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(104, 200, 158, 0.2), rgba(104, 200, 158, 0.95));
+  /* Comet colours: the periwinkle of the halo fading up to the white-blue of the stars. */
+  background: linear-gradient(90deg, rgba(152, 176, 224, 0.12), rgba(152, 176, 224, 0.55) 55%, rgba(214, 228, 255, 0.95));
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 0.12s linear;
@@ -216,6 +219,17 @@ address {
   color: #05080f;
   border-color: #ffffff;
 }
+.btn-label,
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-outline:hover .btn-label,
+.btn-outline:hover .btn-arrow,
+.btn-outline:focus-visible .btn-label,
+.btn-outline:focus-visible .btn-arrow {
+  transform: translateX(6px);
+}
 .btn-lg {
   font-size: clamp(14px, 1.6vw, 18px);
   letter-spacing: 0.08em;
@@ -254,6 +268,15 @@ address {
 
 /* ---------- Hero ---------- */
 .hero {
+  /* The design ships no box-sizing reset, so its 100vh min-height stacks on top
+     of the 120/586 padding: the hero is 1619px tall at a 913px viewport, not
+     1084px. Every decor layer sits at top: 30% OF THAT height, so switching to
+     the global border-box silently lifts the whole composition ~160px. */
+  box-sizing: content-box;
+  /* Hand-tuned nudge, NOT from the design: drops the halo/stars 8px so the ring
+     sits slightly below the headline's optical centre. Decor layers only --
+     .hero-copy deliberately does not use it. */
+  --halo-offset: 8px;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
@@ -264,15 +287,11 @@ address {
   text-align: center;
   padding: 120px 24px 586px;
   background: radial-gradient(circle at 50% 50%, #04060c 0%, #04060c 42%, #0a1830 100%);
-  /* Pushes the halo, stars and headline down so the glow clears the fixed
-     header instead of sitting behind it. Scales with the halo's radius. */
-  --hero-shift: calc(min(44vh, 47vw) * 0.62 + 36px);
 }
 .hero-copy {
   position: relative;
   z-index: 2;
   max-width: 1000px;
-  translate: 0 var(--hero-shift);
   transform: translateY(-6vh);
   animation: vv-zoom-text 11s ease-in-out 0.5 forwards;
 }
@@ -287,7 +306,8 @@ address {
 .hero-title {
   margin: 40px 0 0;
   font-family: var(--sans);
-  font-weight: 300;
+  /* 400 = where the intro used to land, now held for the whole animation. */
+  font-weight: 400;
   font-size: clamp(32px, 5vw, 66px);
   letter-spacing: 0.14em;
   padding-left: 0.14em;
@@ -300,11 +320,15 @@ address {
 .hero-sub {
   margin: 32px 0 0;
   font-size: clamp(12px, 1.25vw, 17px);
-  font-weight: 300;
+  /* 400, not 300: the sub renders CJK on /en and Latin on /zh, and Instrument Sans
+     has no 300 -- at 300 the two locales would land on different weights. */
+  font-weight: 400;
+  /* Pinned so the Latin and CJK sub-lines occupy the same two line boxes;
+     `normal` gives CJK a ~25% taller box and knocks the two locales out of sync. */
+  line-height: 1.18;
   letter-spacing: 0.3em;
   padding-left: 0.3em;
   color: #c4cede;
-  animation: vv-breathe-weight 11s ease-in-out 0.5 forwards;
 }
 .hero-cta {
   margin-top: 34px;
@@ -314,10 +338,8 @@ address {
 .hero-title.enter {
   animation: vv-enter 1.1s var(--ease) calc(var(--i) * 130ms) both, vv-breathe-text 11s ease-in-out 0.5 forwards;
 }
-.hero-sub.enter {
-  animation: vv-enter 1.1s var(--ease) calc(var(--i) * 130ms) both, vv-breathe-weight 11s ease-in-out 0.5 forwards;
-}
 .hero-kicker.enter,
+.hero-sub.enter,
 .hero-cta.enter {
   animation: vv-enter 1.1s var(--ease) calc(var(--i) * 130ms) both;
 }
@@ -438,6 +460,22 @@ address {
 }
 .phones-4 .phone-slot {
   width: clamp(168px, 19vw, 238px);
+}
+/* Hover lift. The scroll parallax owns `translate` on this element, so the lift
+   rides on `transform`, which composes with it instead of fighting it. */
+@media (hover: hover) and (pointer: fine) {
+  .phone-slot {
+    transition: transform 1.2s var(--ease);
+  }
+  .phone-slot:hover {
+    transform: translateY(-14px);
+  }
+  .phone-body {
+    transition: filter 1.2s var(--ease);
+  }
+  .phone-slot:hover .phone-body {
+    filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.55));
+  }
 }
 
 /* Phone frame */
@@ -630,8 +668,13 @@ address {
 /* ---------- Contact ---------- */
 .contact {
   position: relative;
-  overflow: hidden;
-  padding: clamp(110px, 14vw, 190px) 24px 0;
+  /* No clip here on purpose: the glow is allowed to spill over the section above
+     and the footer below, which is what keeps its outer falloff from ending on a
+     straight cut. Horizontal overflow is already handled by `body`. */
+  /* Top space is a little tighter than the bottom on purpose: it lifts the
+     title + button pair onto the centre of the glow ellipse (which sits at 46%
+     of this section) without changing the section's overall height. */
+  padding: clamp(140px, 20vw, 270px) 24px 0;
   text-align: center;
 }
 .contact-copy {
@@ -642,7 +685,7 @@ address {
   margin: 0;
   font-family: var(--cjk);
   font-weight: 300;
-  font-size: clamp(30px, 4.4vw, 62px);
+  font-size: clamp(26px, 3.4vw, 48px);
   letter-spacing: 0.12em;
   color: #ffffff;
 }
@@ -652,15 +695,22 @@ address {
   justify-content: center;
 }
 .contact-rule {
-  margin-top: clamp(120px, 16vw, 200px);
+  margin-top: clamp(160px, 24vw, 330px);
   height: 1px;
   background: linear-gradient(90deg, rgba(190, 210, 240, 0) 0%, rgba(190, 210, 240, 0.14) 50%, rgba(190, 210, 240, 0) 100%);
 }
 .contact-glow,
 .contact-field,
-.contact-core {
+.contact-core,
+.contact-warp {
   z-index: 0;
   transition: opacity 1.8s var(--ease), scale 2.2s var(--ease), filter 2s var(--ease);
+}
+/* The fade lives on the wrapper, not on the sheets: vv-warp animates their own
+   opacity, and an animation would win over a transition set on the same box. */
+.contact-warp.is-zoom-pending {
+  opacity: 0;
+  scale: 0.78;
 }
 .contact-glow.is-zoom-pending {
   opacity: 0;
@@ -934,34 +984,5 @@ address {
   /* Mark only; the link keeps its accessible name. */
   .brand-word {
     display: none;
-  }
-}
-
-/* ---------- Reduced motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .hero-ring,
-  .warp,
-  .field-twinkle,
-  .contact-field,
-  .contact-core {
-    animation: none;
-  }
-  .hero-halo,
-  .hero-hole,
-  .field-out,
-  .field-in,
-  .field-in2,
-  .hero-copy,
-  .hero-title,
-  .hero-sub,
-  .enter {
-    animation-duration: 1ms !important;
-    animation-delay: 0s !important;
-  }
-  .warp {
-    opacity: 0.4;
   }
 }
