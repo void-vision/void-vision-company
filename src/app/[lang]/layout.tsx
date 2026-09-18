@@ -48,7 +48,6 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
         <a className="skip-link" href="#main">
           {lang === "zh" ? "跳到主要内容" : "Skip to content"}
         </a>
-        <div aria-hidden="true" className="page-stars" />
         {children}
         {/* Restores the scroll offset BEFORE first paint. Doing it from a React
             effect paints the top first and then jumps, which reads as a flash;

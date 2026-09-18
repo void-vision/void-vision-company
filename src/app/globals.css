@@ -26,10 +26,6 @@ html {
 }
 
 body {
-  /* z-index:0 makes body its own stacking context, so .page-stars (z-index:-1)
-     paints above body's background instead of being hidden underneath it. */
-  position: relative;
-  z-index: 0;
   margin: 0;
   background: var(--bg);
   color: var(--fg);

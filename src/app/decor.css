@@ -150,7 +150,9 @@
    no visible seam — only the continuous glow does, and that one is free to spill. */
 /* The void opening up as you reach the end of the page. `--hole` is driven from
    the scroll position in Motion.tsx (0 well before the bottom, 1 at it); with no
-   JS it stays 0 and this is just the dark core the design already had. */
+   JS it stays 0 and this is just the dark core the design already had.
+   Sits between the glow and the star sheets, the way .hero-hole sits under the
+   hero's: it eats the glow's inner edge, but the stars stay visible inside it. */
 .contact-hole {
   position: absolute;
   left: 50%;
@@ -165,7 +167,7 @@
   opacity: calc(0.45 + 0.55 * var(--hole, 0));
   filter: blur(22px);
   background: radial-gradient(ellipse closest-side, #04060c 0%, #04060c 78%, rgba(4,6,12,0) 100%);
-  z-index: 2;
+  z-index: 0;
 }
 .contact-stars {
   position: absolute;
@@ -183,76 +185,6 @@
   top: 46%;
   width: min(96vh, 104vw);
   height: min(96vh, 104vw);
-}
-/* Deep-space wash. Seven very large, very low-alpha clouds spread down the whole
-   document (the % positions resolve against body's full height), overlapping just
-   enough that the page drifts between blue-black and indigo instead of sitting on
-   a flat #04060c. Paints below .page-stars: z-index -2 vs -1, both above body's bg. */
-body::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background-repeat: no-repeat;
-  background-image:
-    radial-gradient(1800px 1300px at 10% 5%, rgba(72,98,158,0.13), transparent 72%),
-    radial-gradient(1700px 1250px at 88% 16%, rgba(96,84,152,0.10), transparent 70%),
-    radial-gradient(1900px 1400px at 16% 28%, rgba(58,104,150,0.09), transparent 72%),
-    radial-gradient(1750px 1300px at 84% 40%, rgba(84,92,160,0.11), transparent 70%),
-    radial-gradient(2000px 1450px at 22% 54%, rgba(64,96,150,0.09), transparent 72%),
-    radial-gradient(1700px 1250px at 82% 68%, rgba(90,86,156,0.10), transparent 70%),
-    radial-gradient(1900px 1400px at 28% 84%, rgba(66,100,154,0.08), transparent 72%);
-}
-.page-stars {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.75;
-  /* 36 one-star layers on three prime-sized grids (541/757/1063), so the three
-     lattices never line up and the field reads as random down a 7000px page.
-     ~95 stars per 1440x900 screen, about half the density of the hero sheets. */
-  background-repeat: repeat;
-  background-size: 541px 541px, 757px 757px, 1063px 1063px;
-  background-position: 0 0, 173px 311px, 419px 97px;
-  background-image:
-    radial-gradient(1.5px 1.5px at 45.4% 55.7%, rgba(190,214,255,0.35), transparent),
-    radial-gradient(1.4px 1.4px at 84.1% 20.2%, rgba(190,214,255,0.35), transparent),
-    radial-gradient(1.1px 1.1px at 78.1% 11.0%, rgba(190,214,255,0.25), transparent),
-    radial-gradient(1.1px 1.1px at 62.9% 59.2%, rgba(190,214,255,0.35), transparent),
-    radial-gradient(0.9px 0.9px at 61.1% 17.1%, rgba(255,255,255,0.37), transparent),
-    radial-gradient(1.3px 1.3px at 5.4% 86.4%, rgba(206,230,255,0.44), transparent),
-    radial-gradient(1.2px 1.2px at 44.3% 82.9%, rgba(206,230,255,0.4), transparent),
-    radial-gradient(1.3px 1.3px at 2.4% 10.2%, rgba(190,214,255,0.33), transparent),
-    radial-gradient(1.3px 1.3px at 97.6% 82.7%, rgba(255,255,255,0.31), transparent),
-    radial-gradient(1.2px 1.2px at 51.2% 4.9%, rgba(255,255,255,0.25), transparent),
-    radial-gradient(1.5px 1.5px at 83.3% 39.1%, rgba(255,255,255,0.46), transparent),
-    radial-gradient(0.9px 0.9px at 22.5% 91.0%, rgba(190,214,255,0.33), transparent),
-    radial-gradient(1.3px 1.3px at 40.2% 9.0%, rgba(206,230,255,0.44), transparent),
-    radial-gradient(0.9px 0.9px at 34.3% 31.9%, rgba(255,255,255,0.33), transparent),
-    radial-gradient(0.9px 0.9px at 14.9% 69.9%, rgba(206,230,255,0.35), transparent),
-    radial-gradient(1.2px 1.2px at 19.1% 55.7%, rgba(190,214,255,0.27), transparent),
-    radial-gradient(1.1px 1.1px at 75.9% 42.2%, rgba(255,255,255,0.33), transparent),
-    radial-gradient(1.5px 1.5px at 2.0% 85.0%, rgba(255,255,255,0.39), transparent),
-    radial-gradient(1.4px 1.4px at 22.2% 39.9%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1.2px 1.2px at 6.0% 16.1%, rgba(190,214,255,0.22), transparent),
-    radial-gradient(0.9px 0.9px at 33.6% 30.4%, rgba(190,214,255,0.25), transparent),
-    radial-gradient(1.1px 1.1px at 63.1% 3.5%, rgba(255,255,255,0.39), transparent),
-    radial-gradient(1.2px 1.2px at 94.1% 48.4%, rgba(255,255,255,0.46), transparent),
-    radial-gradient(1.0px 1.0px at 62.2% 31.8%, rgba(190,214,255,0.39), transparent),
-    radial-gradient(1.5px 1.5px at 20.2% 73.0%, rgba(206,230,255,0.28), transparent),
-    radial-gradient(1.2px 1.2px at 86.7% 59.9%, rgba(255,255,255,0.25), transparent),
-    radial-gradient(1.3px 1.3px at 51.2% 26.5%, rgba(206,230,255,0.33), transparent),
-    radial-gradient(1.1px 1.1px at 81.1% 59.3%, rgba(190,214,255,0.27), transparent),
-    radial-gradient(1.2px 1.2px at 95.8% 14.1%, rgba(190,214,255,0.4), transparent),
-    radial-gradient(1.5px 1.5px at 61.0% 28.9%, rgba(255,255,255,0.28), transparent),
-    radial-gradient(1.0px 1.0px at 8.6% 41.5%, rgba(206,230,255,0.23), transparent),
-    radial-gradient(1.0px 1.0px at 37.4% 56.9%, rgba(206,230,255,0.32), transparent),
-    radial-gradient(1.3px 1.3px at 96.1% 65.1%, rgba(255,255,255,0.38), transparent),
-    radial-gradient(1.2px 1.2px at 58.6% 90.7%, rgba(206,230,255,0.32), transparent),
-    radial-gradient(1.3px 1.3px at 94.4% 4.0%, rgba(190,214,255,0.36), transparent),
-    radial-gradient(0.9px 0.9px at 31.9% 15.1%, rgba(206,230,255,0.35), transparent);
 }
 .contact-glow {
   position: absolute;

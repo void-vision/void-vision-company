@@ -106,7 +106,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                       {l.label}
                     </a>
                   ))}
-                  {p.role && <span className="pill pill-muted">{p.role}</span>}
                   {p.alias && <span className="pill pill-muted">{p.alias}</span>}
                   {p.status && <span className="pill pill-muted">{p.status}</span>}
                 </div>
@@ -149,6 +148,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <section id="contact" className="contact" aria-labelledby="contact-title">
           <div aria-hidden="true" className="contact-decor">
             <div data-zoomin className="contact-glow" />
+            <div data-hole className="contact-hole" />
             <div className="contact-stars">
               <div data-zoomin className="stars contact-field" />
               <div data-zoomin className="stars contact-core" />
@@ -158,7 +158,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 <div className="stars warp warp-c" />
               </div>
             </div>
-            <div data-hole className="contact-hole" />
           </div>
           <div className="contact-copy">
             <h2 id="contact-title" data-reveal data-zoom-trigger>{t.contact.title}</h2>
