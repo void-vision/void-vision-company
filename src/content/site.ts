@@ -151,7 +151,7 @@ const zh: Dictionary = {
     sub: "四个人的团队，工程与研究背景横跨 Hulu、微软、华为、迪士尼、Amazon、Atlassian 与戴尔。",
     members: [
       { image: "/images/team/team-1.png", name: "龙源", altName: "Yuan Long", role: "CEO · 产品与商业化", jobTitle: "CEO", chips: ["Hulu", "蔚来", "微软", "UNSW 硕士"], bio: "具备从 0 到 1 的完整开发与商业化经验，同时是另外两个已盈利海外项目的联合创始人。" },
-      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Yizhou Chen", role: "CTO · 全平台架构", jobTitle: "CTO", chips: ["华为", "迪士尼", "CJLU"], bio: "负责 iOS、Android、Web 与 Chrome 插件的基础架构，具备移动端与大数据经验。" },
+      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · 全平台架构", jobTitle: "CTO", chips: ["华为", "迪士尼", "CJLU"], bio: "负责 iOS、Android、Web 与 Chrome 插件的基础架构，具备移动端与大数据经验。" },
       { image: "/images/team/team-3.png", name: "何溱扬", altName: "Zhenyang He", role: "AI · 模型与推荐", jobTitle: "AI 负责人", chips: ["Amazon", "Atlassian", "UW–Madison 博士"], bio: "现任 Amazon 应用科学家，专长模型训练与推荐算法，负责 AI 能力评估与技术路径。" },
       { image: "/images/team/team-4.png", name: "钱易宇", altName: "Yiyu Qian", role: "工程 · 数据与训练", jobTitle: "工程师", chips: ["戴尔", "RMIT 博士"], bio: "皇家墨尔本理工大学计算机博士，曾在戴尔任软件工程师，负责数据管线与模型训练相关工程。" },
     ],
@@ -267,7 +267,7 @@ const en: Dictionary = {
     sub: "A team of four, with engineering and research backgrounds across Hulu, Microsoft, Huawei, Disney, Amazon, Atlassian and Dell.",
     members: [
       { image: "/images/team/team-1.png", name: "Yuan Long", altName: "龙源", role: "CEO · Product & Growth", jobTitle: "CEO", chips: ["Hulu", "NIO", "Microsoft", "MSc UNSW"], bio: "End-to-end experience taking products from zero to one and to revenue; co-founder of two other profitable overseas ventures." },
-      { image: "/images/team/team-2.png", name: "Yizhou Chen", altName: "Theo Chen", role: "CTO · Platform Architecture", jobTitle: "CTO", chips: ["Huawei", "Disney", "CJLU"], bio: "Owns the foundations across iOS, Android, Web and Chrome extensions, with a background in mobile and big data." },
+      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · Platform Architecture", jobTitle: "CTO", chips: ["Huawei", "Disney", "CJLU"], bio: "Owns the foundations across iOS, Android, Web and Chrome extensions, with a background in mobile and big data." },
       { image: "/images/team/team-3.png", name: "Zhenyang He", altName: "何溱扬", role: "AI · Models & Recommendation", jobTitle: "Head of AI", chips: ["Amazon", "Atlassian", "PhD UW–Madison"], bio: "Applied Scientist at Amazon, specialising in model training and recommendation; leads AI capability evaluation and technical direction." },
       { image: "/images/team/team-4.png", name: "Yiyu Qian", altName: "钱易宇", role: "Engineering · Data & Training", jobTitle: "Engineer", chips: ["Dell", "PhD RMIT"], bio: "PhD in Computer Science from RMIT and former software engineer at Dell; builds the data pipelines and model-training infrastructure." },
     ],
