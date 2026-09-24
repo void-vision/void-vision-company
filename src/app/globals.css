@@ -89,7 +89,7 @@ address {
 }
 
 /* ---------- Keyframes (from design) ---------- */
-@keyframes vv-halo { 0%, 100% { transform: translate(-50%, -50%) scale(0.99); opacity: 0.86; } 50% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; } }
+@keyframes vv-halo { 0%, 100% { transform: translateX(-50%) scale(0.99); opacity: 0.86; } 50% { transform: translateX(-50%) scale(1.02); opacity: 1; } }
 @keyframes vv-stars-in { 0%, 100% { opacity: 0.22; transform: translate(-50%, -50%) scale(0.82); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); } }
 @keyframes vv-stars-in2 { 0%, 22% { opacity: 0; transform: translate(-50%, -50%) scale(0.84); } 50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.14); } 78%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.84); } }
 @keyframes vv-stars-out { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.94); } 50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.05); } }

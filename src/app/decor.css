@@ -3,11 +3,18 @@
 .hero-halo {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
-  width: min(88vh, 94vw);
-  height: min(88vh, 94vw);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle at 50% 50%, rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.14) 40%, rgba(152,176,224,0.32) 42.5%, rgba(152,176,224,0.58) 45%, rgba(152,176,224,0.82) 47%, rgba(152,176,224,0.96) 48.8%, rgba(152,176,224,1) 50%, rgba(152,176,224,0.93) 51.5%, rgba(152,176,224,0.75) 53.5%, rgba(152,176,224,0.54) 56%, rgba(152,176,224,0.36) 59%, rgba(152,176,224,0.23) 62.5%, rgba(152,176,224,0.13) 67%, rgba(152,176,224,0.07) 72%, rgba(152,176,224,0.03) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
+  /* Spans the full hero instead of being a box centred on the glow: the glow sits
+     only 412px above the hero's bottom edge but the blur needs ~572px, so a centred
+     box is capped by its worst side and leaks the gradient's edge alpha as four
+     cuts on Safari/iOS. Anchoring top/bottom to the hero keeps every edge far from
+     the glow while staying inside .hero's overflow:hidden. */
+  /* The 2% inset absorbs the animation's scale(1.02) so the box never grows past it. */
+  top: 2%;
+  bottom: 2%;
+  width: calc(min(88vh, 94vw) * 1.8);
+  transform: translateX(-50%);
+  transform-origin: 50% calc(30% + var(--hero-shift, 0px));
+  background: radial-gradient(circle calc(min(88vh, 94vw) * 0.7071) at 50% calc(30% + var(--hero-shift, 0px)), rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.14) 40%, rgba(152,176,224,0.32) 42.5%, rgba(152,176,224,0.58) 45%, rgba(152,176,224,0.82) 47%, rgba(152,176,224,0.96) 48.8%, rgba(152,176,224,1) 50%, rgba(152,176,224,0.93) 51.5%, rgba(152,176,224,0.75) 53.5%, rgba(152,176,224,0.54) 56%, rgba(152,176,224,0.36) 59%, rgba(152,176,224,0.23) 62.5%, rgba(152,176,224,0.13) 67%, rgba(152,176,224,0.07) 72%, rgba(152,176,224,0.03) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
   filter: blur(58px);
   animation: vv-halo 11s ease-in-out 0.5 forwards;
   z-index: 0;
@@ -121,7 +128,10 @@
   right: 0;
   bottom: 0;
   height: 32vh;
-  background: linear-gradient(180deg, rgba(4,6,12,0) 0%, rgba(4,6,12,0.55) 55%, #04060c 100%);
+  /* Weighted to the very bottom: the halo's lower arc lands inside this fade, and a
+     linear ramp swallowed most of it. The last 20% still reaches solid #04060c so it
+     keeps covering where .hero's overflow:hidden cuts the halo off. */
+  background: linear-gradient(180deg, rgba(4,6,12,0) 0%, rgba(4,6,12,0.06) 55%, rgba(4,6,12,0.25) 78%, rgba(4,6,12,0.7) 92%, #04060c 100%);
   z-index: 1;
 }
 .accent-green .product-glow {
