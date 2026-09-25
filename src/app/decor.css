@@ -3,11 +3,14 @@
 .hero-halo {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
-  width: min(88vh, 94vw);
-  height: min(88vh, 94vw);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle at 50% 50%, rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.14) 40%, rgba(152,176,224,0.32) 42.5%, rgba(152,176,224,0.58) 45%, rgba(152,176,224,0.82) 47%, rgba(152,176,224,0.96) 48.8%, rgba(152,176,224,1) 50%, rgba(152,176,224,0.93) 51.5%, rgba(152,176,224,0.75) 53.5%, rgba(152,176,224,0.54) 56%, rgba(152,176,224,0.36) 59%, rgba(152,176,224,0.23) 62.5%, rgba(152,176,224,0.13) 67%, rgba(152,176,224,0.07) 72%, rgba(152,176,224,0.03) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
+  /* 光晕层覆盖首屏，避免模糊边界在 Safari/iOS 上形成切边。
+     上下对称内缩 2%，为缩放留出空间，同时保持与首屏相同的中线。 */
+  top: 2%;
+  bottom: 2%;
+  width: calc(min(88vh, 94vw) * 1.8);
+  transform: translateX(-50%);
+  transform-origin: 50% var(--hero-center-y);
+  background: radial-gradient(circle calc(min(88vh, 94vw) * 0.7071) at 50% var(--hero-center-y), rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.14) 40%, rgba(152,176,224,0.32) 42.5%, rgba(152,176,224,0.58) 45%, rgba(152,176,224,0.82) 47%, rgba(152,176,224,0.96) 48.8%, rgba(152,176,224,1) 50%, rgba(152,176,224,0.93) 51.5%, rgba(152,176,224,0.75) 53.5%, rgba(152,176,224,0.54) 56%, rgba(152,176,224,0.36) 59%, rgba(152,176,224,0.23) 62.5%, rgba(152,176,224,0.13) 67%, rgba(152,176,224,0.07) 72%, rgba(152,176,224,0.03) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
   filter: blur(58px);
   animation: vv-halo 11s ease-in-out 0.5 forwards;
   z-index: 0;
@@ -15,7 +18,7 @@
 .hero-ring {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(92vh, 98vw);
   height: min(92vh, 98vw);
   transform: translate(-50%, -50%);
@@ -30,7 +33,7 @@
 .hero-hole {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(44vh, 47vw);
   height: min(44vh, 47vw);
   transform: translate(-50%, -50%);
@@ -42,7 +45,7 @@
 .warp {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(90vh, 96vw);
   height: min(90vh, 96vw);
   transform: translate(-50%, -50%);
@@ -66,7 +69,7 @@
 .field-twinkle {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(116vh, 118vw);
   height: min(116vh, 118vw);
   transform: translate(-50%, -50%);
@@ -79,7 +82,7 @@
 .field-out {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(104vh, 108vw);
   height: min(104vh, 108vw);
   transform: translate(-50%, -50%);
@@ -92,7 +95,7 @@
 .field-in {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(64vh, 70vw);
   height: min(64vh, 70vw);
   transform: translate(-50%, -50%);
@@ -105,7 +108,7 @@
 .field-in2 {
   position: absolute;
   left: 50%;
-  top: calc(30% + var(--halo-offset, 0px));
+  top: var(--hero-center-y);
   width: min(56vh, 62vw);
   height: min(56vh, 62vw);
   transform: translate(-50%, -50%);
@@ -121,7 +124,10 @@
   right: 0;
   bottom: 0;
   height: 32vh;
-  background: linear-gradient(180deg, rgba(4,6,12,0) 0%, rgba(4,6,12,0.55) 55%, #04060c 100%);
+  /* Weighted to the very bottom: the halo's lower arc lands inside this fade, and a
+     linear ramp swallowed most of it. The last 20% still reaches solid #04060c so it
+     keeps covering where .hero's overflow:hidden cuts the halo off. */
+  background: linear-gradient(180deg, rgba(4,6,12,0) 0%, rgba(4,6,12,0.06) 55%, rgba(4,6,12,0.25) 78%, rgba(4,6,12,0.7) 92%, #04060c 100%);
   z-index: 1;
 }
 .accent-green .product-glow {
