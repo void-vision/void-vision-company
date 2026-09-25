@@ -8,9 +8,10 @@ export const instrumentSans = Instrument_Sans({
   display: "swap",
 });
 
-// CJK font is served as unicode-range slices; preloading all of them would hurt LCP.
+// 中文使用可变字重，保证首屏 300 到 400 的呼吸动画连续过渡。
+// 字体仍按 unicode-range 切片加载；全部预加载会拖慢 LCP。
 export const notoSansSC = Noto_Sans_SC({
-  weight: ["300", "400", "500"],
+  weight: "variable",
   variable: "--font-noto-sc",
   display: "swap",
   preload: false,

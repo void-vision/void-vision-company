@@ -101,16 +101,16 @@ export const productUrls = {
 
 const zh: Dictionary = {
   meta: {
-    title: "Void Vision · 从虚空中看见未来 | 悉尼 AI 产品公司",
+    title: "Void Vision · 让智能在使用中生长 | RSI",
     description:
-      "Void Vision 是一家 2026 年成立于悉尼的 AI 产品公司，打造了 VoidBook（AI 阅读应用）、Airfluence（AI 达人与品牌合作平台）与优渡 Unilinx（留学生落地服务平台）。",
-    keywords: ["Void Vision", "VoidBook", "Airfluence", "优渡", "Unilinx", "AI 阅读", "AI 摘要", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
+      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下 VoidBook 打通信息的收集、处理与输出，让信息直接在笔记中转化为理解、判断和作品。",
+    keywords: ["Void Vision", "VoidBook", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "AI 工作空间", "信息收集", "AI 笔记", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
   nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
-  hero: { kicker: "Sydney · Est. 2026", title: ["从虚空中", "看见未来"], sub: ["See the unseen", "in the void"], cta: "查看产品" },
+  hero: { kicker: "Sydney · Building toward RSI", title: ["从虚空中", "看见未来"], sub: ["See the unseen", "in the void"], cta: "查看产品" },
   about:
-    "Void Vision 成立于 2026 年，总部位于悉尼。我们相信最好的产品诞生于空白之处——在无人涉足的地方，看见值得抵达的未来。目前已上线三款产品。",
+    "我们相信，智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。我们从 VoidBook 的信息收集、处理与输出出发，让每一次创造，都成为下一次进化的起点。",
   stats: [
     { value: "2026", label: "成立于悉尼" },
     { value: "3", label: "已上线产品" },
@@ -119,9 +119,9 @@ const zh: Dictionary = {
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
-      tagline: "信息如海，知识成粒。",
-      description: "AI 阅读应用。把你关注的每一条视频、播客与 newsletter，由 AI 浓缩成一篇三分钟的阅读。",
-      category: "AI 阅读应用 · iOS",
+      tagline: "打通信息的收集、处理与输出。",
+      description: "从你关注的视频、播客与 newsletter 中收集信息，由 AI 帮助理解、筛选和整理，再直接在 VoidBook 的笔记中思考、组织与创作，形成自己的观点、文章和方案。让来自世界的信息，成为你的作品。",
+      category: "AI 工作空间 · 信息收集、处理与笔记创作 · iOS",
       alias: "原 GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
@@ -150,10 +150,10 @@ const zh: Dictionary = {
     title: "我们是谁",
     sub: "四个人的团队，工程与研究背景横跨 Hulu、微软、华为、迪士尼、Amazon、Atlassian 与戴尔。",
     members: [
-      { image: "/images/team/team-1.png", name: "龙源", altName: "Yuan Long", role: "CEO · 产品与商业化", jobTitle: "CEO", chips: ["Hulu", "蔚来", "微软", "UNSW 硕士"], bio: "具备从 0 到 1 的完整开发与商业化经验，同时是另外两个已盈利海外项目的联合创始人。" },
-      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · 全平台架构", jobTitle: "CTO", chips: ["华为", "迪士尼", "CJLU"], bio: "负责 iOS、Android、Web 与 Chrome 插件的基础架构，具备移动端与大数据经验。" },
-      { image: "/images/team/team-3.png", name: "何溱扬", altName: "Zhenyang He", role: "AI · 模型与推荐", jobTitle: "AI 负责人", chips: ["Amazon", "Atlassian", "UW–Madison 博士"], bio: "现任 Amazon 应用科学家，专长模型训练与推荐算法，负责 AI 能力评估与技术路径。" },
-      { image: "/images/team/team-4.png", name: "钱易宇", altName: "Yiyu Qian", role: "工程 · 数据与训练", jobTitle: "工程师", chips: ["戴尔", "RMIT 博士"], bio: "皇家墨尔本理工大学计算机博士，曾在戴尔任软件工程师，负责数据管线与模型训练相关工程。" },
+      { image: "/images/team/team-1.png", name: "龙源", altName: "Yuan Long", role: "CEO · 产品与商业化", jobTitle: "CEO", chips: ["Hulu", "蔚来", "微软", "UNSW 硕士"], bio: "具备从 0 到 1 的完整产品开发与商业化经验，曾参与亿万级用户项目。注重用户体验研究，兼具审美判断与交互设计思维。" },
+      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · 全平台架构", jobTitle: "CTO", chips: ["华为", "迪士尼", "CJLU"], bio: "曾参与亿万级用户流媒体项目，具备复杂系统架构、移动端与大数据工程经验。负责 iOS、Android、Web 与 Chrome 插件的全平台架构，兼顾系统性能、稳定性与扩展能力。" },
+      { image: "/images/team/team-3.png", name: "何溱扬", altName: "Zhenyang He", role: "AI · 模型与推荐", jobTitle: "AI 负责人", chips: ["Amazon", "Atlassian", "UW–Madison 博士"], bio: "威斯康星大学麦迪逊分校博士，现任 Amazon 应用科学家。专长模型训练与推荐算法，负责 AI 技术路线与能力评估，推动研究成果转化为实际产品能力。" },
+      { image: "/images/team/team-4.png", name: "钱易宇", altName: "Yiyu Qian", role: "工程 · 数据与训练", jobTitle: "工程师", chips: ["戴尔", "RMIT 博士"], bio: "皇家墨尔本理工大学计算机博士，曾任戴尔软件工程师。结合科研训练与工程实践，负责数据管线与模型训练工程，注重训练流程的可靠性、效率与可复用性。" },
     ],
   },
   contact: { title: "一起看见未来" },
@@ -166,8 +166,8 @@ const zh: Dictionary = {
     title: "这个网站如何处理你的数据",
     intro:
       "本站是 Void Vision Pty Ltd 的公司官网。它不做统计分析、没有埋点，没有表单和账号，也不向任何第三方发起请求。我们参与开发的产品各自由其运营方发布隐私政策，见第 03 节。",
-    updated: "更新于 2026 年 9 月 18 日",
-    updatedISO: "2026-09-18",
+    updated: "更新于 2026 年 9 月 26 日",
+    updatedISO: "2026-09-26",
     entity: "Void Vision Pty Ltd · 悉尼",
     contactLabel: "隐私相关问询",
     back: "返回首页",
@@ -179,8 +179,8 @@ const zh: Dictionary = {
       ] },
       { no: "02", h: "浏览器本地存储", p: [
         "vv-locale（cookie，有效期一年）：记住你选择的语言，避免每次访问都重新判断。",
-        "vv-breath 与 vv:scroll:*（sessionStorage，关闭标签页即失效）：记住开场音效是否已经播放过，以及刷新后回到你原来的滚动位置。",
-        "这三项只存在于你自己的浏览器中，不会发送给我们，也不会发送给任何第三方。",
+        "vv:scroll:*（sessionStorage，关闭标签页即失效）：记录滚动位置，让你刷新后回到原来的位置。",
+        "滚动位置仅保存在浏览器中，不会发送给服务器；语言 cookie 会随本站请求发送，用于选择页面语言。",
       ] },
       { no: "03", h: "产品的隐私政策", p: [
         "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
@@ -196,16 +196,16 @@ const zh: Dictionary = {
 
 const en: Dictionary = {
   meta: {
-    title: "Void Vision · See the unseen in the void | AI product studio in Sydney",
+    title: "Void Vision · Intelligence that grows through use | RSI",
     description:
-      "Void Vision is an AI product studio founded in Sydney in 2026. We build VoidBook (an AI reading app), Airfluence (an AI creator–brand platform) and Unilinx (arrival services for international students).",
-    keywords: ["Void Vision", "VoidBook", "Airfluence", "Unilinx", "AI reading app", "AI summaries", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
+      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. VoidBook connects information collection, processing and creation, turning what you discover into understanding, judgement and finished work directly in your notes.",
+    keywords: ["Void Vision", "VoidBook", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "AI workspace", "information collection", "AI notes", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
-  hero: { kicker: "Sydney · Est. 2026", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
+  hero: { kicker: "Sydney · Building toward RSI", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
   about:
-    "Void Vision was founded in Sydney in 2026. We believe the best products are born in empty space — seeing a future worth reaching where no one has looked. Three products are live today.",
+    "We believe intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works. We begin with VoidBook, connecting information collection, processing and creation so that every act of creation becomes the starting point for the next improvement.",
   stats: [
     { value: "2026", label: "Founded in Sydney" },
     { value: "3", label: "Products shipped" },
@@ -214,9 +214,9 @@ const en: Dictionary = {
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
-      tagline: "An ocean of noise. One grain of knowledge.",
-      description: "An AI reading app. Every video, podcast and newsletter you follow — distilled by AI into a three-minute read.",
-      category: "AI reading app · iOS",
+      tagline: "Collect. Process. Create. All connected.",
+      description: "Collect information from the videos, podcasts and newsletters you follow. Use AI to understand, filter and organise it, then think, develop ideas and create directly in your VoidBook notes. Turn what you discover into your own perspectives, articles and plans.",
+      category: "AI workspace · Information collection, processing and note-based creation · iOS",
       alias: "Formerly GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
@@ -245,10 +245,10 @@ const en: Dictionary = {
     title: "Who we are",
     sub: "A team of four, with engineering and research backgrounds across Hulu, Microsoft, Huawei, Disney, Amazon, Atlassian and Dell.",
     members: [
-      { image: "/images/team/team-1.png", name: "Yuan Long", altName: "龙源", role: "CEO · Product & Growth", jobTitle: "CEO", chips: ["Hulu", "NIO", "Microsoft", "MSc UNSW"], bio: "End-to-end experience taking products from zero to one and to revenue; co-founder of two other profitable overseas ventures." },
-      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · Platform Architecture", jobTitle: "CTO", chips: ["Huawei", "Disney", "CJLU"], bio: "Owns the foundations across iOS, Android, Web and Chrome extensions, with a background in mobile and big data." },
-      { image: "/images/team/team-3.png", name: "Zhenyang He", altName: "何溱扬", role: "AI · Models & Recommendation", jobTitle: "Head of AI", chips: ["Amazon", "Atlassian", "PhD UW–Madison"], bio: "Applied Scientist at Amazon, specialising in model training and recommendation; leads AI capability evaluation and technical direction." },
-      { image: "/images/team/team-4.png", name: "Yiyu Qian", altName: "钱易宇", role: "Engineering · Data & Training", jobTitle: "Engineer", chips: ["Dell", "PhD RMIT"], bio: "PhD in Computer Science from RMIT and former software engineer at Dell; builds the data pipelines and model-training infrastructure." },
+      { image: "/images/team/team-1.png", name: "Yuan Long", altName: "龙源", role: "CEO · Product & Growth", jobTitle: "CEO", chips: ["Hulu", "NIO", "Microsoft", "MSc UNSW"], bio: "End-to-end experience in product development and commercialisation, from zero to one, with contributions to projects serving hundreds of millions of users. Brings a focus on user experience research, a discerning eye for aesthetics and a thoughtful approach to interaction design." },
+      { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · Platform Architecture", jobTitle: "CTO", chips: ["Huawei", "Disney", "CJLU"], bio: "Contributed to streaming projects serving hundreds of millions of users, with experience in complex system architecture, mobile development and big data engineering. Leads architecture across iOS, Android, Web and Chrome extensions, balancing performance, reliability and scalability." },
+      { image: "/images/team/team-3.png", name: "Zhenyang He", altName: "何溱扬", role: "AI · Models & Recommendation", jobTitle: "Head of AI", chips: ["Amazon", "Atlassian", "PhD UW–Madison"], bio: "PhD from the University of Wisconsin–Madison and currently an Applied Scientist at Amazon. Specialises in model training and recommendation algorithms, leading AI technical direction and capability evaluation to turn research into practical product capabilities." },
+      { image: "/images/team/team-4.png", name: "Yiyu Qian", altName: "钱易宇", role: "Engineering · Data & Training", jobTitle: "Engineer", chips: ["Dell", "PhD RMIT"], bio: "PhD in Computer Science from RMIT and former software engineer at Dell. Combines research training with engineering practice to build data pipelines and model-training systems, with a focus on reliable, efficient and reusable training workflows." },
     ],
   },
   contact: { title: "See the future with us" },
@@ -261,8 +261,8 @@ const en: Dictionary = {
     title: "How this website handles your data",
     intro:
       "This is the corporate website of Void Vision Pty Ltd. It runs no analytics, carries no tracking, has no forms or accounts, and makes no requests to third parties. The products we help build publish their own privacy policies — see section 03.",
-    updated: "Updated 18 September 2026",
-    updatedISO: "2026-09-18",
+    updated: "Updated 26 September 2026",
+    updatedISO: "2026-09-26",
     entity: "Void Vision Pty Ltd · Sydney",
     contactLabel: "Privacy enquiries",
     back: "Back to home",
@@ -274,8 +274,8 @@ const en: Dictionary = {
       ] },
       { no: "02", h: "Browser storage", p: [
         "vv-locale (cookie, one year): remembers the language you chose, so the site does not have to guess on every visit.",
-        "vv-breath and vv:scroll:* (sessionStorage, cleared when you close the tab): remember whether the opening sound has played, and return you to your scroll position after a reload.",
-        "All three live only in your own browser. They are never sent to us or to anyone else.",
+        "vv:scroll:* (sessionStorage, cleared when you close the tab): saves your scroll position so you can return to it after a reload.",
+        "Your scroll position stays in your browser and is not sent to the server. The language cookie accompanies requests to this site to select the page language.",
       ] },
       { no: "03", h: "Product privacy policies", p: [
         "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",

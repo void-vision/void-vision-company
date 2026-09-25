@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { BreathSound } from "@/components/BreathSound";
 import { LangSwitch } from "@/components/LangSwitch";
 import { Motion } from "@/components/Motion";
 import { PhoneFrame } from "@/components/PhoneFrame";
@@ -26,7 +25,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(homeJsonLd(lang)) }} />
       <Motion />
-      <BreathSound />
 
       <nav data-nav className="site-nav" aria-label={lang === "zh" ? "主导航" : "Main"}>
         <div data-progress className="nav-progress" aria-hidden="true" />
