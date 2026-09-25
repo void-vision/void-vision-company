@@ -93,7 +93,7 @@ address {
 @keyframes vv-stars-in { 0%, 100% { opacity: 0.22; transform: translate(-50%, -50%) scale(0.82); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); } }
 @keyframes vv-stars-in2 { 0%, 22% { opacity: 0; transform: translate(-50%, -50%) scale(0.84); } 50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.14); } 78%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.84); } }
 @keyframes vv-stars-out { 0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.94); } 50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.05); } }
-@keyframes vv-zoom-text { 0%, 100% { transform: translateY(-6vh) scale(0.9); } 50% { transform: translateY(-6vh) scale(1); } }
+@keyframes vv-zoom-text { 0%, 100% { transform: scale(0.9); } 50% { transform: scale(1); } }
 @keyframes vv-warp { 0% { transform: translate(-50%, -50%) scale(0.45); opacity: 0; } 18% { opacity: 0.8; } 65% { opacity: 0.55; } 100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; } }
 @keyframes vv-hole { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.9); } }
 /* No font-weight here: the CJK face ships as discrete 300/400/500 instances, so an
@@ -268,15 +268,6 @@ address {
 
 /* ---------- Hero ---------- */
 .hero {
-  /* The design ships no box-sizing reset, so its 100vh min-height stacks on top
-     of the 120/586 padding: the hero is 1619px tall at a 913px viewport, not
-     1084px. Every decor layer sits at top: 30% OF THAT height, so switching to
-     the global border-box silently lifts the whole composition ~160px. */
-  box-sizing: content-box;
-  /* Hand-tuned nudge, NOT from the design: drops the halo/stars 8px so the ring
-     sits slightly below the headline's optical centre. Decor layers only --
-     .hero-copy deliberately does not use it. */
-  --halo-offset: 8px;
   position: relative;
   overflow: hidden;
   min-height: 100vh;
@@ -285,14 +276,20 @@ address {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 120px 24px 586px;
+  --hero-padding-top: 120px;
+  --hero-padding-bottom: 586px;
+  padding: var(--hero-padding-top) 24px var(--hero-padding-bottom);
   background: radial-gradient(circle at 50% 50%, #04060c 0%, #04060c 42%, #0a1830 100%);
+  /* 整体下移，避免光晕遮住固定导航。 */
+  --hero-shift: calc(min(44vh, 47vw) * 0.62 + 36px);
+  /* 圆环与文字共用内容区中心，补偿上下留白的差值。 */
+  --hero-center-y: calc(50% + (var(--hero-padding-top) - var(--hero-padding-bottom)) / 2 + var(--hero-shift));
 }
 .hero-copy {
   position: relative;
   z-index: 2;
   max-width: 1000px;
-  transform: translateY(-6vh);
+  translate: 0 var(--hero-shift);
   animation: vv-zoom-text 11s ease-in-out 0.5 forwards;
 }
 .hero-kicker {
