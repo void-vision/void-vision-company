@@ -103,14 +103,14 @@ const zh: Dictionary = {
   meta: {
     title: "Void Vision · 让智能在使用中生长 | RSI",
     description:
-      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下 VoidBook 打通信息的收集、处理与输出，让信息直接在笔记中转化为理解、判断和作品。",
-    keywords: ["Void Vision", "VoidBook", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "AI 工作空间", "信息收集", "AI 笔记", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
+      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下 VoidBook 是自带信息聚合功能的知识库，将关注的内容与自己的笔记汇集一处，用 AI 辅助理解、整理与创作。",
+    keywords: ["Void Vision", "VoidBook", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
   nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
   hero: { kicker: "Sydney · Building toward RSI", title: ["从虚空中", "看见未来"], sub: ["See the unseen", "in the void"], cta: "查看产品" },
   about:
-    "我们相信，智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。我们从 VoidBook 的信息收集、处理与输出出发，让每一次创造，都成为下一次进化的起点。",
+    "我们相信，智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。我们从 VoidBook 这个自带信息聚合功能的知识库出发，让每一次创造，都成为下一次进化的起点。",
   stats: [
     { value: "2026", label: "成立于悉尼" },
     { value: "3", label: "已上线产品" },
@@ -119,9 +119,9 @@ const zh: Dictionary = {
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
-      tagline: "打通信息的收集、处理与输出。",
-      description: "从你关注的视频、播客与 newsletter 中收集信息，由 AI 帮助理解、筛选和整理，再直接在 VoidBook 的笔记中思考、组织与创作，形成自己的观点、文章和方案。让来自世界的信息，成为你的作品。",
-      category: "AI 工作空间 · 信息收集、处理与笔记创作 · iOS",
+      tagline: "自带信息聚合功能的知识库。",
+      description: "将你关注的视频、播客与 newsletter 汇集到自己的知识库，与笔记一起管理。用 AI 辅助理解、筛选和整理，在积累的内容上继续思考与创作，形成自己的观点、文章和方案。",
+      category: "知识库 · 信息聚合 · AI 笔记 · iOS",
       alias: "原 GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
@@ -198,14 +198,14 @@ const en: Dictionary = {
   meta: {
     title: "Void Vision · Intelligence that grows through use | RSI",
     description:
-      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. VoidBook connects information collection, processing and creation, turning what you discover into understanding, judgement and finished work directly in your notes.",
-    keywords: ["Void Vision", "VoidBook", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "AI workspace", "information collection", "AI notes", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
+      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. VoidBook is a knowledge base with built-in content aggregation, bringing the content you follow and your own notes together with AI to help you understand, organise and create.",
+    keywords: ["Void Vision", "VoidBook", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
   hero: { kicker: "Sydney · Building toward RSI", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
   about:
-    "We believe intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works. We begin with VoidBook, connecting information collection, processing and creation so that every act of creation becomes the starting point for the next improvement.",
+    "We believe intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works. We begin with VoidBook, a knowledge base with built-in content aggregation, so that every act of creation becomes the starting point for the next improvement.",
   stats: [
     { value: "2026", label: "Founded in Sydney" },
     { value: "3", label: "Products shipped" },
@@ -214,9 +214,9 @@ const en: Dictionary = {
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
-      tagline: "Collect. Process. Create. All connected.",
-      description: "Collect information from the videos, podcasts and newsletters you follow. Use AI to understand, filter and organise it, then think, develop ideas and create directly in your VoidBook notes. Turn what you discover into your own perspectives, articles and plans.",
-      category: "AI workspace · Information collection, processing and note-based creation · iOS",
+      tagline: "A knowledge base with built-in content aggregation.",
+      description: "Bring the videos, podcasts and newsletters you follow into your own knowledge base, alongside your notes. Use AI to understand, filter and organise your content, then build on what you have gathered to develop your own perspectives, articles and plans.",
+      category: "Knowledge base · Content aggregation · AI notes · iOS",
       alias: "Formerly GrainBook",
       links: [
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
