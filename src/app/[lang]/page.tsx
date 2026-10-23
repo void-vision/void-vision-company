@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
+import { MacFrame } from "@/components/MacFrame";
 import { Motion } from "@/components/Motion";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { company, getDictionary, hasLocale } from "@/content/site";
@@ -108,13 +109,23 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   {p.status && <span className="pill pill-muted">{p.status}</span>}
                 </div>
               </div>
-              <div data-reveal data-phones className={`phones phones-${p.screens.length}`}>
-                {p.screens.map((s) => (
-                  <div key={s.src} className="phone-slot">
-                    <PhoneFrame screen={s} sizes={p.screens.length === 4 ? "(max-width: 900px) 168px, 238px" : "(max-width: 900px) 180px, 252px"} />
-                  </div>
-                ))}
-              </div>
+              {p.device === "mac" ? (
+                <div data-reveal data-phones className="phones phones-mac">
+                  {p.screens.map((s) => (
+                    <div key={s.src} className="mac-slot">
+                      <MacFrame screen={s} sizes="(max-width: 1180px) 92vw, 1080px" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div data-reveal data-phones className={`phones phones-${p.screens.length}`}>
+                  {p.screens.map((s) => (
+                    <div key={s.src} className="phone-slot">
+                      <PhoneFrame screen={s} sizes={p.screens.length === 4 ? "(max-width: 900px) 168px, 238px" : "(max-width: 900px) 180px, 252px"} />
+                    </div>
+                  ))}
+                </div>
+              )}
             </article>
           ))}
         </section>
