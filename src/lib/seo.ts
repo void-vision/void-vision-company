@@ -77,7 +77,8 @@ export function pageMetadata({
 const ids = {
   org: absolute("/#organization"),
   site: absolute("/#website"),
-  product: (id: string) => absolute(`/#product-${id}`),
+  // Void Calendar reuses the @id from its own site, so both graphs describe one entity.
+  product: (id: string) => (id === "voidcalendar" ? `${productUrls.voidcalendar.site.zh}#app` : absolute(`/#product-${id}`)),
   person: (n: number) => absolute(`/#person-${n + 1}`),
 };
 
@@ -149,10 +150,10 @@ export function homeJsonLd(locale: Locale) {
       // The App Store listing still reads GrainBook while the account migration is in flight.
       alternateName: p.id === "unilinx" ? ["Unilinx", "优渡"] : p.id === "voidbook" ? ["GrainBook"] : undefined,
       description: `${p.tagline} ${p.description}`,
-      applicationCategory: p.id === "voidbook" ? "EducationApplication" : "BusinessApplication",
-      // We build all three, but Airfluence and Unilinx are co-founded ventures run
-      // by their own entities, so only VoidBook gets us as publisher.
-      publisher: p.id === "voidbook" ? { "@id": ids.org } : undefined,
+      applicationCategory: p.id === "voidbook" ? "EducationApplication" : p.id === "voidcalendar" ? "ProductivityApplication" : "BusinessApplication",
+      // Airfluence and Unilinx are co-founded ventures run by their own entities,
+      // so only VoidBook and Void Calendar get us as publisher.
+      publisher: p.id === "voidbook" || p.id === "voidcalendar" ? { "@id": ids.org } : undefined,
       creator: { "@id": ids.org },
       screenshot: p.screens.map((s) => absolute(s.src)),
       inLanguage,
@@ -165,6 +166,17 @@ export function homeJsonLd(locale: Locale) {
         url: productUrls.voidbook.site,
         installUrl: productUrls.voidbook.appStore,
         sameAs: [productUrls.voidbook.appStore],
+      };
+    }
+    if (p.id === "voidcalendar") {
+      const site = productUrls.voidcalendar.site[locale];
+      return {
+        ...base,
+        "@type": "SoftwareApplication",
+        operatingSystem: "macOS",
+        url: site,
+        downloadUrl: `${site.replace(/\/$/, "")}/download`,
+        sameAs: [productUrls.voidcalendar.site.zh, productUrls.voidcalendar.repo],
       };
     }
     if (p.id === "airfluence") {

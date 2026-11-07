@@ -418,6 +418,7 @@ address {
 .accent-green .product-tag { color: #9fe0bd; }
 .accent-rose .product-tag { color: #edc7b7; font-family: var(--sans); }
 .accent-cyan .product-tag { color: #9adbe8; }
+.accent-blue .product-tag { color: #b6c4ff; }
 .product-desc {
   margin: 18px auto 0;
   max-width: 620px;
@@ -470,6 +471,39 @@ address {
   .phone-slot:hover .phone-body {
     filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.55));
   }
+}
+
+/* Mac window: one wide screenshot in place of the phone row. */
+.mac-slot {
+  width: min(100%, 1080px);
+  will-change: translate;
+}
+@media (hover: hover) and (pointer: fine) {
+  .mac-slot {
+    transition: transform 1.2s var(--ease);
+  }
+  .mac-slot:hover {
+    transform: translateY(-14px);
+  }
+  .mac-body {
+    transition: filter 1.2s var(--ease);
+  }
+  .mac-slot:hover .mac-body {
+    filter: drop-shadow(0 34px 58px rgba(0, 0, 0, 0.55));
+  }
+}
+.mac {
+  margin: 0;
+  container-type: inline-size;
+}
+.mac-body {
+  filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.45));
+}
+.mac-shot {
+  width: 100%;
+  height: auto;
+  /* Matches the source window corner (22px at 1345px wide). */
+  border-radius: 1.64cqw;
 }
 
 /* Phone frame */
