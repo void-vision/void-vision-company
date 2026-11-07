@@ -10,6 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Project notes
 
+- 和用户沟通一律用中文：回复、提问、选项与说明都用中文（代码、命令、文件名保持原样）。
+
 - All site copy lives in `src/content/site.ts` (zh + en). Keep the two languages in sync; JSON-LD, sitemap and llms.txt derive from it.
 - Client components must import locale helpers from `@/content/i18n`, not `@/content/site`, to avoid shipping the dictionaries to the browser.
 - `raw/` is the design source and is gitignored — never copy internal docs from it into `public/`.

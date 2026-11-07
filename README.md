@@ -6,7 +6,7 @@ The company site for Void Vision Pty Ltd, built with [Next.js 16](https://nextjs
 
 ```bash
 bun install
-bun dev          # http://localhost:3000
+bun dev          # http://localhost:4820
 bun run lint
 bun run typecheck
 bun run build && bun run start

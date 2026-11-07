@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
 import { MacFrame } from "@/components/MacFrame";
+import { MacGallery } from "@/components/MacGallery";
 import { Motion } from "@/components/Motion";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { company, getDictionary, hasLocale } from "@/content/site";
@@ -111,11 +112,17 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
               </div>
               {p.device === "mac" ? (
                 <div data-reveal data-phones className="phones phones-mac">
-                  {p.screens.map((s) => (
-                    <div key={s.src} className="mac-slot">
-                      <MacFrame screen={s} sizes="(max-width: 1180px) 92vw, 1080px" />
+                  {p.screens.length > 1 ? (
+                    <div className="mac-slot">
+                      <MacGallery screens={p.screens} label={p.name} sizes="(max-width: 1180px) 92vw, 1080px" />
                     </div>
-                  ))}
+                  ) : (
+                    p.screens.map((s) => (
+                      <div key={s.src} className="mac-slot">
+                        <MacFrame screen={s} sizes="(max-width: 1180px) 92vw, 1080px" />
+                      </div>
+                    ))
+                  )}
                 </div>
               ) : (
                 <div data-reveal data-phones className={`phones phones-${p.screens.length}`}>

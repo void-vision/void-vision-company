@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { company, getDictionary, hasLocale, localeTag, locales } from "@/content/site";
-import { helveticaRounded, instrumentSans, notoSansSC } from "@/lib/fonts";
+import { helveticaRounded, inter, instrumentSans, notoSansSC } from "@/lib/fonts";
 import { isIndexable, siteUrl } from "@/lib/seo";
 import "../globals.css";
 
@@ -41,7 +41,7 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
   return (
     <html
       lang={localeTag[lang]}
-      className={`${instrumentSans.variable} ${notoSansSC.variable} ${helveticaRounded.variable}`}
+      className={`${instrumentSans.variable} ${inter.variable} ${notoSansSC.variable} ${helveticaRounded.variable}`}
       data-scroll-behavior="smooth"
     >
       <body>
