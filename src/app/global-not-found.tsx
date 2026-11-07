@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { helveticaRounded, instrumentSans, notoSansSC } from "@/lib/fonts";
+import { helveticaRounded, inter, instrumentSans, notoSansSC } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 // Bilingual: unmatched URLs have no locale to render in.
 export default function GlobalNotFound() {
   return (
-    <html lang="zh-CN" className={`${instrumentSans.variable} ${notoSansSC.variable} ${helveticaRounded.variable}`}>
+    <html lang="zh-CN" className={`${instrumentSans.variable} ${inter.variable} ${notoSansSC.variable} ${helveticaRounded.variable}`}>
       <body>
         <main id="main" className="not-found">
           <p className="legal-kicker">404</p>

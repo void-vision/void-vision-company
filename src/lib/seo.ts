@@ -77,7 +77,7 @@ export function pageMetadata({
 const ids = {
   org: absolute("/#organization"),
   site: absolute("/#website"),
-  // Void Calendar reuses the @id from its own site, so both graphs describe one entity.
+  // Voido reuses the @id from its own site, so both graphs describe one entity.
   product: (id: string) => (id === "voidcalendar" ? `${productUrls.voidcalendar.site.zh}#app` : absolute(`/#product-${id}`)),
   person: (n: number) => absolute(`/#person-${n + 1}`),
 };
@@ -152,7 +152,7 @@ export function homeJsonLd(locale: Locale) {
       description: `${p.tagline} ${p.description}`,
       applicationCategory: p.id === "voidbook" ? "EducationApplication" : p.id === "voidcalendar" ? "ProductivityApplication" : "BusinessApplication",
       // Airfluence and Unilinx are co-founded ventures run by their own entities,
-      // so only VoidBook and Void Calendar get us as publisher.
+      // so only VoidBook and Voido get us as publisher.
       publisher: p.id === "voidbook" || p.id === "voidcalendar" ? { "@id": ids.org } : undefined,
       creator: { "@id": ids.org },
       screenshot: p.screens.map((s) => absolute(s.src)),

@@ -19,7 +19,11 @@ export const company = {
 
 export type ProductId = "voidbook" | "voidcalendar" | "airfluence" | "unilinx";
 
-export type Screen = { src: string; width: number; height: number; alt: string; bar: "auto" | "island" | "none"; tone?: string };
+export type Screen = {
+  src: string; width: number; height: number; alt: string; bar: "auto" | "island" | "none"; tone?: string;
+  /** Tab text when a desktop product shows several shots in one window. */
+  label?: string;
+};
 
 export type Product = {
   id: ProductId;
@@ -79,9 +83,15 @@ export type Dictionary = {
 const W = { gb: [760, 1652], af: [804, 1748], ul: [780, 1696] } as const;
 
 const screens = {
-  voidcalendar: (locale: Locale, alt: string): Screen[] => [
-    { src: `/images/screens/vc-week-${locale}.png`, width: locale === "zh" ? 2688 : 2690, height: locale === "zh" ? 1458 : 1460, alt, bar: "none" },
-  ],
+  voidcalendar: (locale: Locale, shots: [label: string, alt: string][]): Screen[] =>
+    (["canvas", "project", "tasks", "calendar"] as const).map((scene, i) => ({
+      src: `/images/screens/voido-${scene}-${locale}.webp`,
+      width: 2880,
+      height: 1800,
+      label: shots[i][0],
+      alt: shots[i][1],
+      bar: "none",
+    })),
   voidbook: (alts: [string, string, string]): Screen[] =>
     (["gb-following.jpg", "gb-explore.jpg", "gb-summary.jpg"] as const).map((f, i) => ({
       src: `/images/screens/${f}`, width: W.gb[0], height: W.gb[1], alt: alts[i], bar: "auto",
@@ -102,7 +112,7 @@ const screens = {
 export const productUrls = {
   voidbook: { site: "https://grainbook.app/", appStore: "https://apps.apple.com/app/grainbook/id6754638202" },
   voidcalendar: {
-    site: { zh: "https://calendar.voidvision.ai/", en: "https://calendar.voidvision.ai/en" },
+    site: { zh: "https://voido.ai/", en: "https://voido.ai/en" },
     repo: "https://github.com/void-vision/void-calendar-website",
   },
   airfluence: { site: "https://airfluence.ai/" },
@@ -113,7 +123,7 @@ const zh: Dictionary = {
     title: "Void Vision · 让智能在使用中生长 | RSI",
     description:
       "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下 VoidBook 是自带信息聚合功能的知识库，将关注的内容与自己的笔记汇集一处，用 AI 辅助理解、整理与创作。",
-    keywords: ["Void Vision", "VoidBook", "Void Calendar", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
+    keywords: ["Void Vision", "VoidBook", "Voido", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
   nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
@@ -139,13 +149,18 @@ const zh: Dictionary = {
       screens: screens.voidbook(["VoidBook 关注信息流界面", "VoidBook 探索信息流界面", "VoidBook 视频转写与 AI 摘要阅读界面"]),
     },
     {
-      id: "voidcalendar", anchor: "vc", name: "Void Calendar", accent: "blue", device: "mac",
+      id: "voidcalendar", anchor: "vc", name: "Voido", accent: "blue", device: "mac",
       tagline: "把想法安排进时间。",
       description: "Mac 上的 AI 日历与时间盒应用，把日程、任务、笔记与专注放在一起。告诉 AI 要做什么，它会避开已有日程，把事情放进真正空着的时间；连接 Apple 日历、iCloud、Google 和 Outlook。",
       category: "AI 日历 · 时间盒 · macOS",
       status: "免费公开测试版",
-      links: [{ label: "calendar.voidvision.ai", href: productUrls.voidcalendar.site.zh, primary: true }],
-      screens: screens.voidcalendar("zh", "Void Calendar 周视图，AI 助手把任务排进空闲时间"),
+      links: [{ label: "voido.ai", href: productUrls.voidcalendar.site.zh, primary: true }],
+      screens: screens.voidcalendar("zh", [
+        ["并行任务", "Voido 画布：四个 AI 任务同时运行，展开的卡片列出搜索、读取笔记等执行步骤"],
+        ["项目对话", "Voido 项目对话：AI 思考 36 秒后改写项目大纲，右侧是目标、大纲、资源与 AI 产出"],
+        ["任务拆解", "Voido 任务列表：AI 按里程碑拆出的 12 个任务，右侧 AI 侧栏给出下一步建议"],
+        ["AI 日历", "Voido 周视图：AI 侧栏按要求把 6 个任务排进工作日的空档，日历上直接出现对应时间块"],
+      ]),
     },
     {
       id: "airfluence", anchor: "af", name: "Airfluence", accent: "rose",
@@ -202,7 +217,7 @@ const zh: Dictionary = {
       ] },
       { no: "03", h: "产品的隐私政策", p: [
         "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
-        "Void Calendar 的隐私政策：https://calendar.voidvision.ai/privacy。",
+        "Voido 的隐私政策：https://voido.ai/privacy。",
         "Airfluence 与优渡 Unilinx 的隐私政策由各自的运营方发布。Void Vision 参与了这两款产品的创办与开发，但不是其运营主体，也不控制其用户数据；与这两款产品相关的隐私问题，请联系对应的运营方。",
       ] },
       { no: "04", h: "联系与变更", p: [
@@ -218,7 +233,7 @@ const en: Dictionary = {
     title: "Void Vision · Intelligence that grows through use | RSI",
     description:
       "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. VoidBook is a knowledge base with built-in content aggregation, bringing the content you follow and your own notes together with AI to help you understand, organise and create.",
-    keywords: ["Void Vision", "VoidBook", "Void Calendar", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
+    keywords: ["Void Vision", "VoidBook", "Voido", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
@@ -244,13 +259,18 @@ const en: Dictionary = {
       screens: screens.voidbook(["VoidBook Following feed", "VoidBook Explore feed", "VoidBook transcript and AI summary view"]),
     },
     {
-      id: "voidcalendar", anchor: "vc", name: "Void Calendar", accent: "blue", device: "mac",
+      id: "voidcalendar", anchor: "vc", name: "Voido", accent: "blue", device: "mac",
       tagline: "Turn ideas into time.",
       description: "An AI calendar and time-blocking app for Mac that brings events, tasks, notes and focus together. Tell the AI what needs doing and it plans around your existing events, into time that is genuinely free. Works with Apple Calendar, iCloud, Google and Outlook.",
       category: "AI calendar · Time blocking · macOS",
       status: "Free public beta",
-      links: [{ label: "calendar.voidvision.ai", href: productUrls.voidcalendar.site.en, primary: true }],
-      screens: screens.voidcalendar("en", "Void Calendar week view with the AI assistant planning tasks into free time"),
+      links: [{ label: "voido.ai", href: productUrls.voidcalendar.site.en, primary: true }],
+      screens: screens.voidcalendar("en", [
+        ["Parallel runs", "Voido canvas with four AI tasks running at once; the expanded card lists steps such as searching and reading notes"],
+        ["Project chat", "Voido project chat: the AI thinks, rewrites the project outline, and the side panel shows goal, outline, resources and AI outputs"],
+        ["Task breakdown", "Voido task list with the tasks the AI broke out by milestone, and the AI sidebar suggesting the next step"],
+        ["AI calendar", "Voido week view: the AI sidebar time-boxes six tasks into free working hours, and the blocks appear on the calendar"],
+      ]),
     },
     {
       id: "airfluence", anchor: "af", name: "Airfluence", accent: "rose",
@@ -307,7 +327,7 @@ const en: Dictionary = {
       ] },
       { no: "03", h: "Product privacy policies", p: [
         "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",
-        "Void Calendar: https://calendar.voidvision.ai/en/privacy",
+        "Voido: https://voido.ai/en/privacy",
         "Airfluence and Unilinx publish their own privacy policies through their respective operators. Void Vision co-founded and helped build both products but does not operate them and does not control their user data; please direct privacy questions about those products to their operators.",
       ] },
       { no: "04", h: "Contact and changes", p: [

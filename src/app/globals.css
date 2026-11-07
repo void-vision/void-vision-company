@@ -12,6 +12,11 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: dark;
 }
+/* --cjk is Noto-first so Chinese copy gets its own Latin glyphs. On /en the same
+   reading-text role goes to Inter; Instrument Sans stays on nav, labels and stats. */
+:root:lang(en) {
+  --cjk: var(--font-inter), var(--sans);
+}
 
 *,
 *::before,
@@ -345,13 +350,23 @@ address {
 }
 .manifesto-text {
   margin: 0;
-  max-width: 940px;
+  /* In em so the measure follows the font: ~28 CJK characters or ~65 Latin per line. */
+  max-width: 28em;
   font-family: var(--cjk);
   font-weight: 300;
-  font-size: clamp(22px, 3vw, 40px);
-  line-height: 1.75;
+  font-size: clamp(19px, 1.9vw, 26px);
+  line-height: 1.8;
   letter-spacing: 0.02em;
   color: #ffffff;
+  /* pretty still left a 3-character last line in Chinese; the paragraph is short enough to balance. */
+  text-wrap: balance;
+}
+/* Latin glyphs sit smaller in the em than CJK, so English runs a step larger. */
+:root:lang(en) .manifesto-text {
+  font-size: clamp(20px, 2.1vw, 28px);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  /* 7 lines in English, past the line count browsers will balance. */
   text-wrap: pretty;
 }
 .stats {
@@ -419,6 +434,7 @@ address {
 .accent-rose .product-tag { color: #edc7b7; font-family: var(--sans); }
 .accent-cyan .product-tag { color: #9adbe8; }
 .accent-blue .product-tag { color: #b6c4ff; }
+:root:lang(en) .product-tag { font-family: var(--cjk); }
 .product-desc {
   margin: 18px auto 0;
   max-width: 620px;
@@ -499,11 +515,127 @@ address {
 .mac-body {
   filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.45));
 }
+.mac-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 32px);
+}
+.mac-gallery .mac {
+  width: 100%;
+}
+/* All shots share one grid cell, so the frame keeps the tallest height and switching is a crossfade. */
+.mac-stack {
+  display: grid;
+}
+.mac-stack-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0s 0.6s;
+}
+.mac-stack-item[data-active] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s var(--ease);
+}
+/* Segmented bar under the gallery; the current segment fills like a progress bar. */
+.mac-tabs {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  width: min(100%, 760px);
+  overflow: hidden;
+  background: #121419;
+  border: 1px solid rgba(220, 232, 248, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.mac-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 18px 12px;
+  font: inherit;
+  font-family: var(--cjk);
+  font-size: 15px;
+  color: #7d8796;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.mac-tab + .mac-tab {
+  border-left: 1px solid rgba(220, 232, 248, 0.08);
+}
+.mac-tab:hover,
+.mac-tab[aria-selected="true"] {
+  color: #ffffff;
+}
+.mac-tab[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.05);
+}
+.mac-tab-num {
+  position: relative;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12px;
+  color: #5d6878;
+}
+.mac-tab[aria-selected="true"] .mac-tab-num {
+  color: #a3aebb;
+}
+.mac-tab-label {
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mac-tab-fill {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.12);
+  transform-origin: left center;
+  animation: mac-tab-fill linear forwards;
+  animation-play-state: paused;
+}
+.mac-tabs[data-playing] .mac-tab-fill {
+  animation-play-state: running;
+}
+@keyframes mac-tab-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.mac-tab:focus-visible {
+  outline: 2px solid #b6c4ff;
+  outline-offset: -2px;
+}
+@media (max-width: 640px) {
+  .mac-tab {
+    padding: 14px 6px;
+    font-size: 13px;
+  }
+  .mac-tab-num {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mac-stack-item,
+  .mac-stack-item[data-active] {
+    transition: none;
+  }
+  /* No autoplay: the current segment is simply lit. */
+  .mac-tab-fill {
+    animation: none;
+  }
+}
 .mac-shot {
   width: 100%;
   height: auto;
-  /* Matches the source window corner (22px at 1345px wide). */
-  border-radius: 1.64cqw;
+  /* Matches the window corner baked into the screenshots (34px at 2560–2880px wide). */
+  border-radius: 1.2cqw;
 }
 
 /* Phone frame */
