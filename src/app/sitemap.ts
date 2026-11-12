@@ -3,7 +3,7 @@ import { getDictionary, locales } from "@/content/site";
 import { absolute, languageAlternates, localizedPath, type PagePath } from "@/lib/seo";
 
 const pages: { path: PagePath; priority: number; lastModified: string }[] = [
-  { path: "", priority: 1, lastModified: "2026-09-17" },
+  { path: "", priority: 1, lastModified: "2026-11-12" },
   { path: "/privacy", priority: 0.3, lastModified: getDictionary("en").privacy.updatedISO },
 ];
 
