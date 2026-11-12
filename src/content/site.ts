@@ -1,6 +1,4 @@
-// Single source of truth for all site copy. Pages, JSON-LD, sitemap and
-// llms.txt are all generated from this file, so crawlers and AI agents see
-// exactly the same facts as human visitors.
+// 全站文案的唯一来源，页面、结构化数据与 llms.txt 均从这里生成。
 
 import type { Locale } from "./i18n";
 
@@ -14,10 +12,10 @@ export const company = {
   city: "Sydney",
   region: "NSW",
   country: "AU",
-  productCount: 4,
+  productCount: 5,
 } as const;
 
-export type ProductId = "voidbook" | "voidcalendar" | "airfluence" | "unilinx";
+export type ProductId = "voidbook" | "voidcalendar" | "voidisland" | "airfluence" | "unilinx";
 
 export type Screen = {
   src: string; width: number; height: number; alt: string; bar: "auto" | "island" | "none"; tone?: string;
@@ -35,6 +33,11 @@ export type Product = {
   category: string;
   links: { label: string; href: string; primary?: boolean }[];
   status?: string;
+  logo?: string;
+  features?: { title: string; description: string }[];
+  connection?: string;
+  offer?: { label: string; price: string; terms: string; availability: string };
+  screenCaption?: string;
   /** Former name, shown next to the store links while a listing still carries it. */
   alias?: string;
   screens: Screen[];
@@ -83,6 +86,11 @@ export type Dictionary = {
 const W = { gb: [760, 1652], af: [804, 1748], ul: [780, 1696] } as const;
 
 const screens = {
+  voidisland: (locale: Locale, shots: [label: string, alt: string][]): Screen[] =>
+    (["ai", "git", "awake"] as const).map((scene, i) => ({
+      src: `/images/screens/void-island-${scene}-${locale}.webp`,
+      width: 1200, height: 690, label: shots[i][0], alt: shots[i][1], bar: "none",
+    })),
   voidcalendar: (locale: Locale, shots: [label: string, alt: string][]): Screen[] =>
     (["canvas", "project", "tasks", "calendar"] as const).map((scene, i) => ({
       src: `/images/screens/voido-${scene}-${locale}.webp`,
@@ -115,6 +123,11 @@ export const productUrls = {
     site: { zh: "https://voido.ai/", en: "https://voido.ai/en" },
     repo: "https://github.com/void-vision/void-calendar-website",
   },
+  voidisland: {
+    site: { zh: "https://voidisland.app/zh", en: "https://voidisland.app/" },
+    repo: "https://github.com/void-vision/void-island",
+    community: "https://discord.gg/Z3fh88qHwN",
+  },
   airfluence: { site: "https://airfluence.ai/" },
 } as const;
 
@@ -122,8 +135,8 @@ const zh: Dictionary = {
   meta: {
     title: "Void Vision · 让智能在使用中生长 | RSI",
     description:
-      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下 VoidBook 是自带信息聚合功能的知识库，将关注的内容与自己的笔记汇集一处，用 AI 辅助理解、整理与创作。",
-    keywords: ["Void Vision", "VoidBook", "Voido", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
+      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下产品包括知识库 VoidBook、AI 日历 Voido，以及将 AI 会话工作流带入 macOS 刘海的 Void Island。",
+    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
   nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
@@ -132,7 +145,7 @@ const zh: Dictionary = {
     "我们相信，智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。我们从 VoidBook 这个自带信息聚合功能的知识库出发，让每一次创造，都成为下一次进化的起点。",
   stats: [
     { value: "2026", label: "成立于悉尼" },
-    { value: "4", label: "已上线产品" },
+    { value: String(company.productCount), label: "产品与项目" },
   ],
   productsHeading: "我们的产品",
   products: [
@@ -160,6 +173,35 @@ const zh: Dictionary = {
         ["项目对话", "Voido 项目对话：AI 思考 36 秒后改写项目大纲，右侧是目标、大纲、资源与 AI 产出"],
         ["任务拆解", "Voido 任务列表：AI 按里程碑拆出的 12 个任务，右侧 AI 侧栏给出下一步建议"],
         ["AI 日历", "Voido 周视图：AI 侧栏按要求把 6 个任务排进工作日的空档，日历上直接出现对应时间块"],
+      ]),
+    },
+    {
+      id: "voidisland", anchor: "island", name: "Void Island", accent: "blue", device: "mac",
+      logo: "/images/void-island.png",
+      tagline: "AI 在工作，你继续专注。",
+      description: "把 Claude、Codex 和 Cursor 的会话状态、授权与提问，收进 Mac 顶部的刘海。少找一个窗口，多留一点思路。原生 macOS 应用，可独立运行。",
+      category: "AI 会话工作流 · Git · 保持唤醒 · macOS",
+      features: [
+        { title: "AI 会话", description: "观察进度、处理授权与提问，需要时返回对应的原应用。" },
+        { title: "Git", description: "在小岛里查看分支、文件改动与提交记录。" },
+        { title: "保持唤醒", description: "需要时让 Mac 保持唤醒，工作结束后再停下。" },
+      ],
+      connection: "内置三种插件，无需 Voido 也可使用；连接 Voido 后，还可扩展日历、笔记与专注工作流。",
+      offer: {
+        label: "限时早鸟买断", price: "USD 19.99",
+        terms: "一次付款，永久使用，包含未来所有版本升级。",
+        availability: "正式购买与独立安装入口待发布验证完成后开放，请前往产品官网查看进展。",
+      },
+      links: [
+        { label: "探索 Void Island", href: productUrls.voidisland.site.zh, primary: true },
+        { label: "GitHub", href: productUrls.voidisland.repo },
+        { label: "Discord 社区", href: productUrls.voidisland.community },
+      ],
+      screenCaption: "产品官网演示 · 使用虚构数据，展示 AI 授权、Git 与保持唤醒界面。",
+      screens: screens.voidisland("zh", [
+        ["AI 会话", "Void Island 示例：在刘海小岛中查看 AI 会话状态并处理读取文件的授权"],
+        ["Git 改动", "Void Island 示例：查看虚构项目的分支、暂存文件与更改列表"],
+        ["保持唤醒", "Void Island 示例：保持唤醒的时长、结束条件与自动规则界面"],
       ]),
     },
     {
@@ -232,8 +274,8 @@ const en: Dictionary = {
   meta: {
     title: "Void Vision · Intelligence that grows through use | RSI",
     description:
-      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. VoidBook is a knowledge base with built-in content aggregation, bringing the content you follow and your own notes together with AI to help you understand, organise and create.",
-    keywords: ["Void Vision", "VoidBook", "Voido", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
+      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. Our products include the VoidBook knowledge base, Voido AI calendar, and Void Island for AI session workflows in the macOS notch.",
+    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
   nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
@@ -242,7 +284,7 @@ const en: Dictionary = {
     "We believe intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works. We begin with VoidBook, a knowledge base with built-in content aggregation, so that every act of creation becomes the starting point for the next improvement.",
   stats: [
     { value: "2026", label: "Founded in Sydney" },
-    { value: "4", label: "Products shipped" },
+    { value: String(company.productCount), label: "Products & projects" },
   ],
   productsHeading: "Our products",
   products: [
@@ -270,6 +312,35 @@ const en: Dictionary = {
         ["Project chat", "Voido project chat: the AI thinks, rewrites the project outline, and the side panel shows goal, outline, resources and AI outputs"],
         ["Task breakdown", "Voido task list with the tasks the AI broke out by milestone, and the AI sidebar suggesting the next step"],
         ["AI calendar", "Voido week view: the AI sidebar time-boxes six tasks into free working hours, and the blocks appear on the calendar"],
+      ]),
+    },
+    {
+      id: "voidisland", anchor: "island", name: "Void Island", accent: "blue", device: "mac",
+      logo: "/images/void-island.png",
+      tagline: "AI is working. Stay in your flow.",
+      description: "Bring Claude, Codex and Cursor session status, approvals and questions into your Mac’s notch. Fewer windows. More room to think. A native macOS app that runs on its own.",
+      category: "AI session workflows · Git · Keep awake · macOS",
+      features: [
+        { title: "AI sessions", description: "Follow progress, handle approvals and questions, then return to the original app." },
+        { title: "Git", description: "See your branch, changed files and commits from the island." },
+        { title: "Keep awake", description: "Keep your Mac awake when you need it. Stop when the work is done." },
+      ],
+      connection: "Use all three built-in plugins without Voido. Connect Voido to add calendar, notes and focus workflows.",
+      offer: {
+        label: "Limited-time early bird", price: "USD 19.99",
+        terms: "One payment. Lifetime access. All future version upgrades included.",
+        availability: "Official checkout and standalone installation will open after release verification. Follow progress on the product website.",
+      },
+      links: [
+        { label: "Explore Void Island", href: productUrls.voidisland.site.en, primary: true },
+        { label: "GitHub", href: productUrls.voidisland.repo },
+        { label: "Discord community", href: productUrls.voidisland.community },
+      ],
+      screenCaption: "Product website demo · Fictional data showing AI approvals, Git and keep-awake controls.",
+      screens: screens.voidisland("en", [
+        ["AI sessions", "Void Island demo: AI session status and a file-read approval in the Mac’s notch"],
+        ["Git changes", "Void Island demo: branch, staged files and changes in a fictional project"],
+        ["Keep awake", "Void Island demo: keep-awake durations, end conditions and automatic rules"],
       ]),
     },
     {

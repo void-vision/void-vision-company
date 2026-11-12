@@ -1146,3 +1146,106 @@ address {
     display: none;
   }
 }
+
+/* 产品索引与独立产品的补充信息沿用全站的字体、边框和蓝色调。 */
+.product-index {
+  padding: 64px 24px 0;
+  text-align: center;
+  scroll-margin-top: 80px;
+}
+.product-index h2 {
+  font-family: var(--cjk);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 400;
+}
+.product-index-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.product-logo {
+  margin: 0 auto 24px;
+  border-radius: 18px;
+}
+.product-offer {
+  margin: 28px auto 0;
+  max-width: 620px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(116, 151, 255, 0.04);
+  font-family: var(--cjk);
+}
+.product-offer p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--body);
+}
+.product-offer .product-offer-price {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 18px;
+  color: #b6c4ff;
+}
+.product-offer-price strong {
+  font-family: var(--sans);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--fg);
+}
+.product-offer .product-availability {
+  font-size: 12px;
+}
+.product-caption,
+.product-connection {
+  position: relative;
+  font-family: var(--cjk);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--body);
+}
+.product-caption {
+  max-width: 660px;
+  margin: 24px auto 0;
+}
+.product-details {
+  position: relative;
+  margin-top: 42px;
+  max-width: 960px;
+}
+.product-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  gap: 24px;
+  text-align: left;
+  font-family: var(--cjk);
+}
+.product-features > div {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+}
+.product-features dt {
+  color: #b6c4ff;
+  font-weight: 500;
+  font-size: 16px;
+}
+.product-features dd {
+  margin: 12px 0 0;
+  color: var(--body);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.product-connection {
+  margin: 26px auto 0;
+  max-width: 660px;
+}
+@media (max-width: 560px) {
+  .product-features { grid-template-columns: 1fr; gap: 20px; }
+  .product-offer { padding: 18px; }
+}

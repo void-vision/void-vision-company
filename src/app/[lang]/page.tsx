@@ -91,15 +91,30 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </section>
 
         <section id="products" aria-labelledby="products-title">
-          <h2 id="products-title" className="sr-only">{t.productsHeading}</h2>
+          <div className="product-index container">
+            <h2 id="products-title">{t.productsHeading}</h2>
+            <nav aria-labelledby="products-title" className="product-index-links">
+              {t.products.map((p) => (
+                <a key={p.id} href={`#${p.anchor}`} className="pill pill-outline">{p.name}</a>
+              ))}
+            </nav>
+          </div>
           {t.products.map((p) => (
             <article key={p.id} id={p.anchor} className={`product accent-${p.accent}`} aria-labelledby={`${p.anchor}-name`}>
               <div aria-hidden="true" className="product-glow" />
               <div data-reveal className="product-copy">
+                {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="product-logo" />}
                 <h3 id={`${p.anchor}-name`} className="product-name">{p.name}</h3>
                 <p className="product-tag">{p.tagline}</p>
                 <p className="product-desc">{p.description}</p>
                 <p className="sr-only">{p.category}</p>
+                {p.offer && (
+                  <div className="product-offer">
+                    <p className="product-offer-price"><span>{p.offer.label}</span><strong>{p.offer.price}</strong></p>
+                    <p>{p.offer.terms}</p>
+                    <p className="product-availability">{p.offer.availability}</p>
+                  </div>
+                )}
                 <div className="product-actions">
                   {p.links.map((l) => (
                     <a key={l.href} href={l.href} target="_blank" rel="noopener" className={l.primary ? "pill pill-solid" : "pill pill-outline"}>
@@ -131,6 +146,20 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                       <PhoneFrame screen={s} sizes={p.screens.length === 4 ? "(max-width: 900px) 168px, 238px" : "(max-width: 900px) 180px, 252px"} />
                     </div>
                   ))}
+                </div>
+              )}
+              {p.screenCaption && <p className="product-caption">{p.screenCaption}</p>}
+              {p.features && (
+                <div className="product-details container">
+                  <dl className="product-features">
+                    {p.features.map((f) => (
+                      <div key={f.title}>
+                        <dt>{f.title}</dt>
+                        <dd>{f.description}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {p.connection && <p className="product-connection">{p.connection}</p>}
                 </div>
               )}
             </article>

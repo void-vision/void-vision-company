@@ -6,7 +6,8 @@ import { absolute, localizedPath } from "@/lib/seo";
 const productLinks = (locale: Locale) =>
   getDictionary(locale).products.map((p) => {
     const url = p.links.find((l) => !l.href.includes("apps.apple.com"))?.href ?? absolute(`${localizedPath(locale, "")}#${p.anchor}`);
-    return `- [${p.name}](${url}): ${p.tagline} ${p.description}`;
+    const offer = p.offer ? ` ${p.offer.label}: ${p.offer.price}. ${p.offer.terms} ${p.offer.availability}` : "";
+    return `- [${p.name}](${url}): ${p.tagline} ${p.description}${p.connection ? ` ${p.connection}` : ""}${offer}`;
   });
 
 export function llmsTxt() {
@@ -55,6 +56,9 @@ function localeFull(locale: Locale) {
   ];
   for (const p of t.products) {
     lines.push(`### ${p.name}`, "", `*${p.tagline}*`, "", p.description, "", `- ${p.category}`);
+    for (const f of p.features ?? []) lines.push(`- ${f.title}: ${f.description}`);
+    if (p.connection) lines.push("", p.connection, "");
+    if (p.offer) lines.push(`- ${p.offer.label}: ${p.offer.price}`, `- ${p.offer.terms}`, `- ${p.offer.availability}`);
     for (const l of p.links) lines.push(`- ${l.label}: ${l.href}`);
     if (p.alias) lines.push(`- ${p.alias}`);
     if (p.status) lines.push(`- ${p.status}`);
