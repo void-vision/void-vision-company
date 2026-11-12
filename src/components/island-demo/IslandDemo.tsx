@@ -462,13 +462,13 @@ function Demo({ lang }: { lang: Language }) {
               event.target.matches(":focus-visible") &&
               !(event.target as Element).closest("[data-compact-action]")
             ) {
-              setHovered(true);
-              // 聚焦只暂停轮播；展开由显式按钮处理，避免从设置返回时被动重开。
+              setAutoplay(false);
+              // 键盘操作显式暂停；焦点移除不能留下伪悬停，阻止之后恢复自动播放。
             }
           }}
           onBlurCapture={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-              setHovered(false);
+              setHovered(native.current?.matches(":hover") ?? false);
             }
           }}
           data-content={content}
