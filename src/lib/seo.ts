@@ -3,6 +3,7 @@ import {
   company,
   getDictionary,
   localeTag,
+  localizedPath,
   locales,
   ogLocale,
   productUrls,
@@ -27,12 +28,12 @@ export const isIndexable =
 export type PagePath = "" | "/privacy";
 
 export const absolute = (path: string) => `${siteUrl}${path}`;
-export const localizedPath = (locale: Locale, path: PagePath) => `/${locale}${path}`;
+export { localizedPath } from "@/content/i18n";
 
 export function languageAlternates(path: PagePath) {
   const languages: Record<string, string> = {};
   for (const l of locales) languages[localeTag[l]] = absolute(localizedPath(l, path));
-  // "/" negotiates the visitor's language, so it is the x-default entry.
+  // 默认页面固定使用英文路径。
   languages["x-default"] = absolute(path || "/");
   return languages;
 }
@@ -68,9 +69,10 @@ export function pageMetadata({
       title,
       description,
       locale: ogLocale[locale],
+      images: [{ url: absolute(localizedPath(locale, "/opengraph-image")), alt: dict.meta.ogAlt }],
       alternateLocale: locales.filter((l) => l !== locale).map((l) => ogLocale[l]),
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [absolute(localizedPath(locale, "/opengraph-image"))] },
   };
 }
 
@@ -95,7 +97,7 @@ export function homeJsonLd(locale: Locale) {
     legalName: company.legalName,
     url: siteUrl,
     logo: { "@type": "ImageObject", url: absolute("/images/vv-mark.png"), width: 1108, height: 340 },
-    image: absolute(`/${locale}/opengraph-image`),
+    image: absolute(localizedPath(locale, "/opengraph-image")),
     description: dict.meta.description,
     slogan: dict.hero.title.join(" "),
     email: company.email,
@@ -139,7 +141,7 @@ export function homeJsonLd(locale: Locale) {
     inLanguage,
     isPartOf: { "@id": ids.site },
     about: { "@id": ids.org },
-    primaryImageOfPage: absolute(`/${locale}/opengraph-image`),
+    primaryImageOfPage: absolute(localizedPath(locale, "/opengraph-image")),
     mainEntity: { "@id": ids.org },
   };
 

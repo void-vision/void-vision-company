@@ -9,6 +9,7 @@ bun install
 bun dev          # http://localhost:4820
 bun run lint
 bun run typecheck
+bun test
 bun run build && bun run start
 ```
 
@@ -17,9 +18,10 @@ bun run build && bun run start
 | Path | Purpose |
 | --- | --- |
 | `src/content/site.ts` | **All copy** (zh + en): company facts, products, team, privacy policy. Edit here. |
-| `src/content/i18n.ts` | Locales and helpers shared by client code |
-| `src/app/[lang]/` | Pages: home and `/privacy`, statically rendered for `/zh` and `/en` |
-| `src/proxy.ts` | Sends `/` and paths without a locale to the visitor's language (cookie → `Accept-Language` → `zh`) |
+| `src/content/i18n.ts` | Locales and public URL helpers shared by client code |
+| `src/components/island-demo/` | Self-contained interactive Void Island demo with fictional data and draggable windows |
+| `src/app/[lang]/` | Internal locale pages; public English routes use `/` and `/privacy`, Chinese routes use `/zh` and `/zh/privacy` |
+| `src/proxy.ts` | Rewrites unprefixed routes to English; permanently redirects legacy `/en` URLs to unprefixed routes |
 | `src/lib/seo.ts` | Canonical URL, hreflang, Open Graph and JSON-LD (schema.org) graph |
 | `src/lib/llms.ts` | `/llms.txt` and `/llms-full.txt` for AI agents |
 | `src/app/globals.css`, `src/app/decor.css` | Styles ported from the v2 design (`decor.css` holds the star and halo layers) |
@@ -30,7 +32,7 @@ The design source material (`raw/`) is kept out of git because it includes proto
 ## Search engine and AI discoverability
 
 - Every page is prerendered HTML, so all text is readable without running JavaScript. Motion is a progressive enhancement and respects `prefers-reduced-motion`.
-- Language-specific URLs (`/zh`, `/en`) have `<html lang>`, canonical links, and `hreflang` alternates (with `x-default` → `/`).
+- Language-specific URLs (`/`, `/zh`) have `<html lang>`, canonical links, and `hreflang` alternates (with `x-default` → `/`).
 - Semantic markup: a single `h1`, a heading outline, `article`, `dl`, `address`, `time`, and descriptive `alt` text.
 - JSON-LD `@graph`: `Organization`, `WebSite`, `WebPage`, `ItemList`, `MobileApplication` / `SoftwareApplication` per product, and `Person` per team member (with Chinese/English `alternateName`). The privacy page adds `BreadcrumbList`.
 - `sitemap.xml` includes hreflang alternates and product screenshots. `robots.txt` explicitly allows the major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and others).

@@ -1164,42 +1164,17 @@ address {
   justify-content: center;
   gap: 12px;
 }
-.product-logo {
-  margin: 0 auto 24px;
-  border-radius: 18px;
-}
-.product-offer {
-  margin: 28px auto 0;
-  max-width: 620px;
-  padding: 20px 24px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(116, 151, 255, 0.04);
-  font-family: var(--cjk);
-}
-.product-offer p {
-  margin: 10px 0 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--body);
-}
-.product-offer .product-offer-price {
-  margin: 0;
+.product-heading {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  gap: 8px 18px;
-  color: #b6c4ff;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
 }
-.product-offer-price strong {
-  font-family: var(--sans);
-  font-size: 26px;
-  font-weight: 600;
-  color: var(--fg);
-}
-.product-offer .product-availability {
-  font-size: 12px;
+.product-logo {
+  width: clamp(44px, 6.4vw, 80px);
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 20%;
 }
 .product-caption,
 .product-connection {
@@ -1247,5 +1222,4 @@ address {
 }
 @media (max-width: 560px) {
   .product-features { grid-template-columns: 1fr; gap: 20px; }
-  .product-offer { padding: 18px; }
 }

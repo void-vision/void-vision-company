@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
 import { Motion } from "@/components/Motion";
-import { company, getDictionary, hasLocale } from "@/content/site";
+import { company, getDictionary, hasLocale, localizedPath } from "@/content/site";
 import { pageMetadata, privacyJsonLd, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/privacy">): Promise<Metadata> {
@@ -26,8 +26,8 @@ export default async function Privacy({ params }: PageProps<"/[lang]/privacy">) 
       <Motion />
       <nav data-nav className="legal-nav" aria-label={lang === "zh" ? "页面导航" : "Page"}>
         <div data-progress className="nav-progress" aria-hidden="true" />
-        <Link href={`/${lang}`} className="legal-back">← {company.name}</Link>
-        <LangSwitch href={`/${other}/privacy`} target={other} label={t.nav.switchLabel} text={t.nav.switchTo} className="lang-btn" />
+        <Link href={localizedPath(lang)} className="legal-back">← {company.name}</Link>
+        <LangSwitch href={localizedPath(other, "/privacy")} target={other} label={t.nav.switchLabel} text={t.nav.switchTo} className="lang-btn" />
       </nav>
 
       <main id="main">
@@ -68,7 +68,7 @@ export default async function Privacy({ params }: PageProps<"/[lang]/privacy">) 
       <footer className="legal-footer">
         <div>
           <span>{t.footer.rights}</span>
-          <Link href={`/${lang}`}>{p.back}</Link>
+          <Link href={localizedPath(lang)}>{p.back}</Link>
         </div>
       </footer>
     </div>

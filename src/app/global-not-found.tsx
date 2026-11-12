@@ -19,7 +19,7 @@ export default function GlobalNotFound() {
           <p lang="en">Nothing was found in the void.</p>
           <p className="not-found-links">
             <Link href="/zh">返回首页</Link>
-            <Link href="/en" lang="en">Back to home</Link>
+            <Link href="/" lang="en">Back to home</Link>
           </p>
         </main>
       </body>

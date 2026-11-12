@@ -3,11 +3,12 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
+import { IslandDemo } from "@/components/island-demo/IslandDemo";
 import { MacFrame } from "@/components/MacFrame";
 import { MacGallery } from "@/components/MacGallery";
 import { Motion } from "@/components/Motion";
 import { PhoneFrame } from "@/components/PhoneFrame";
-import { company, getDictionary, hasLocale } from "@/content/site";
+import { company, getDictionary, getIslandDemoContent, hasLocale, localizedPath } from "@/content/site";
 import { homeJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
@@ -38,7 +39,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <a href="#products">{t.nav.products}</a>
           <a href="#team">{t.nav.team}</a>
           <a href="#contact">{t.nav.contact}</a>
-          <LangSwitch href={`/${other}`} target={other} label={t.nav.switchLabel} text={t.nav.switchTo} className="lang-btn" />
+          <LangSwitch href={localizedPath(other)} target={other} label={t.nav.switchLabel} text={t.nav.switchTo} className="lang-btn" />
         </div>
       </nav>
 
@@ -103,18 +104,13 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             <article key={p.id} id={p.anchor} className={`product accent-${p.accent}`} aria-labelledby={`${p.anchor}-name`}>
               <div aria-hidden="true" className="product-glow" />
               <div data-reveal className="product-copy">
-                {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="product-logo" />}
-                <h3 id={`${p.anchor}-name`} className="product-name">{p.name}</h3>
+                <div className="product-heading">
+                  {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="product-logo" />}
+                  <h3 id={`${p.anchor}-name`} className="product-name">{p.name}</h3>
+                </div>
                 <p className="product-tag">{p.tagline}</p>
                 <p className="product-desc">{p.description}</p>
                 <p className="sr-only">{p.category}</p>
-                {p.offer && (
-                  <div className="product-offer">
-                    <p className="product-offer-price"><span>{p.offer.label}</span><strong>{p.offer.price}</strong></p>
-                    <p>{p.offer.terms}</p>
-                    <p className="product-availability">{p.offer.availability}</p>
-                  </div>
-                )}
                 <div className="product-actions">
                   {p.links.map((l) => (
                     <a key={l.href} href={l.href} target="_blank" rel="noopener" className={l.primary ? "pill pill-solid" : "pill pill-outline"}>
@@ -125,7 +121,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   {p.status && <span className="pill pill-muted">{p.status}</span>}
                 </div>
               </div>
-              {p.device === "mac" ? (
+              {p.id === "voidisland" ? (
+                <IslandDemo lang={lang} content={getIslandDemoContent(lang)} />
+              ) : p.device === "mac" ? (
                 <div data-reveal data-phones className="phones phones-mac">
                   {p.screens.length > 1 ? (
                     <div className="mac-slot">
@@ -148,7 +146,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   ))}
                 </div>
               )}
-              {p.screenCaption && <p className="product-caption">{p.screenCaption}</p>}
+              {p.id !== "voidisland" && p.screenCaption && <p className="product-caption">{p.screenCaption}</p>}
               {p.features && (
                 <div className="product-details container">
                   <dl className="product-features">
@@ -217,7 +215,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <footer className="site-footer">
         <span className="footer-left">
           {t.footer.rights}
-          <a href={`/${lang}/privacy`}>{t.footer.privacy}</a>
+          <a href={localizedPath(lang, "/privacy")}>{t.footer.privacy}</a>
         </span>
         <span className="footer-products">
           {t.products.map((p) =>

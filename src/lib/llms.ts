@@ -6,8 +6,7 @@ import { absolute, localizedPath } from "@/lib/seo";
 const productLinks = (locale: Locale) =>
   getDictionary(locale).products.map((p) => {
     const url = p.links.find((l) => !l.href.includes("apps.apple.com"))?.href ?? absolute(`${localizedPath(locale, "")}#${p.anchor}`);
-    const offer = p.offer ? ` ${p.offer.label}: ${p.offer.price}. ${p.offer.terms} ${p.offer.availability}` : "";
-    return `- [${p.name}](${url}): ${p.tagline} ${p.description}${p.connection ? ` ${p.connection}` : ""}${offer}`;
+    return `- [${p.name}](${url}): ${p.tagline} ${p.description}${p.connection ? ` ${p.connection}` : ""}`;
   });
 
 export function llmsTxt() {
@@ -17,7 +16,7 @@ export function llmsTxt() {
     "",
     `> ${en.meta.description}`,
     "",
-    `${company.legalName} is headquartered in ${company.city}, Australia (founded ${company.foundingYear}). Contact: ${company.email}. The site is bilingual: Simplified Chinese (/zh) and English (/en).`,
+    `${company.legalName} is headquartered in ${company.city}, Australia (founded ${company.foundingYear}). Contact: ${company.email}. The site is bilingual: English (/) and Simplified Chinese (/zh).`,
     "",
     "## Products",
     "",
@@ -26,9 +25,9 @@ export function llmsTxt() {
     "",
     "## Pages",
     "",
-    `- [Home (English)](${absolute("/en")}): company overview, products, team and contact`,
+    `- [Home (English)](${absolute("/")}): company overview, products, team and contact`,
     `- [首页（中文）](${absolute("/zh")}): 公司介绍、产品、团队与联系方式`,
-    `- [Website Privacy Notice](${absolute("/en/privacy")}): what this site does and does not collect, and where each product's policy lives`,
+    `- [Website Privacy Notice](${absolute("/privacy")}): what this site does and does not collect, and where each product's policy lives`,
     `- [网站隐私声明](${absolute("/zh/privacy")})`,
     "",
     "## Optional",
@@ -58,7 +57,6 @@ function localeFull(locale: Locale) {
     lines.push(`### ${p.name}`, "", `*${p.tagline}*`, "", p.description, "", `- ${p.category}`);
     for (const f of p.features ?? []) lines.push(`- ${f.title}: ${f.description}`);
     if (p.connection) lines.push("", p.connection, "");
-    if (p.offer) lines.push(`- ${p.offer.label}: ${p.offer.price}`, `- ${p.offer.terms}`, `- ${p.offer.availability}`);
     for (const l of p.links) lines.push(`- ${l.label}: ${l.href}`);
     if (p.alias) lines.push(`- ${p.alias}`);
     if (p.status) lines.push(`- ${p.status}`);
