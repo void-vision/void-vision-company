@@ -183,6 +183,11 @@ function SessionRow({
   );
 }
 const subscribe = () => () => {};
+// 某些浏览器使用纪元时间戳，统一换算到悬停冷却使用的单调时钟。
+const interactionTime = (event: { timeStamp: number }) =>
+  event.timeStamp > 1e12
+    ? event.timeStamp - performance.timeOrigin
+    : event.timeStamp;
 function Demo({ lang }: { lang: Language }) {
   const { sessions: DEMO_SESSIONS } = useDemoContent();
   const t = useText(),
@@ -211,13 +216,9 @@ function Demo({ lang }: { lang: Language }) {
   const pinned = useRef(false),
     suppressHover = useRef(false);
   const reopenAfter = useRef(0);
-  const [hovered, setHovered] = useState(false),
-    [autoplay, setAutoplay] = useState(true);
-  const settingsDrag = useWindowDrag(
-    settingsWindow,
-    () => setAutoplay(false),
-    settingsOpen,
-  );
+  const [autoplay, setAutoplay] = useState(true);
+  const [timelineRun, setTimelineRun] = useState(0);
+  const settingsDrag = useWindowDrag(settingsWindow, undefined, settingsOpen);
   const native = useRef<HTMLDivElement>(null),
     inner = useRef<HTMLDivElement>(null),
     body = useRef<HTMLDivElement>(null),
@@ -241,17 +242,19 @@ function Demo({ lang }: { lang: Language }) {
   );
   const timelineRef = useDemoTimeline(
     step,
-    autoplay && !hovered && !settingsOpen && row === null && mode === "ai",
+    autoplay,
     (next) => {
       setStep(next as Step);
       setDecision(null);
       setAnswer(null);
       setAnswerDraft("");
-      setJumped(next === "jump");
+      setJumped(
+        next === "jump" && mode === "ai" && !settingsOpen && row === null,
+      );
     },
+    timelineRun,
   );
   function leaveIsland() {
-    setHovered(false);
     suppressHover.current = false;
     if (pinned.current) return;
     closeTimer.current = setTimeout(() => {
@@ -273,12 +276,22 @@ function Demo({ lang }: { lang: Language }) {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setExpanded(true);
     setMode("ai");
+    setSettingsOpen(false);
     setStep(next);
+    setTimelineRun((run) => run + 1);
     setDecision(null);
     setAnswer(null);
     setAnswerDraft("");
     setRow(null);
     setJumped(next === "jump");
+  }
+  function answerQuestion(text: string) {
+    setAnswer(text);
+    setTimelineRun((run) => run + 1);
+  }
+  function decide(choice: "allow" | "deny") {
+    setDecision(choice);
+    setTimelineRun((run) => run + 1);
   }
   function reset() {
     setWindowReset((value) => value + 1);
@@ -328,10 +341,10 @@ function Demo({ lang }: { lang: Language }) {
     setExpanded(false);
     setSettingsOpen(true);
   }
-  function closeSettings() {
+  function closeSettings(event: { timeStamp: number }) {
     pinned.current = false;
     suppressHover.current = true;
-    reopenAfter.current = performance.now() + 360;
+    reopenAfter.current = interactionTime(event) + 360;
     setExpanded(false);
     setSettingsOpen(false);
     requestAnimationFrame(() =>
@@ -380,10 +393,6 @@ function Demo({ lang }: { lang: Language }) {
       inert={!ready}
       aria-busy={!ready}
       tabIndex={-1}
-      onClickCapture={(event) => {
-        if (!(event.target as Element).closest("[data-autoplay]"))
-          setAutoplay(false);
-      }}
       onKeyDown={(event) => {
         if (
           questionPending &&
@@ -392,7 +401,7 @@ function Demo({ lang }: { lang: Language }) {
           const index = Number(event.key) - 1;
           if (index >= 0 && index < answers.length && event.key.length === 1) {
             event.preventDefault();
-            setAnswer(answers[index]);
+            answerQuestion(answers[index]);
             return;
           }
         }
@@ -400,7 +409,7 @@ function Demo({ lang }: { lang: Language }) {
           event.preventDefault();
           pinned.current = false;
           suppressHover.current = true;
-          reopenAfter.current = performance.now() + 360;
+          reopenAfter.current = interactionTime(event) + 360;
           setExpanded(false);
           requestAnimationFrame(() =>
             expandButton.current?.focus({ preventScroll: true }),
@@ -432,7 +441,6 @@ function Demo({ lang }: { lang: Language }) {
           lang={lang}
           step={step}
           jumped={jumped}
-          onInteract={() => setAutoplay(false)}
         />
         <div
           className={`native ${expanded ? "" : "compact"}`}
@@ -450,26 +458,11 @@ function Demo({ lang }: { lang: Language }) {
               !(event.target as Element).closest("[data-compact-action]")
             ) {
               if (closeTimer.current) clearTimeout(closeTimer.current);
-              setHovered(true);
               setExpanded(true);
             }
           }}
           onPointerLeave={(event) => {
             if (event.pointerType === "mouse") leaveIsland();
-          }}
-          onFocusCapture={(event) => {
-            if (
-              event.target.matches(":focus-visible") &&
-              !(event.target as Element).closest("[data-compact-action]")
-            ) {
-              setAutoplay(false);
-              // 键盘操作显式暂停；焦点移除不能留下伪悬停，阻止之后恢复自动播放。
-            }
-          }}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-              setHovered(native.current?.matches(":hover") ?? false);
-            }
           }}
           data-content={content}
           role="region"
@@ -648,12 +641,12 @@ function Demo({ lang }: { lang: Language }) {
                                   <p>{t("d043")}</p>
                                 </div>
                                 <div className="f-inline-actions">
-                                  <button onClick={() => setDecision("deny")}>
+                                  <button onClick={() => decide("deny")}>
                                     {t("d047")}
                                   </button>
                                   <button
                                     className="f-allow"
-                                    onClick={() => setDecision("allow")}
+                                    onClick={() => decide("allow")}
                                   >
                                     {t("d046")}
                                   </button>
@@ -677,7 +670,7 @@ function Demo({ lang }: { lang: Language }) {
                                     key={label}
                                     type="button"
                                     className="f-question-option"
-                                    onClick={() => setAnswer(label)}
+                                    onClick={() => answerQuestion(label)}
                                   >
                                     <span className="f-question-number">
                                       {index + 1}
@@ -696,7 +689,7 @@ function Demo({ lang }: { lang: Language }) {
                                 onSubmit={(event) => {
                                   event.preventDefault();
                                   if (answerDraft.trim())
-                                    setAnswer(answerDraft.trim());
+                                    answerQuestion(answerDraft.trim());
                                 }}
                               >
                                 <input
@@ -796,7 +789,7 @@ function Demo({ lang }: { lang: Language }) {
               if (event.key === "Escape") {
                 event.preventDefault();
                 event.stopPropagation();
-                closeSettings();
+                closeSettings(event);
               }
             }}
           >
