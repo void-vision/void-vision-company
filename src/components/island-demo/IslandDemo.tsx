@@ -512,6 +512,8 @@ function Demo({ lang }: { lang: Language }) {
                 ) : (
                   <>
                     <button
+                      className="coffee-toggle"
+                      data-active={coffeeOn || undefined}
                       onClick={() => switchMode("coffee")}
                       aria-label={t("d034")}
                       aria-pressed={
@@ -692,6 +694,8 @@ function Demo({ lang }: { lang: Language }) {
             <div className="compact-actions">
               <button
                 data-compact-action
+                className="coffee-toggle"
+                data-active={coffeeOn || undefined}
                 onClick={() => switchMode("coffee")}
                 aria-label={t("d053")}
                 aria-pressed={coffeeOn}

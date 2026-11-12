@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- 演示图标使用原生界面的固定尺寸。 */
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { PixelCoffee } from "./glyphs";
 import { useWindowDrag } from "./use-window-drag";
 import {
   ArrowUp,
@@ -94,37 +95,7 @@ export function AwakePanel({
   return (
     <div className="awake-panel">
       <div className="awake-heading">
-        <svg
-          viewBox="0 0 9 9"
-          width="28"
-          height="28"
-          shapeRendering="crispEdges"
-          aria-hidden="true"
-        >
-          {[
-            ".#.#.#...",
-            ".........",
-            "#######..",
-            "#.....###",
-            "#.....#.#",
-            "#.....###",
-            "#.....#..",
-            ".#####...",
-          ].flatMap((row, y) =>
-            [...row].map((c, x) =>
-              c === "#" ? (
-                <rect
-                  key={`${x}-${y}`}
-                  x={x}
-                  y={y}
-                  width="1"
-                  height="1"
-                  fill="#ff9233"
-                />
-              ) : null,
-            ),
-          )}
-        </svg>
+        <PixelCoffee size={28} />
         <div>
           <strong>{selected ? t("d090", { v0: selected }) : t("d091")}</strong>
           <span role="status">{selected ? t("d092") : t("d093")}</span>
