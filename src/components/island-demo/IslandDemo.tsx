@@ -1,5 +1,5 @@
 "use client";
-import { Check, MousePointer2, X } from "lucide-react";
+import { ChevronRight, MousePointer2, X } from "lucide-react";
 import {
   useEffect,
   useId,
@@ -10,7 +10,14 @@ import {
 } from "react";
 import type { Locale as Language } from "@/content/i18n";
 import type { IslandDemoContent } from "@/content/site";
-import { AgentCursor, AgentLogo, Battery, Glyph, PixelCat } from "./glyphs";
+import {
+  AgentCursor,
+  AgentLogo,
+  Battery,
+  Glyph,
+  PixelCat,
+  PixelCoffee,
+} from "./glyphs";
 import {
   AwakePanel,
   BrandIcon,
@@ -27,16 +34,23 @@ import {
 import { GitPanel } from "./GitPanel";
 import { useWindowDrag } from "./use-window-drag";
 import { DemoProvider, useDemoContent, useText, type Text } from "./context";
+import { demoState } from "./demo-state";
 import "./demo.css";
 type Step = "monitor" | "approve" | "ask" | "jump";
 type Mode = "ai" | "git" | "coffee";
-const Cat = ({ blue = false, fill }: { blue?: boolean; fill?: number }) => (
+const Cat = ({
+  mood,
+  fill,
+}: {
+  mood: "calm" | "working" | "waiting";
+  fill: number;
+}) => (
   <PixelCat
-    mood="calm"
-    color="#e6e6e6"
-    fill={fill ?? (blue ? 4 : 0)}
-    px={2.4}
-    blue="#4aa5ff"
+    mood={mood}
+    color={mood === "waiting" ? "#ff9233" : "#e6e6e6"}
+    fill={fill}
+    px={2}
+    blue="#4a8dff"
   />
 );
 function Wallpaper() {
@@ -68,6 +82,7 @@ function SessionRow({
   sessionIndex = 0,
   phase,
   decision,
+  answer,
   open,
   onClick,
   passive = false,
@@ -76,6 +91,7 @@ function SessionRow({
   sessionIndex?: number;
   phase?: string;
   decision?: string | null;
+  answer?: string | null;
   open?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   passive?: boolean;
@@ -136,11 +152,15 @@ function SessionRow({
         <span className="f-reply">
           {session.agent}
           {t("d008")}{" "}
-          {decision === "deny"
-            ? t("d009")
-            : decision === "allow"
-              ? t("d010")
-              : session.reply}
+          {phase === "ask"
+            ? t("d048")
+            : answer
+              ? t("answerContinuing", { v0: answer })
+              : decision === "deny"
+                ? t("d009")
+                : decision === "allow"
+                  ? t("d010")
+                  : session.reply}
         </span>
       </span>
     </>
@@ -177,7 +197,8 @@ function Demo({ lang }: { lang: Language }) {
     [step, setStep] = useState<Step>("monitor");
   const [usage, setUsage] = useState<"claude" | "codex" | null>(null);
   const [decision, setDecision] = useState<string | null>(null),
-    [answer, setAnswer] = useState<number | null>(null),
+    [answer, setAnswer] = useState<string | null>(null),
+    [answerDraft, setAnswerDraft] = useState(""),
     [muted, setMuted] = useState(false),
     [row, setRow] = useState<number | null>(null),
     [jumped, setJumped] = useState(false);
@@ -202,13 +223,8 @@ function Demo({ lang }: { lang: Language }) {
     body = useRef<HTMLDivElement>(null),
     closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelHeight = useNativeHeight(inner, body);
-  const runningCount =
-    DEMO_SESSIONS.filter((session) => session.status === "working").length -
-    (step === "monitor" ? 0 : 1);
-  const catFill = Math.max(
-    1,
-    Math.round((runningCount / DEMO_SESSIONS.length) * 8),
-  );
+  const state = demoState(DEMO_SESSIONS, step, decision, answer);
+  const questionPending = mode === "ai" && step === "ask" && answer === null;
   const expandButton = useRef<HTMLButtonElement>(null),
     tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const steps: Step[] = ["monitor", "approve", "ask", "jump"];
@@ -230,6 +246,7 @@ function Demo({ lang }: { lang: Language }) {
       setStep(next as Step);
       setDecision(null);
       setAnswer(null);
+      setAnswerDraft("");
       setJumped(next === "jump");
     },
   );
@@ -239,7 +256,7 @@ function Demo({ lang }: { lang: Language }) {
     if (pinned.current) return;
     closeTimer.current = setTimeout(() => {
       // 悬停离开后若用户已经点开或切换面板，旧关闭请求不能覆盖新的操作。
-      if (pinned.current) return;
+      if (pinned.current || native.current?.matches(":hover")) return;
       const active = document.activeElement;
       if (
         active instanceof HTMLElement &&
@@ -257,6 +274,9 @@ function Demo({ lang }: { lang: Language }) {
     setExpanded(true);
     setMode("ai");
     setStep(next);
+    setDecision(null);
+    setAnswer(null);
+    setAnswerDraft("");
     setRow(null);
     setJumped(next === "jump");
   }
@@ -266,6 +286,7 @@ function Demo({ lang }: { lang: Language }) {
     choose("monitor");
     setDecision(null);
     setAnswer(null);
+    setAnswerDraft("");
     setMuted(false);
     setUsage(null);
     setCoffeeChoice(null);
@@ -364,6 +385,17 @@ function Demo({ lang }: { lang: Language }) {
           setAutoplay(false);
       }}
       onKeyDown={(event) => {
+        if (
+          questionPending &&
+          !["INPUT", "TEXTAREA"].includes((event.target as HTMLElement).tagName)
+        ) {
+          const index = Number(event.key) - 1;
+          if (index >= 0 && index < answers.length && event.key.length === 1) {
+            event.preventDefault();
+            setAnswer(answers[index]);
+            return;
+          }
+        }
         if (event.key === "Escape" && expanded) {
           event.preventDefault();
           pinned.current = false;
@@ -447,6 +479,23 @@ function Demo({ lang }: { lang: Language }) {
             expanded={expanded}
             height={expanded ? panelHeight : 30}
           />
+          <div className="native-cat" data-expanded={expanded || undefined}>
+            <span
+              role="img"
+              aria-label={t(
+                state.mood === "waiting"
+                  ? "catWaiting"
+                  : state.mood === "working"
+                    ? "catWorking"
+                    : "catCalm",
+              )}
+            >
+              <Cat mood={state.mood} fill={state.fill} />
+            </span>
+            <span className="compact-session-count" aria-hidden={expanded}>
+              {state.count}
+            </span>
+          </div>
           <div
             ref={inner}
             className="native-inner"
@@ -461,7 +510,7 @@ function Demo({ lang }: { lang: Language }) {
                   aria-label={t("d030")}
                   aria-pressed={mode === "ai"}
                 >
-                  <Cat fill={catFill} />
+                  <span className="native-cat-placeholder" aria-hidden="true" />
                 </button>
                 <div className="f-meters">
                   {(["claude", "codex"] as const).map((provider) => (
@@ -512,8 +561,6 @@ function Demo({ lang }: { lang: Language }) {
                 ) : (
                   <>
                     <button
-                      className="coffee-toggle"
-                      data-active={coffeeOn || undefined}
                       onClick={() => switchMode("coffee")}
                       aria-label={t("d034")}
                       aria-pressed={
@@ -581,83 +628,109 @@ function Demo({ lang }: { lang: Language }) {
                           <SessionRow
                             t={t}
                             sessionIndex={index}
-                            phase={
-                              index === 0 && step === "approve" && !decision
-                                ? "approval"
-                                : index === 0 &&
-                                    step === "ask" &&
-                                    answer === null
-                                  ? "ask"
-                                  : step === "jump" && index === 0
-                                    ? "input"
-                                    : undefined
-                            }
+                            phase={state.phases[index]}
                             decision={index === 0 ? decision : null}
+                            answer={index === 0 ? answer : null}
                             open={row === index}
                             onClick={(event) => openRow(index, event)}
                           />
                           {index === 0 &&
                             step === "approve" &&
+                            decision === null &&
                             row === null && (
-                              <div className="f-inline">
+                              <div className="f-inline f-permission">
                                 <span className="f-inline-title">
+                                  <Glyph name="warning" />
                                   {t("d041")}
                                 </span>
-                                <code>{t("d042")}</code>
-                                <p>{t("d043")}</p>
-                                {decision ? (
-                                  <span className="f-result" role="status">
-                                    {decision === "deny"
-                                      ? t("d044")
-                                      : t("d045")}
-                                  </span>
-                                ) : (
-                                  <div className="f-inline-actions">
-                                    <button
-                                      className="f-allow"
-                                      onClick={() => setDecision("allow")}
-                                    >
-                                      {t("d046")}
-                                    </button>
-                                    <button onClick={() => setDecision("deny")}>
-                                      {t("d047")}
-                                    </button>
-                                  </div>
-                                )}
+                                <div className="f-permission-command">
+                                  <code>{t("d042")}</code>
+                                  <p>{t("d043")}</p>
+                                </div>
+                                <div className="f-inline-actions">
+                                  <button onClick={() => setDecision("deny")}>
+                                    {t("d047")}
+                                  </button>
+                                  <button
+                                    className="f-allow"
+                                    onClick={() => setDecision("allow")}
+                                  >
+                                    {t("d046")}
+                                  </button>
+                                </div>
                               </div>
                             )}
-                          {index === 0 && step === "ask" && row === null && (
-                            <div className="f-inline f-question">
-                              <span className="f-inline-title">
-                                {t("d048")}
-                              </span>
-                              {answers.map((label, i) => (
+                          {index === 0 && questionPending && (
+                            <div
+                              className="f-inline f-question"
+                              role="group"
+                              aria-label={t("questionSource")}
+                            >
+                              <div className="f-question-source">
+                                <Glyph name="question" />
+                                {t("questionSource")}
+                              </div>
+                              <p className="f-question-title">{t("d048")}</p>
+                              <div className="f-question-options">
+                                {answers.map((label, index) => (
+                                  <button
+                                    key={label}
+                                    type="button"
+                                    className="f-question-option"
+                                    onClick={() => setAnswer(label)}
+                                  >
+                                    <span className="f-question-number">
+                                      {index + 1}
+                                    </span>
+                                    <span>{label}</span>
+                                    <ChevronRight
+                                      size={10}
+                                      className="f-question-chevron"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                              <form
+                                className="f-question-compose"
+                                onSubmit={(event) => {
+                                  event.preventDefault();
+                                  if (answerDraft.trim())
+                                    setAnswer(answerDraft.trim());
+                                }}
+                              >
+                                <input
+                                  value={answerDraft}
+                                  onChange={(event) =>
+                                    setAnswerDraft(event.target.value)
+                                  }
+                                  placeholder={t("questionPlaceholder")}
+                                  aria-label={t("questionPlaceholder")}
+                                />
                                 <button
-                                  key={label}
-                                  aria-pressed={answer === i}
-                                  onClick={() => setAnswer(i)}
+                                  type="submit"
+                                  disabled={!answerDraft.trim()}
+                                  aria-label={t("questionSubmit")}
                                 >
-                                  <span>{i + 1}</span>
-                                  {label}
-                                  {answer === i && <Check size={12} />}
+                                  <Glyph name="send" />
                                 </button>
-                              ))}
-                              {answer !== null && (
-                                <p className="f-result" role="status">
-                                  {t("d049")}
-                                  {answers[answer]}
-                                </p>
-                              )}
+                              </form>
                             </div>
                           )}
-                          {row === index && (
-                            <Conversation
-                              key={session.name}
-                              index={index}
-                              lang={lang}
-                              onJump={() => setJumped(true)}
-                            />
+                          {index === 0 && step === "ask" && answer !== null && (
+                            <p className="f-answer-result" role="status">
+                              {t("answerSent", { v0: answer })}
+                            </p>
                           )}
+                          {row === index &&
+                            !(index === 0 && questionPending) && (
+                              <Conversation
+                                key={session.name}
+                                index={index}
+                                lang={lang}
+                                onJump={() => setJumped(true)}
+                              />
+                            )}
                         </div>
                       ),
                   )}
@@ -673,11 +746,7 @@ function Demo({ lang }: { lang: Language }) {
             onClick={expandManually}
             hidden={expanded}
           >
-            <Cat fill={catFill} />
-            {coffeeOn && (
-              <span className="compact-coffee-space" aria-hidden="true" />
-            )}
-            <span className="compact-session-count">{runningCount}</span>
+            <span className="native-cat-placeholder" aria-hidden="true" />
             <span className="compact-session-label">{t("d051")}</span>
           </button>
           {coffeeOn && !expanded && (
@@ -687,15 +756,13 @@ function Demo({ lang }: { lang: Language }) {
               onClick={toggleSimpleCoffee}
               aria-label={t("d052")}
             >
-              <Glyph name="coffee" />
+              <PixelCoffee size={13.5} />
             </button>
           )}
           {!expanded && (
             <div className="compact-actions">
               <button
                 data-compact-action
-                className="coffee-toggle"
-                data-active={coffeeOn || undefined}
                 onClick={() => switchMode("coffee")}
                 aria-label={t("d053")}
                 aria-pressed={coffeeOn}
@@ -805,8 +872,10 @@ function Demo({ lang }: { lang: Language }) {
             onClick={() => {
               pinned.current = false;
               suppressHover.current = expanded;
-              if (expanded) setExpanded(false);
-              else expandManually();
+              if (expanded) {
+                reopenAfter.current = performance.now() + 360;
+                setExpanded(false);
+              } else expandManually();
             }}
           >
             {expanded ? t("d070") : t("d071")}

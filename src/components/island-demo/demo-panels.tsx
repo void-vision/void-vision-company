@@ -343,9 +343,9 @@ export function TerminalWindows({
     if (!jumped) return;
     const frame = requestAnimationFrame(() =>
       setOrder((previous) =>
-        previous.at(-1) === "claude"
+        previous.at(-1) === "codex"
           ? previous
-          : [...previous.filter((item) => item !== "claude"), "claude"],
+          : [...previous.filter((item) => item !== "codex"), "codex"],
       ),
     );
     return () => cancelAnimationFrame(frame);
@@ -407,6 +407,15 @@ export function TerminalWindows({
                   <span className="terminal-caret" />
                 </div>
                 <small>{t("d150")}</small>
+                {(step === "approve" || step === "ask" || jumped) && (
+                  <p className="terminal-result">
+                    {step === "approve"
+                      ? t("d166")
+                      : step === "ask"
+                        ? t("d167")
+                        : t("d168")}
+                  </p>
+                )}
               </>
             ) : (
               <>
@@ -439,15 +448,7 @@ export function TerminalWindows({
                   {t("d164")}
                   <span className="terminal-pass">{t("d165")}</span>
                 </p>
-                <p className="terminal-result">
-                  {step === "approve"
-                    ? t("d166")
-                    : step === "ask"
-                      ? t("d167")
-                      : jumped
-                        ? t("d168")
-                        : t("d169")}
-                </p>
+                <p className="terminal-result">{t("d169")}</p>
                 <div className="terminal-prompt">
                   {t("d170")}
                   <span className="terminal-caret" />

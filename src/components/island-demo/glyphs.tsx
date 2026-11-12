@@ -1,14 +1,18 @@
-import type { CSSProperties } from "react";
+import { useEffect, useState, useId, type CSSProperties } from "react";
+import { catFrame } from "./cat-frame";
 
 /**
  * Island 用到的图标，照原生岛（void-calendar/app/src-tauri/native/island）画：
- * - 标签栏常规按钮使用系统图标，咖啡统一使用像素杯；记录复用原生像素铅笔路径。
+ * - 右侧咖啡按钮使用系统杯碟图标；运行标记与保持唤醒面板使用原生像素杯。
  * - AI 小猫、用量电池、会话状态光标：照 agentCatFrame、agentBatteryShape、会话光标的算法移植。
  * - Claude / OpenAI 标志：原生 Agents.swift 里同一份 24 × 24 路径。
  */
 export type GlyphName =
   | "journal"
   | "coffee"
+  | "question"
+  | "warning"
+  | "send"
   | "focus"
   | "focusRunning"
   | "calendar"
@@ -125,6 +129,34 @@ export function PixelCoffee({ size = 18 }: { size?: number }) {
 }
 
 const nativeToolbarSymbols = {
+  warning: {
+    height: 11,
+    pointSize: 11,
+    symbol: "exclamationmark.triangle.fill",
+    weight: "semibold",
+    width: 12,
+  },
+  question: {
+    height: 12,
+    pointSize: 11,
+    symbol: "bubble.left.and.bubble.right.fill",
+    weight: "semibold",
+    width: 14.25,
+  },
+  send: {
+    height: 13,
+    pointSize: 13,
+    symbol: "paperplane.fill",
+    weight: "semibold",
+    width: 13,
+  },
+  coffee: {
+    height: 14,
+    pointSize: 14,
+    symbol: "cup.and.saucer.fill",
+    weight: "medium",
+    width: 18,
+  },
   git: {
     height: 14,
     pointSize: 14,
@@ -203,8 +235,6 @@ export function Glyph({ name }: { name: GlyphName }) {
           <path d={pencil} />
         </svg>
       );
-    case "coffee":
-      return <PixelCoffee />;
     case "focus":
     case "focusRunning":
       return (
@@ -447,40 +477,39 @@ export function Glyph({ name }: { name: GlyphName }) {
 /* ---------- AI 小猫：照 agentCatFrame（11 列 × 8 行）。 ---------- */
 export type CatMood = "calm" | "working" | "waiting";
 const catColumns = 11;
-function catRows(mood: CatMood) {
-  const ears = "#.....#",
-    nose = "#######";
-  const eyes = "#.###.#";
-  const tail: [number, number][] =
-    mood === "waiting"
-      ? [
-          [6, 7],
-          [7, 6],
-          [7, 5],
-          [8, 4],
-        ]
-      : [
-          [6, 7],
-          [7, 6],
-          [8, 5],
-        ];
-  const grid = [
-    ears,
-    "##...##",
-    "#######",
-    eyes,
-    nose,
-    ".#####.",
-    ".#####.",
-    ".#####.",
-  ].map((row) => [...row.padEnd(catColumns, ".")]);
-  for (const [x, y] of tail) grid[y][x] = "#";
-  return grid.map((row) => row.join(""));
+function useCatClock() {
+  const [clock, setClock] = useState(0);
+  useEffect(() => {
+    const media = matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0,
+      previous = -Infinity;
+    const draw = (now: number) => {
+      if (media.matches) {
+        setClock(0);
+        return;
+      }
+      if (now - previous >= 50) {
+        setClock(now / 1000);
+        previous = now;
+      }
+      frame = requestAnimationFrame(draw);
+    };
+    const restart = () => {
+      cancelAnimationFrame(frame);
+      previous = -Infinity;
+      frame = requestAnimationFrame(draw);
+    };
+    media.addEventListener("change", restart);
+    restart();
+    return () => {
+      cancelAnimationFrame(frame);
+      media.removeEventListener("change", restart);
+    };
+  }, []);
+  return clock;
 }
-/**
- * 小猫：身体是心情的颜色（平静是正文色、处理中白、等你橙）；等待输入的会话占几成，就从下往上灌几成蓝（agentCatFillRows）。
- * 等你时右边一列「!」一闪一闪、小猫往上一跳；处理中右边冒思考泡泡。
- */
+
+/** 直接按原生帧节奏绘制；等待时只有感叹号间歇出现，主体不会闪灭。 */
 export function PixelCat({
   mood,
   color,
@@ -496,7 +525,9 @@ export function PixelCat({
   blue?: string;
   style?: CSSProperties;
 }) {
-  const rows = catRows(mood);
+  const mouthId = useId();
+  const clock = useCatClock();
+  const { rows, dy } = catFrame(mood, clock, clock > 0);
   const level = rows.length - fill;
   return (
     <svg
@@ -506,9 +537,28 @@ export function PixelCat({
       viewBox={`0 0 ${catColumns} 8`}
       shapeRendering="crispEdges"
       aria-hidden="true"
-      style={style}
+      style={{ ...style, transform: `translateY(${dy}px)` }}
     >
-      <g className="vi-cat-body">
+      <defs>
+        <mask
+          id={mouthId}
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="11"
+          height="8"
+        >
+          <rect width="11" height="8" fill="white" />
+          <path
+            d="M3.1 4.7 3.5 4.3 3.9 4.7"
+            fill="none"
+            stroke="black"
+            strokeWidth=".275"
+            strokeLinejoin="miter"
+          />
+        </mask>
+      </defs>
+      <g className="vi-cat-body" mask={`url(#${mouthId})`}>
         {rows.flatMap((row, y) =>
           [...row].map((cell, x) =>
             cell === "." ? null : (
@@ -525,34 +575,6 @@ export function PixelCat({
           ),
         )}
       </g>
-      <path
-        d="M3.1 4.7 3.5 4.3 3.9 4.7"
-        fill="none"
-        stroke="#000"
-        strokeWidth=".275"
-        strokeLinejoin="miter"
-      />
-      {mood === "waiting" && (
-        <g className="vi-cat-mark" fill={color}>
-          {[0, 1, 2, 4].map((y) => (
-            <rect key={y} x="10" y={y} width="1" height="1" />
-          ))}
-        </g>
-      )}
-      {mood === "working" && (
-        <g className="vi-cat-think" fill={color}>
-          {[7, 5, 3].map((y, index) => (
-            <rect
-              key={y}
-              x="10"
-              y={y}
-              width="1"
-              height="1"
-              style={{ animationDelay: `${index * 0.22}s` }}
-            />
-          ))}
-        </g>
-      )}
     </svg>
   );
 }

@@ -8,3 +8,11 @@
 - 窗口标题栏支持鼠标／触控拖动、方向键调整、Shift 加速和 Escape 取消；重置示例会恢复窗口位置。
 
 产品官网：[voidisland.app](https://voidisland.app/)；公开展示仓库：[void-vision/void-island](https://github.com/void-vision/void-island)。
+
+原生状态还原约束：
+
+- 右侧咖啡操作按钮使用系统杯碟符号；猫旁的橙色像素杯表示已经启用，两者不能互换。
+- 整个演示只渲染一只猫，让它跟随外壳移动；数量使用右上角 8pt 绿色角标。
+- `demo-state.ts` 统一推导会话状态、计数和已就绪的蓝色填充比例。
+- `cat-frame.ts` 对照原生 `agentCatFrame` 计算动作，等待时只闪提醒标记，主体不会闪灭；尊重减少动态效果偏好。
+- 提问卡对照原生单题交互：单选直接回答，输入框支持回车发送。不会向任何真实 AI 会话发消息。

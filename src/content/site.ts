@@ -407,7 +407,7 @@ const islandDemoTexts: Record<Locale, Record<string,string>> = {
   "zh": {
     "d001": "处理中",
     "d002": "等待授权",
-    "d003": "需要回答",
+    "d003": "等待回答",
     "d004": "等待输入",
     "d005": "刚刚",
     "d006": "6 分钟",
@@ -455,7 +455,7 @@ const islandDemoTexts: Record<Locale, Record<string,string>> = {
     "d048": "下一步先做什么？",
     "d049": "已选择：",
     "d050": "展开小岛示例",
-    "d051": "个 AI 在运行",
+    "d051": "个 AI 会话",
     "d052": "停止保持唤醒",
     "d053": "保持唤醒",
     "d054": "Git 改动",
@@ -609,12 +609,20 @@ const islandDemoTexts: Record<Locale, Record<string,string>> = {
     "d202": "AI 在跑时",
     "d203": "专注计时时",
     "d204": "只在接电源时",
-    "d205": "刚刚"
+    "d205": "刚刚",
+    "catWorking": "小猫：AI 正在工作",
+    "catWaiting": "小猫：有 AI 会话需要你处理",
+    "catCalm": "小猫",
+    "questionSource": "ChatGPT 的提问",
+    "questionPlaceholder": "输入或粘贴回答…",
+    "questionSubmit": "提交回答",
+    "answerSent": "已回答：{v0}",
+    "answerContinuing": "已收到回答，继续处理。"
   },
   "en": {
     "d001": "Working",
     "d002": "Needs approval",
-    "d003": "Needs input",
+    "d003": "Needs an answer",
     "d004": "Waiting for input",
     "d005": "Now",
     "d006": "6 min",
@@ -662,7 +670,7 @@ const islandDemoTexts: Record<Locale, Record<string,string>> = {
     "d048": "What should we do next?",
     "d049": "Selected: ",
     "d050": "Expand example island",
-    "d051": "AI sessions running",
+    "d051": "AI sessions",
     "d052": "Stop keeping awake",
     "d053": "Keep awake",
     "d054": "Git changes",
@@ -816,7 +824,15 @@ const islandDemoTexts: Record<Locale, Record<string,string>> = {
     "d202": "While AI runs",
     "d203": "While focusing",
     "d204": "Only on power",
-    "d205": "now"
+    "d205": "now",
+    "catWorking": "Cat: an AI session is working",
+    "catWaiting": "Cat: an AI session needs you",
+    "catCalm": "Cat",
+    "questionSource": "ChatGPT’s question",
+    "questionPlaceholder": "Type or paste an answer…",
+    "questionSubmit": "Submit answer",
+    "answerSent": "Answered: {v0}",
+    "answerContinuing": "Answer received. Continuing with the task."
   }
 };
 const islandDemoSessions = [
@@ -984,6 +1000,6 @@ const islandDemoCommits: IslandDemoCommit[] = [
   },
 ];
 export function getIslandDemoContent(locale:Locale) {
- return { text:islandDemoTexts[locale], sessions:islandDemoSessions.map(s=>({...s,prompt:s.prompt[locale==='zh'?0:1],reply:s.reply[locale==='zh'?0:1]})), commits:islandDemoCommits.map(c=>({...c, zh:c[locale], en:c[locale], ago:{zh:c.ago[locale],en:c.ago[locale]}})) };
+ return { text:islandDemoTexts[locale], sessions:islandDemoSessions.slice(0, 4).map(s=>({...s,prompt:s.prompt[locale==='zh'?0:1],reply:s.reply[locale==='zh'?0:1]})), commits:islandDemoCommits.map(c=>({...c, zh:c[locale], en:c[locale], ago:{zh:c.ago[locale],en:c.ago[locale]}})) };
 }
 export type IslandDemoContent = ReturnType<typeof getIslandDemoContent>;

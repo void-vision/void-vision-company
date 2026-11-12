@@ -2807,17 +2807,64 @@
 .island-demo { position:relative; isolation:isolate; margin:56px auto 0; max-width:1200px; text-align:left; font-family:var(--cjk); font-size:14px; line-height:1.6; --in:360ms; --out:340ms; --ease:cubic-bezier(0,0,.2,1); background:transparent; }
 .island-demo .demo-block { margin:0; scroll-margin-top:80px; }
 
-/* 像素杯在各入口保持同一轮廓：未启用为灰色，保持唤醒时为橙色。 */
-:where(.island-demo) .native .f-toolbar-right button:has(> .pixel-coffee) {
-  width: auto;
-  padding: 0 10px;
+/* 原生猫与角标：数量固定在右耳旁上方，咖啡状态标记另占一格。 */
+:where(.island-demo) .compact-cat { position:relative; display:block; width:22px; height:16px; flex:none; }
+:where(.island-demo) .compact-session-count {
+  position:absolute; left:calc(100% - .62em); top:-3px;
+  font:700 8px/1 ui-rounded, -apple-system, system-ui, sans-serif;
+  font-variant-numeric:tabular-nums; color:#34d158;
 }
-:where(.island-demo) .native .f-toolbar button.coffee-toggle,
-:where(.island-demo) .compact-actions button.coffee-toggle {
-  color: #aaa;
-}
-:where(.island-demo) .native .f-toolbar button.coffee-toggle[data-active],
-:where(.island-demo) .compact-actions button.coffee-toggle[data-active],
-:where(.island-demo) .awake-heading > .pixel-coffee {
-  color: #ff9233;
-}
+:where(.island-demo) .compact-coffee-badge { left:42px; top:5px; }
+:where(.island-demo) .compact-coffee-badge .pixel-coffee { width:13.5px; height:13.5px; }
+:where(.island-demo) .awake-heading > .pixel-coffee { color:#ff9233; }
+:where(.island-demo) .f-state.state-ask { color:#ff9233; }
+/* 提问卡沿用原生尺寸：没有外框，橙色选项，18pt 数字框和 35pt 输入区。 */
+:where(.island-demo) .f-question { border:0; border-radius:0; background:none; padding:0; color:#e6e6e6; }
+:where(.island-demo) .f-question-source { display:flex; align-items:center; gap:6px; margin-bottom:10px; color:#ff9233; font-size:12px; font-weight:600; line-height:15px; height:15px; }
+:where(.island-demo) .f-question .f-question-title { margin:0 0 6px; color:#e6e6e6; font-size:12.5px; font-weight:500; line-height:15px; }
+:where(.island-demo) .f-question-options { display:flex; flex-direction:column; gap:6px; }
+:where(.island-demo) .f-question-option { display:flex; align-items:flex-start; gap:10px; width:100%; padding:6px 10px; border:0; border-radius:6px; background:rgba(255,146,51,.14); color:#e6e6e6; text-align:left; font-size:12px; font-weight:500; line-height:18px; }
+:where(.island-demo) .f-question-option:hover { background:rgba(255,146,51,.2); box-shadow:inset 0 0 0 1px rgba(255,146,51,.7); }
+:where(.island-demo) .f-question-number { display:grid; place-items:center; width:18px; height:18px; flex:none; border-radius:4px; background:rgba(255,146,51,.7); color:#fff; font-size:11px; font-weight:600; }
+:where(.island-demo) .f-question-chevron { margin:4px 0 0 auto; flex:none; color:#8e8e93; }
+:where(.island-demo) .f-question-compose { display:flex; gap:6px; margin-top:6px; }
+:where(.island-demo) .f-question-compose input { width:0; flex:1; height:35px; padding:0 10px; border:.5px solid rgba(230,230,230,.1); border-radius:9px; background:rgba(230,230,230,.08); color:#e6e6e6; font:12.5px -apple-system, system-ui, sans-serif; }
+:where(.island-demo) .f-question-compose input::placeholder { color:#8e8e93; }
+:where(.island-demo) .f-question-compose button { display:grid; place-items:center; width:34px; height:35px; border:0; border-radius:9px; background:rgba(230,230,230,.05); color:rgba(230,230,230,.9); }
+:where(.island-demo) .f-question-compose button:disabled { color:rgba(230,230,230,.25); }
+:where(.island-demo) .f-answer-result { margin:2px 10px 9px 72px; color:#8e8e93; font-size:12px; line-height:18px; }
+
+:where(.island-demo) .f-state.state-input { color:#4a8dff; }
+:where(.island-demo) .f-permission { border:0; border-radius:0; background:none; padding:0; }
+:where(.island-demo) .f-permission .f-inline-title { display:flex; align-items:center; gap:6px; color:#ff9233; font-size:12px; font-weight:600; }
+:where(.island-demo) .f-permission-command { padding:7px; border:.5px solid rgba(255,146,51,.16); border-radius:6px; background:rgba(255,146,51,.05); }
+:where(.island-demo) .f-permission-command p { margin-bottom:0; }
+:where(.island-demo) .f-permission .f-inline-actions { gap:6px; }
+:where(.island-demo) .f-permission .f-inline-actions button { flex:1; height:26px; padding:0 8px; border:0; border-radius:6px; background:rgba(245,245,247,.13); color:#f5f5f7; font-size:12px; font-weight:600; }
+:where(.island-demo) .f-permission .f-inline-actions .f-allow { background:rgba(245,245,247,.9); color:#000; }
+
+/* 原生共用猫的格子尺寸不随展开改变，收起内边距取原生共享布局常量。 */
+:where(.island-demo) .native-open { padding-left:12.5px; }
+:where(.island-demo) .f-cat-tab .vi-cat-glyph { width:22px; height:16px; }
+:where(.island-demo) .compact-coffee-badge { left:38.5px; top:calc(50% - 5.75px); width:13.5px; height:13.5px; }
+
+/* 只有一个猫视图随外壳移动，避免收起／展开时两只猫交替显隐。 */
+:where(.island-demo) .native { transition:height 360ms cubic-bezier(0,0,.2,1),width 360ms cubic-bezier(0,0,.2,1),left 360ms cubic-bezier(0,0,.2,1),transform 360ms cubic-bezier(0,0,.2,1); }
+:where(.island-demo) .native .f-toolbar { padding-left:24px; }
+:where(.island-demo) .native-cat { position:absolute; z-index:5; left:32px; top:8px; width:22px; height:16px; pointer-events:none; transition:left 360ms cubic-bezier(0,0,.2,1),top 360ms cubic-bezier(0,0,.2,1); }
+:where(.island-demo) .native.compact .native-cat { left:12.5px; top:7px; }
+:where(.island-demo) .native-cat > span[role="img"],
+:where(.island-demo) .native-cat .vi-cat-glyph,
+:where(.island-demo) .native-cat-placeholder { display:block; width:22px; height:16px; flex:none; }
+:where(.island-demo) .native-cat .compact-session-count { transition:opacity 180ms ease; }
+:where(.island-demo) .native-cat[data-expanded] .compact-session-count { opacity:0; }
+@media (prefers-reduced-motion:reduce) { :where(.island-demo) .native, :where(.island-demo) .native-cat { transition:none; } }
+/* 收起时内容跟随外壳裁切淡出，不立即隐藏整块正文。 */
+:where(.island-demo) .native { overflow:hidden; filter:drop-shadow(0 12px 13px #0008); }
+:where(.island-demo) .native.compact { filter:drop-shadow(0 4px 5px #0008); }
+:where(.island-demo) .native .native-outline,
+:where(.island-demo) .native.compact .native-outline { filter:none; }
+:where(.island-demo) .native-inner { opacity:1; transition:opacity 160ms ease; }
+:where(.island-demo) .native.compact .native-inner { visibility:visible; max-height:100%; opacity:0; }
+:where(.island-demo) .native.compact .f-native-body,
+:where(.island-demo) .native.compact .f-toolbar button { visibility:visible; }
