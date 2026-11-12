@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 /**
  * Island 用到的图标，照原生岛（void-calendar/app/src-tauri/native/island）画：
- * - 标签栏和按钮：原生用系统图标，这里照着 14pt / medium 的样子重画成矢量；记录是原生自己描的实心铅笔（照 islandJournalPencilPath）。
+ * - 标签栏常规按钮使用系统图标，咖啡统一使用像素杯；记录复用原生像素铅笔路径。
  * - AI 小猫、用量电池、会话状态光标：照 agentCatFrame、agentBatteryShape、会话光标的算法移植。
  * - Claude / OpenAI 标志：原生 Agents.swift 里同一份 24 × 24 路径。
  */
@@ -91,14 +91,40 @@ const pencil = (() => {
   ].join("");
 })();
 
+// 与原生 islandCoffeeCupRows 保持一致：9×9 像素，顶部两行蒸汽。
+export function PixelCoffee({ size = 18 }: { size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 9 9"
+      width={size}
+      height={size}
+      className="vi-glyph pixel-coffee"
+      shapeRendering="crispEdges"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      {[
+        "..#.#.#..",
+        "..#.#.#..",
+        ".........",
+        "#######..",
+        "#.....###",
+        "#.....#.#",
+        "#.....###",
+        "#.....#..",
+        ".#####...",
+      ].flatMap((row, y) =>
+        [...row].map((cell, x) =>
+          cell === "#" ? (
+            <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" />
+          ) : null,
+        ),
+      )}
+    </svg>
+  );
+}
+
 const nativeToolbarSymbols = {
-  coffee: {
-    height: 14,
-    pointSize: 14,
-    symbol: "cup.and.saucer.fill",
-    weight: "medium",
-    width: 18,
-  },
   git: {
     height: 14,
     pointSize: 14,
@@ -178,24 +204,7 @@ export function Glyph({ name }: { name: GlyphName }) {
         </svg>
       );
     case "coffee":
-      return (
-        <svg {...props} fill="currentColor">
-          <path
-            d="M2.9 4.3h12v3.6c0 3.3-2.6 5.6-6 5.6s-6-2.3-6-5.6z"
-            {...rounded}
-          />
-          <path
-            d="M14.6 5.7h.9a2.15 2.15 0 0 1 0 4.3h-1.3"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-          />
-          <path
-            d="M.9 14.4c1.3 1 4.5 1.7 8 1.7s6.7-.7 8-1.7c-.1 2-3.6 3.3-8 3.3s-7.9-1.3-8-3.3z"
-            {...rounded}
-          />
-        </svg>
-      );
+      return <PixelCoffee />;
     case "focus":
     case "focusRunning":
       return (

@@ -1,11 +1,4 @@
 {
-  "coffee" : {
-    "height" : 14,
-    "pointSize" : 14,
-    "symbol" : "cup.and.saucer.fill",
-    "weight" : "medium",
-    "width" : 18
-  },
   "git" : {
     "height" : 14,
     "pointSize" : 14,

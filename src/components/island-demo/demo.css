@@ -2806,3 +2806,18 @@
 
 .island-demo { position:relative; isolation:isolate; margin:56px auto 0; max-width:1200px; text-align:left; font-family:var(--cjk); font-size:14px; line-height:1.6; --in:360ms; --out:340ms; --ease:cubic-bezier(0,0,.2,1); background:transparent; }
 .island-demo .demo-block { margin:0; scroll-margin-top:80px; }
+
+/* 像素杯在各入口保持同一轮廓：未启用为灰色，保持唤醒时为橙色。 */
+:where(.island-demo) .native .f-toolbar-right button:has(> .pixel-coffee) {
+  width: auto;
+  padding: 0 10px;
+}
+:where(.island-demo) .native .f-toolbar button.coffee-toggle,
+:where(.island-demo) .compact-actions button.coffee-toggle {
+  color: #aaa;
+}
+:where(.island-demo) .native .f-toolbar button.coffee-toggle[data-active],
+:where(.island-demo) .compact-actions button.coffee-toggle[data-active],
+:where(.island-demo) .awake-heading > .pixel-coffee {
+  color: #ff9233;
+}
