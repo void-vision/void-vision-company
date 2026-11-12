@@ -1,44 +1,65 @@
 {
-  "coffee" : {
-    "height" : 14,
-    "pointSize" : 14,
-    "symbol" : "cup.and.saucer.fill",
-    "weight" : "medium",
-    "width" : 18
+  "coffee": {
+    "height": 14,
+    "pointSize": 14,
+    "symbol": "cup.and.saucer.fill",
+    "weight": "medium",
+    "width": 18
   },
-  "git" : {
-    "height" : 14,
-    "pointSize" : 14,
-    "symbol" : "arrow.triangle.branch",
-    "weight" : "medium",
-    "width" : 13
+  "git": {
+    "height": 14,
+    "pointSize": 14,
+    "symbol": "arrow.triangle.branch",
+    "weight": "medium",
+    "width": 13
   },
-  "muted" : {
-    "height" : 13.5,
-    "pointSize" : 14,
-    "symbol" : "speaker.slash.fill",
-    "weight" : "regular",
-    "width" : 13.25
+  "muted": {
+    "height": 13.5,
+    "pointSize": 14,
+    "symbol": "speaker.slash.fill",
+    "weight": "regular",
+    "width": 13.25
   },
-  "plus" : {
-    "height" : 12,
-    "pointSize" : 14,
-    "symbol" : "plus",
-    "weight" : "regular",
-    "width" : 11.25
+  "plus": {
+    "height": 12,
+    "pointSize": 14,
+    "symbol": "plus",
+    "weight": "regular",
+    "width": 11.25
   },
-  "settings" : {
-    "height" : 15,
-    "pointSize" : 14,
-    "symbol" : "gearshape.fill",
-    "weight" : "regular",
-    "width" : 15
+  "settings": {
+    "height": 15,
+    "pointSize": 14,
+    "symbol": "gearshape.fill",
+    "weight": "regular",
+    "width": 15
   },
-  "sound" : {
-    "height" : 13,
-    "pointSize" : 14,
-    "symbol" : "speaker.wave.2.fill",
-    "weight" : "regular",
-    "width" : 15.75
+  "sound": {
+    "height": 13,
+    "pointSize": 14,
+    "symbol": "speaker.wave.2.fill",
+    "weight": "regular",
+    "width": 15.75
+  },
+  "question": {
+    "height": 12,
+    "width": 14.25,
+    "pointSize": 11,
+    "weight": "semibold",
+    "symbol": "bubble.left.and.bubble.right.fill"
+  },
+  "send": {
+    "height": 13,
+    "width": 13,
+    "pointSize": 13,
+    "weight": "semibold",
+    "symbol": "paperplane.fill"
+  },
+  "warning": {
+    "height": 11,
+    "width": 12,
+    "pointSize": 11,
+    "weight": "semibold",
+    "symbol": "exclamationmark.triangle.fill"
   }
 }

@@ -55,11 +55,13 @@ export function useDemoTimeline(
   step: string,
   playing: boolean,
   next: (value: string) => void,
+  restartKey = 0,
 ) {
   const ref = useRef<HTMLDivElement>(null),
     callback = useRef(next),
     elapsed = useRef(0),
-    previousStep = useRef(step);
+    previousStep = useRef(step),
+    previousRestart = useRef(restartKey);
   const [visible, setVisible] = useState(false),
     [reduce, setReduce] = useState(true);
   useEffect(() => {
@@ -84,16 +86,29 @@ export function useDemoTimeline(
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
-    if (previousStep.current !== step) {
+    if (
+      previousStep.current !== step ||
+      previousRestart.current !== restartKey
+    ) {
       elapsed.current = 0;
       previousStep.current = step;
+      previousRestart.current = restartKey;
     }
     let frame = 0,
       last = performance.now();
     const draw = (now: number) => {
       const delta = now - last;
       last = now;
-      if (playing && visible && !reduce)
+      // 只在当前演示的文本编辑期间让计时等候；读取真实焦点，避免输入框移除后残留暂停。
+      const active = document.activeElement;
+      const editing =
+        active instanceof HTMLElement &&
+        ref.current?.closest("#demo")?.contains(active) &&
+        !active.closest("[inert]") &&
+        active.matches(
+          'textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]), [contenteditable="true"]',
+        );
+      if (playing && visible && !reduce && !editing)
         elapsed.current += Math.min(delta, 100);
       const index = stages.indexOf(step),
         duration = durations[index] ?? 5500,
@@ -103,7 +118,7 @@ export function useDemoTimeline(
         "aria-valuenow",
         String(Math.round(((index + progress) / stages.length) * 100)),
       );
-      if (progress >= 1) {
+      if (progress >= 1 && !editing) {
         elapsed.current = 0;
         callback.current(stages[(index + 1) % stages.length]);
         return;
@@ -112,6 +127,6 @@ export function useDemoTimeline(
     };
     draw(last);
     return () => cancelAnimationFrame(frame);
-  }, [step, playing, visible, reduce]);
+  }, [step, playing, visible, reduce, restartKey]);
   return ref;
 }

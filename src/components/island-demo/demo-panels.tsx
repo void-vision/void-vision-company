@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- 演示图标使用原生界面的固定尺寸。 */
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { PixelCoffee } from "./glyphs";
 import { useWindowDrag } from "./use-window-drag";
 import {
   ArrowUp,
@@ -94,37 +95,7 @@ export function AwakePanel({
   return (
     <div className="awake-panel">
       <div className="awake-heading">
-        <svg
-          viewBox="0 0 9 9"
-          width="28"
-          height="28"
-          shapeRendering="crispEdges"
-          aria-hidden="true"
-        >
-          {[
-            ".#.#.#...",
-            ".........",
-            "#######..",
-            "#.....###",
-            "#.....#.#",
-            "#.....###",
-            "#.....#..",
-            ".#####...",
-          ].flatMap((row, y) =>
-            [...row].map((c, x) =>
-              c === "#" ? (
-                <rect
-                  key={`${x}-${y}`}
-                  x={x}
-                  y={y}
-                  width="1"
-                  height="1"
-                  fill="#ff9233"
-                />
-              ) : null,
-            ),
-          )}
-        </svg>
+        <PixelCoffee size={28} />
         <div>
           <strong>{selected ? t("d090", { v0: selected }) : t("d091")}</strong>
           <span role="status">{selected ? t("d092") : t("d093")}</span>
@@ -372,9 +343,9 @@ export function TerminalWindows({
     if (!jumped) return;
     const frame = requestAnimationFrame(() =>
       setOrder((previous) =>
-        previous.at(-1) === "claude"
+        previous.at(-1) === "codex"
           ? previous
-          : [...previous.filter((item) => item !== "claude"), "claude"],
+          : [...previous.filter((item) => item !== "codex"), "codex"],
       ),
     );
     return () => cancelAnimationFrame(frame);
@@ -436,6 +407,15 @@ export function TerminalWindows({
                   <span className="terminal-caret" />
                 </div>
                 <small>{t("d150")}</small>
+                {(step === "approve" || step === "ask" || jumped) && (
+                  <p className="terminal-result">
+                    {step === "approve"
+                      ? t("d166")
+                      : step === "ask"
+                        ? t("d167")
+                        : t("d168")}
+                  </p>
+                )}
               </>
             ) : (
               <>
@@ -468,15 +448,7 @@ export function TerminalWindows({
                   {t("d164")}
                   <span className="terminal-pass">{t("d165")}</span>
                 </p>
-                <p className="terminal-result">
-                  {step === "approve"
-                    ? t("d166")
-                    : step === "ask"
-                      ? t("d167")
-                      : jumped
-                        ? t("d168")
-                        : t("d169")}
-                </p>
+                <p className="terminal-result">{t("d169")}</p>
                 <div className="terminal-prompt">
                   {t("d170")}
                   <span className="terminal-caret" />
