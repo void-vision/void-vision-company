@@ -343,8 +343,8 @@ const zh: Dictionary = {
         "托管服务商在提供服务的过程中会生成标准的访问日志（通常包含 IP 地址与 User-Agent），我们不使用这些日志做分析、画像或广告。",
       ] },
       { no: "02", h: "浏览器本地存储", p: [
-        "vv:scroll:*（sessionStorage，关闭标签页即失效）：记录滚动位置，让你刷新后回到原来的位置。",
-        "滚动位置仅保存在浏览器中，不会发送给服务器。页面语言由网址决定，本站不设置任何 cookie。",
+        "为了让你刷新后回到原来的位置，本站会在浏览器的 sessionStorage 里记下滚动位置（键名 vv:scroll:）。关闭标签页即清除，不会发送给服务器。",
+        "页面语言由网址决定。本站不设置任何 cookie。",
       ] },
       { no: "03", h: "产品的隐私政策", p: [
         "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
@@ -521,8 +521,8 @@ const en: Dictionary = {
         "Our hosting provider generates standard access logs in the course of serving the site, typically an IP address and user agent. We do not use those logs for analytics, profiling or advertising.",
       ] },
       { no: "02", h: "Browser storage", p: [
-        "vv:scroll:* (sessionStorage, cleared when you close the tab): saves your scroll position so you can return to it after a reload.",
-        "Your scroll position stays in your browser and is not sent to the server. The URL determines the page language, and this site sets no cookies.",
+        "To bring you back to where you were after a reload, the site remembers your scroll position in your browser's sessionStorage (key vv:scroll:). It is cleared when you close the tab and is never sent to our server.",
+        "The URL determines the page language. This site sets no cookies.",
       ] },
       { no: "03", h: "Product privacy policies", p: [
         "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",
