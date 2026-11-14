@@ -3,9 +3,12 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { locales } from "@/content/i18n";
 
-export const alt = "Void Vision — 从虚空中看见未来 · See the unseen in the void";
+export const alt = "Void Vision — Put AI into the products people actually use every day.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// 与首页产品墙同序；分享图不区分语言，产品名本身就是英文。
+const PRODUCTS = ["Airfluence", "VoidBook", "Voido", "Void Island", "Unilinx"];
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -35,11 +38,11 @@ export default async function OpenGraphImage() {
       >
         <img src={src(mark)} width={277} height={85} alt="" />
         <img src={src(word)} width={433} height={34} alt="" style={{ marginTop: 34 }} />
-        <div style={{ marginTop: 44, fontSize: 30, letterSpacing: 8, color: "#c4cede" }}>SEE THE UNSEEN IN THE VOID</div>
-        <div style={{ marginTop: 56, display: "flex", gap: 36, fontFamily: "Rounded", fontSize: 28, color: "#99a4b1" }}>
-          <span>VoidBook</span>
-          <span>Airfluence</span>
-          <span>Unilinx</span>
+        <div style={{ marginTop: 44, fontSize: 34, letterSpacing: -0.5, color: "#e6ebf2" }}>Put AI into the products people actually use every day.</div>
+        <div style={{ marginTop: 52, display: "flex", gap: 34, fontFamily: "Rounded", fontSize: 26, color: "#99a4b1" }}>
+          {PRODUCTS.map((name) => (
+            <span key={name}>{name}</span>
+          ))}
         </div>
       </div>
     ),

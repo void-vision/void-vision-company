@@ -188,7 +188,7 @@ const zh: Dictionary = {
     description:
       "Void Vision 是悉尼的 AI 产品公司，把 AI 做进人们每天真正在用的产品里。我们的产品包括达人营销平台 Airfluence、AI 日历 Voido、Mac 刘海里的 Void Island、知识库 VoidBook 与留学生服务平台优渡 Unilinx。",
     keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
-    ogAlt: "Void Vision — 从虚空中看见未来",
+    ogAlt: "Void Vision — 把 AI 做进人们每天真正在用的产品里",
   },
   nav: { products: "产品", about: "关于", team: "团队", contact: "联系我们", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
   hero: {
@@ -330,7 +330,7 @@ const zh: Dictionary = {
     kicker: "网站隐私声明",
     title: "这个网站如何处理你的数据",
     intro:
-      "本站是 Void Vision Pty Ltd 的公司官网。它不做统计分析、没有埋点，没有表单和账号，也不向任何第三方发起请求。我们参与开发的产品各自由其运营方发布隐私政策，见第 03 节。",
+      "本站是 Void Vision Pty Ltd 的公司官网。它不做统计分析、没有埋点，没有表单和账号，也不向任何第三方发起请求。各款产品的隐私政策见第 03 节。",
     updated: "更新于 2026 年 11 月 15 日",
     updatedISO: "2026-11-15",
     entity: "Void Vision Pty Ltd · 悉尼",
@@ -344,12 +344,14 @@ const zh: Dictionary = {
       ] },
       { no: "02", h: "浏览器本地存储", p: [
         "vv:scroll:*（sessionStorage，关闭标签页即失效）：记录滚动位置，让你刷新后回到原来的位置。",
-        "滚动位置仅保存在浏览器中，不会发送给服务器；页面语言由网址决定，本站不再设置语言 cookie。",
+        "滚动位置仅保存在浏览器中，不会发送给服务器。页面语言由网址决定，本站不设置任何 cookie。",
       ] },
       { no: "03", h: "产品的隐私政策", p: [
         "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
         "Voido 的隐私政策：https://voido.ai/privacy。",
-        "Airfluence 与优渡 Unilinx 的隐私政策以各自产品内公布的为准，与这两款产品相关的隐私问题请联系对应的产品。",
+        "Airfluence 的隐私政策：https://www.airfluence.ai/privacy/。",
+        "优渡 Unilinx 的隐私政策以产品内公布的为准。",
+        "Void Island 目前还没有单独的隐私政策页面，相关问题请发邮件到 hello@voidvision.ai。",
       ] },
       { no: "04", h: "联系与变更", p: [
         "与本站有关的隐私问题，可以发邮件到 hello@voidvision.ai。",
@@ -365,7 +367,7 @@ const en: Dictionary = {
     description:
       "Void Vision is an AI product company in Sydney that puts AI into the products people actually use every day. Our products include the Airfluence influencer platform, the Voido AI calendar, Void Island in the Mac notch, the VoidBook knowledge base and the Unilinx student services platform.",
     keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
-    ogAlt: "Void Vision — See the unseen in the void",
+    ogAlt: "Void Vision — Put AI into the products people actually use every day.",
   },
   nav: { products: "Products", about: "About", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
   hero: {
@@ -506,7 +508,7 @@ const en: Dictionary = {
     kicker: "Website Privacy Notice",
     title: "How this website handles your data",
     intro:
-      "This is the corporate website of Void Vision Pty Ltd. It runs no analytics, carries no tracking, has no forms or accounts, and makes no requests to third parties. The products we help build publish their own privacy policies — see section 03.",
+      "This is the corporate website of Void Vision Pty Ltd. It runs no analytics, carries no tracking, has no forms or accounts, and makes no requests to third parties. Each product's privacy policy is listed in section 03.",
     updated: "Updated 15 November 2026",
     updatedISO: "2026-11-15",
     entity: "Void Vision Pty Ltd · Sydney",
@@ -520,12 +522,14 @@ const en: Dictionary = {
       ] },
       { no: "02", h: "Browser storage", p: [
         "vv:scroll:* (sessionStorage, cleared when you close the tab): saves your scroll position so you can return to it after a reload.",
-        "Your scroll position stays in your browser and is not sent to the server. The URL determines the page language; this site no longer sets a language cookie.",
+        "Your scroll position stays in your browser and is not sent to the server. The URL determines the page language, and this site sets no cookies.",
       ] },
       { no: "03", h: "Product privacy policies", p: [
         "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",
         "Voido: https://voido.ai/en/privacy",
-        "Airfluence and Unilinx each publish their own privacy policy in the product; please direct privacy questions about those products to them.",
+        "Airfluence: https://www.airfluence.ai/privacy/",
+        "Unilinx publishes its privacy policy in the product.",
+        "Void Island does not have a separate privacy policy page yet; please email privacy questions to hello@voidvision.ai.",
       ] },
       { no: "04", h: "Contact and changes", p: [
         "For privacy questions about this website, email hello@voidvision.ai.",

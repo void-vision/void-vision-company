@@ -732,11 +732,17 @@ address {
 .not-found h1 {
   margin: 28px 0 0;
   font-family: var(--cjk);
-  font-weight: 300;
-  font-size: clamp(34px, 5.2vw, 64px);
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  font-size: clamp(30px, 3.6vw, 48px);
+  letter-spacing: -0.01em;
   line-height: 1.25;
+  text-wrap: balance;
   color: #ffffff;
+}
+:root:lang(en) .legal-header h1,
+.not-found h1:lang(en) {
+  font-family: var(--sans);
+  letter-spacing: -0.025em;
 }
 .legal-intro {
   margin: 30px 0 0;
@@ -780,10 +786,21 @@ address {
 .legal-heading h2 {
   margin: 0;
   font-family: var(--cjk);
-  font-weight: 400;
-  font-size: clamp(20px, 2.4vw, 28px);
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-size: clamp(18px, 1.8vw, 22px);
+  letter-spacing: 0;
   color: #eef2f7;
+}
+.legal-paras a {
+  color: #c9d6ea;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 214, 234, 0.35);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.legal-paras a:hover {
+  color: #ffffff;
+  text-decoration-color: currentColor;
 }
 .legal-paras {
   display: grid;

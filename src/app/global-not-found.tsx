@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "404 · Void Vision",
-  description: "从虚空中，什么也没找到。Nothing was found in the void.",
+  description: "这个页面不存在。This page doesn’t exist.",
 };
 
 // Bilingual: unmatched URLs have no locale to render in.
@@ -15,8 +15,8 @@ export default function GlobalNotFound() {
       <body>
         <main id="main" className="not-found">
           <p className="legal-kicker">404</p>
-          <h1>从虚空中，什么也没找到。</h1>
-          <p lang="en">Nothing was found in the void.</p>
+          <h1>这个页面不存在。</h1>
+          <p lang="en">This page doesn’t exist. It may have moved, or the link may be mistyped.</p>
           <p className="not-found-links">
             <Link href="/zh">返回首页</Link>
             <Link href="/" lang="en">Back to home</Link>
