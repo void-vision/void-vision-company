@@ -1,47 +1,5 @@
 /* Decorative light & star layers, generated verbatim from raw/Void Vision v2.dc.html. */
 
-.hero-halo {
-  position: absolute;
-  left: 50%;
-  /* 光晕层覆盖首屏，避免模糊边界在 Safari/iOS 上形成切边。
-     上下对称内缩 2%，为缩放留出空间，同时保持与首屏相同的中线。 */
-  top: 2%;
-  bottom: 2%;
-  width: calc(min(88vh, 94vw) * 1.8);
-  transform: translateX(-50%);
-  transform-origin: 50% var(--hero-center-y);
-  background: radial-gradient(circle calc(min(88vh, 94vw) * 0.7071) at 50% var(--hero-center-y), rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.14) 40%, rgba(152,176,224,0.32) 42.5%, rgba(152,176,224,0.58) 45%, rgba(152,176,224,0.82) 47%, rgba(152,176,224,0.96) 48.8%, rgba(152,176,224,1) 50%, rgba(152,176,224,0.93) 51.5%, rgba(152,176,224,0.75) 53.5%, rgba(152,176,224,0.54) 56%, rgba(152,176,224,0.36) 59%, rgba(152,176,224,0.23) 62.5%, rgba(152,176,224,0.13) 67%, rgba(152,176,224,0.07) 72%, rgba(152,176,224,0.03) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
-  filter: blur(58px);
-  animation: vv-halo 11s ease-in-out 0.5 forwards;
-  z-index: 0;
-}
-.hero-ring {
-  position: absolute;
-  left: 50%;
-  top: var(--hero-center-y);
-  width: min(92vh, 98vw);
-  height: min(92vh, 98vw);
-  transform: translate(-50%, -50%);
-  animation: vv-spin 165s linear infinite;
-  filter: blur(46px);
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(214,228,255,0.2) 0deg, rgba(214,228,255,0.06) 60deg, rgba(214,228,255,0) 105deg, rgba(214,228,255,0) 150deg, rgba(214,228,255,0.12) 190deg, rgba(214,228,255,0.04) 250deg, rgba(214,228,255,0) 300deg, rgba(214,228,255,0.2) 360deg);
-  mask-image: radial-gradient(circle at 50% 50%, transparent 0 32%, rgba(0,0,0,0.5) 42%, #000 50%, rgba(0,0,0,0.5) 60%, transparent 72%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 0 32%, rgba(0,0,0,0.5) 42%, #000 50%, rgba(0,0,0,0.5) 60%, transparent 72%);
-  z-index: 0;
-}
-.hero-hole {
-  position: absolute;
-  left: 50%;
-  top: var(--hero-center-y);
-  width: min(44vh, 47vw);
-  height: min(44vh, 47vw);
-  transform: translate(-50%, -50%);
-  animation: vv-hole 11s ease-in-out 0.5 forwards;
-  filter: blur(22px);
-  background: radial-gradient(circle closest-side, #04060c 0%, #04060c 78%, rgba(4,6,12,0) 100%);
-  z-index: 0;
-}
 .warp {
   position: absolute;
   left: 50%;
@@ -92,64 +50,6 @@
   -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, #000 62%, transparent 94%);
   background: radial-gradient(1.3px 1.3px at 7% 12%, rgba(255,255,255,0.7), transparent), radial-gradient(1px 1px at 19% 7%, rgba(255,255,255,0.55), transparent), radial-gradient(1.5px 1.5px at 33% 15%, rgba(255,255,255,0.75), transparent), radial-gradient(1.1px 1.1px at 47% 5%, rgba(255,255,255,0.6), transparent), radial-gradient(1.3px 1.3px at 61% 11%, rgba(255,255,255,0.65), transparent), radial-gradient(1px 1px at 76% 8%, rgba(255,255,255,0.5), transparent), radial-gradient(1.4px 1.4px at 89% 16%, rgba(255,255,255,0.7), transparent), radial-gradient(1.1px 1.1px at 95% 29%, rgba(255,255,255,0.55), transparent), radial-gradient(1.2px 1.2px at 4% 31%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 15% 42%, rgba(255,255,255,0.5), transparent), radial-gradient(1.4px 1.4px at 28% 35%, rgba(255,255,255,0.65), transparent), radial-gradient(1.1px 1.1px at 41% 27%, rgba(255,255,255,0.55), transparent), radial-gradient(1.3px 1.3px at 55% 33%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 68% 25%, rgba(255,255,255,0.5), transparent), radial-gradient(1.5px 1.5px at 82% 38%, rgba(255,255,255,0.7), transparent), radial-gradient(1.1px 1.1px at 92% 48%, rgba(255,255,255,0.55), transparent), radial-gradient(1.3px 1.3px at 6% 55%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 17% 66%, rgba(255,255,255,0.5), transparent), radial-gradient(1.4px 1.4px at 30% 59%, rgba(255,255,255,0.65), transparent), radial-gradient(1.1px 1.1px at 44% 71%, rgba(255,255,255,0.55), transparent), radial-gradient(1.2px 1.2px at 57% 63%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 71% 74%, rgba(255,255,255,0.5), transparent), radial-gradient(1.4px 1.4px at 85% 61%, rgba(255,255,255,0.65), transparent), radial-gradient(1.1px 1.1px at 96% 70%, rgba(255,255,255,0.5), transparent), radial-gradient(1.3px 1.3px at 11% 79%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 24% 90%, rgba(255,255,255,0.5), transparent), radial-gradient(1.5px 1.5px at 38% 84%, rgba(255,255,255,0.65), transparent), radial-gradient(1.1px 1.1px at 52% 93%, rgba(255,255,255,0.55), transparent), radial-gradient(1.2px 1.2px at 65% 86%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 79% 95%, rgba(255,255,255,0.45), transparent), radial-gradient(1.4px 1.4px at 91% 88%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 2% 45%, rgba(255,255,255,0.45), transparent), radial-gradient(1.1px 1.1px at 49% 48%, rgba(255,255,255,0.4), transparent), radial-gradient(1.2px 1.2px at 73% 51%, rgba(255,255,255,0.45), transparent), radial-gradient(1px 1px at 26% 71%, rgba(255,255,255,0.4), transparent);
 }
-.field-in {
-  position: absolute;
-  left: 50%;
-  top: var(--hero-center-y);
-  width: min(64vh, 70vw);
-  height: min(64vh, 70vw);
-  transform: translate(-50%, -50%);
-  animation: vv-stars-in 11s ease-in-out 0.5 forwards;
-  z-index: 1;
-  mask-image: radial-gradient(circle at 50% 50%, #000 0%, #000 52%, transparent 82%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, #000 52%, transparent 82%);
-  background: radial-gradient(1.6px 1.6px at 21% 28%, rgba(255,255,255,0.95), transparent), radial-gradient(1.2px 1.2px at 68% 19%, rgba(206,230,255,0.85), transparent), radial-gradient(1.8px 1.8px at 81% 61%, rgba(255,255,255,0.9), transparent), radial-gradient(1.1px 1.1px at 34% 72%, rgba(190,220,255,0.8), transparent), radial-gradient(1.4px 1.4px at 57% 84%, rgba(255,255,255,0.75), transparent), radial-gradient(1px 1px at 13% 55%, rgba(210,232,255,0.7), transparent), radial-gradient(1.5px 1.5px at 44% 12%, rgba(255,255,255,0.8), transparent), radial-gradient(1.2px 1.2px at 89% 37%, rgba(198,226,255,0.7), transparent), radial-gradient(1px 1px at 27% 45%, rgba(255,255,255,0.6), transparent), radial-gradient(1.3px 1.3px at 74% 76%, rgba(220,238,255,0.7), transparent), radial-gradient(1.2px 1.2px at 8% 22%, rgba(255,255,255,0.8), transparent), radial-gradient(1px 1px at 91% 14%, rgba(206,230,255,0.7), transparent), radial-gradient(1.6px 1.6px at 62% 92%, rgba(255,255,255,0.75), transparent), radial-gradient(1.1px 1.1px at 16% 88%, rgba(214,234,255,0.65), transparent), radial-gradient(1.4px 1.4px at 95% 72%, rgba(255,255,255,0.7), transparent), radial-gradient(1px 1px at 48% 5%, rgba(200,226,255,0.6), transparent), radial-gradient(1.3px 1.3px at 30% 8%, rgba(255,255,255,0.7), transparent), radial-gradient(1.1px 1.1px at 86% 90%, rgba(212,232,255,0.6), transparent), radial-gradient(1.5px 1.5px at 6% 68%, rgba(255,255,255,0.65), transparent), radial-gradient(1px 1px at 70% 38%, rgba(220,238,255,0.6), transparent);
-}
-.field-in2 {
-  position: absolute;
-  left: 50%;
-  top: var(--hero-center-y);
-  width: min(56vh, 62vw);
-  height: min(56vh, 62vw);
-  transform: translate(-50%, -50%);
-  animation: vv-stars-in2 11s ease-in-out 0.5 forwards;
-  z-index: 1;
-  mask-image: radial-gradient(circle at 50% 50%, #000 0%, #000 50%, transparent 84%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, #000 50%, transparent 84%);
-  background: radial-gradient(1.2px 1.2px at 38% 33%, rgba(255,255,255,0.8), transparent), radial-gradient(1px 1px at 63% 48%, rgba(206,230,255,0.6), transparent), radial-gradient(1.5px 1.5px at 52% 64%, rgba(255,255,255,0.7), transparent), radial-gradient(1px 1px at 19% 66%, rgba(214,234,255,0.55), transparent), radial-gradient(1.3px 1.3px at 78% 26%, rgba(255,255,255,0.65), transparent), radial-gradient(1px 1px at 46% 90%, rgba(200,226,255,0.5), transparent), radial-gradient(1.3px 1.3px at 24% 20%, rgba(255,255,255,0.7), transparent), radial-gradient(1px 1px at 84% 56%, rgba(210,232,255,0.55), transparent), radial-gradient(1.4px 1.4px at 31% 52%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 58% 14%, rgba(206,230,255,0.5), transparent), radial-gradient(1.2px 1.2px at 71% 82%, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 12% 40%, rgba(214,234,255,0.5), transparent), radial-gradient(1.3px 1.3px at 90% 34%, rgba(255,255,255,0.55), transparent), radial-gradient(1px 1px at 41% 76%, rgba(200,226,255,0.5), transparent);
-}
-.hero-fade {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 32vh;
-  /* Weighted to the very bottom: the halo's lower arc lands inside this fade, and a
-     linear ramp swallowed most of it. The last 20% still reaches solid #04060c so it
-     keeps covering where .hero's overflow:hidden cuts the halo off. */
-  background: linear-gradient(180deg, rgba(4,6,12,0) 0%, rgba(4,6,12,0.06) 55%, rgba(4,6,12,0.25) 78%, rgba(4,6,12,0.7) 92%, #04060c 100%);
-  z-index: 1;
-}
-.accent-green .product-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 72% 40% at 50% 40%, rgba(90,205,150,0.17) 0%, rgba(48,130,100,0.09) 42%, rgba(4,6,12,0) 76%);
-}
-.accent-blue .product-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 72% 40% at 50% 46%, rgba(120,140,255,0.18) 0%, rgba(70,84,170,0.10) 42%, rgba(4,6,12,0) 76%);
-}
-.accent-rose .product-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 72% 40% at 50% 38%, rgba(224,160,140,0.20) 0%, rgba(150,96,84,0.11) 40%, rgba(6,8,14,0) 76%);
-}
-.accent-cyan .product-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 72% 40% at 50% 40%, rgba(80,190,215,0.17) 0%, rgba(40,120,140,0.09) 42%, rgba(4,6,12,0) 76%);
-}
 .contact-decor {
   position: absolute;
   inset: 0;
@@ -162,8 +62,8 @@
 /* The void opening up as you reach the end of the page. `--hole` is driven from
    the scroll position in Motion.tsx (0 well before the bottom, 1 at it); with no
    JS it stays 0 and this is just the dark core the design already had.
-   Sits between the glow and the star sheets, the way .hero-hole sits under the
-   hero's: it eats the glow's inner edge, but the stars stay visible inside it. */
+   Sits between the glow and the star sheets: it eats the glow's inner edge, but the
+   stars stay visible inside it. */
 .contact-hole {
   position: absolute;
   left: 50%;

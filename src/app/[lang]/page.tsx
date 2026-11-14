@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
+import { AirfluenceSitePreview, AirfluenceStory } from "@/components/airfluence/Airfluence";
 import { IslandDemo } from "@/components/island-demo/IslandDemo";
-import { MacFrame } from "@/components/MacFrame";
 import { MacGallery } from "@/components/MacGallery";
 import { Motion } from "@/components/Motion";
-import { PhoneFrame } from "@/components/PhoneFrame";
-import { company, getDictionary, getIslandDemoContent, hasLocale, localizedPath } from "@/content/site";
+import { WorkGrid, WORK_ORDER } from "@/components/home/WorkGrid";
+import { company, getDictionary, getIslandDemoContent, hasLocale, localizedPath, productUrls, type Product } from "@/content/site";
 import { homeJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
@@ -23,6 +23,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!hasLocale(lang)) notFound();
   const t = getDictionary(lang);
   const other = lang === "zh" ? "en" : "zh";
+  const ordered = WORK_ORDER.map((id) => t.products.find((p) => p.id === id)).filter((p) => p !== undefined);
+  const product = (id: Product["id"]) => t.products.find((p) => p.id === id)!;
+  const mail = (email: string, subject: string) => `mailto:${email}?subject=${encodeURIComponent(subject)}`;
 
   return (
     <>
@@ -37,131 +40,86 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </a>
         <div className="nav-links">
           <a href="#products">{t.nav.products}</a>
+          <a href="#about">{t.nav.about}</a>
           <a href="#team">{t.nav.team}</a>
-          <a href="#contact">{t.nav.contact}</a>
           <LangSwitch href={localizedPath(other)} target={other} label={t.nav.switchLabel} text={t.nav.switchTo} className="lang-btn" />
+          <a href="#contact" className="nav-cta">{t.nav.contact}</a>
         </div>
       </nav>
 
       <main id="main">
-        <header id="top" className="hero">
-          <div aria-hidden="true" className="hero-halo" />
-          <div aria-hidden="true" className="hero-ring" />
-          <div aria-hidden="true" className="hero-hole" />
-          <div aria-hidden="true" className="stars warp warp-a" />
-          <div aria-hidden="true" className="stars warp warp-b" />
-          <div aria-hidden="true" className="stars warp warp-c" />
-          <div aria-hidden="true" className="stars field-twinkle" />
-          <div aria-hidden="true" className="stars field-out" />
-          <div aria-hidden="true" className="stars field-in" />
-          <div aria-hidden="true" className="stars field-in2" />
-          <div aria-hidden="true" className="hero-fade" />
-          <div className="hero-copy">
-            <p className="hero-kicker enter" style={{ "--i": 1 } as CSSProperties}>{t.hero.kicker}</p>
-            <h1 className="hero-title enter" style={{ "--i": 2 } as CSSProperties}>
-              {t.hero.title[0]}
-              <br />
-              {t.hero.title[1]}
-            </h1>
-            {t.hero.sub && (
-              <p className="hero-sub enter" style={{ "--i": 3 } as CSSProperties} lang={other}>
-                {t.hero.sub[0]}
-                <br />
-                {t.hero.sub[1]}
-              </p>
-            )}
-            <div className="enter hero-cta" style={{ "--i": 4 } as CSSProperties}>
-              <a href="#products" className="btn-outline"><span className="btn-label">{t.hero.cta}</span><span aria-hidden="true" className="btn-arrow">→</span></a>
+        <header id="top" className="intro">
+          <div aria-hidden="true" className="intro-sky">
+            <div className="stars warp warp-a" />
+            <div className="stars warp warp-b" />
+            <div className="stars warp warp-c" />
+            <div className="stars field-twinkle" />
+            <div className="stars field-out" />
+          </div>
+          <div className="intro-inner">
+            <div className="intro-copy">
+              <p className="intro-kicker enter" style={{ "--i": 1 } as CSSProperties}>{t.hero.kicker}</p>
+              <h1 className="intro-title enter" style={{ "--i": 2 } as CSSProperties}>
+                {t.hero.title[0]}
+                {/* 中文在宽屏按设计分两行；英文句子长，交给 text-wrap: balance 均衡折行。 */}
+                {lang === "zh" ? <br className="intro-break" /> : " "}
+                {t.hero.title[1]}
+              </h1>
+              <p className="intro-sub enter" style={{ "--i": 3 } as CSSProperties}>{t.hero.sub}</p>
+              <div className="intro-actions enter" style={{ "--i": 4 } as CSSProperties}>
+                <a href="#products" className="pill pill-solid">{t.hero.cta} ↓</a>
+              </div>
             </div>
+            <nav className="intro-index enter" style={{ "--i": 5 } as CSSProperties} aria-label={t.hero.indexLabel}>
+              <ul>
+                {ordered.map((p) => (
+                  <li key={p.id}>
+                    <a href={`#${p.anchor}`}>{p.name}</a>
+                    <span>
+                      {p.short} · {p.platforms}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </header>
 
-        <section className="manifesto" aria-labelledby="about-title">
-          <div className="container">
-            <h2 id="about-title" className="sr-only">{lang === "zh" ? "关于 Void Vision" : "About Void Vision"}</h2>
-            <p data-reveal className="manifesto-text">{t.about}</p>
-            <dl data-reveal className="stats">
-              {t.stats.map((s) => (
-                <div key={s.label}>
-                  <dt>{s.label}</dt>
-                  <dd>{s.value}</dd>
-                </div>
-              ))}
-            </dl>
+        <section id="products" className="work" aria-labelledby="products-title">
+          <div data-reveal className="section-head work-head">
+            <h2 id="products-title">{t.productsHeading}</h2>
+            <p>{t.productsNote}</p>
           </div>
+          <WorkGrid
+            products={t.products}
+            labels={{ demo: t.work.demo, close: t.work.close }}
+            media={{ airfluence: <AirfluenceSitePreview site={t.airfluenceDemo.site} href={productUrls.airfluence.site} /> }}
+            demos={{
+              airfluence: (
+                <DemoBody p={product("airfluence")} note={t.work.demoNote}>
+                  <AirfluenceStory story={t.airfluenceDemo.story} screens={product("airfluence").screens} />
+                </DemoBody>
+              ),
+              voidcalendar: (
+                <DemoBody p={product("voidcalendar")} note={t.work.demoNote}>
+                  <MacGallery screens={product("voidcalendar").screens} label={product("voidcalendar").name} sizes="(max-width: 1240px) 92vw, 1120px" />
+                </DemoBody>
+              ),
+              voidisland: (
+                <DemoBody p={product("voidisland")} note={t.work.demoNote}>
+                  <IslandDemo lang={lang} content={getIslandDemoContent(lang)} />
+                </DemoBody>
+              ),
+            }}
+          />
         </section>
 
-        <section id="products" aria-labelledby="products-title">
-          <div className="product-index container">
-            <h2 id="products-title">{t.productsHeading}</h2>
-            <nav aria-labelledby="products-title" className="product-index-links">
-              {t.products.map((p) => (
-                <a key={p.id} href={`#${p.anchor}`} className="pill pill-outline">{p.name}</a>
-              ))}
-            </nav>
+        <section id="about" className="about" aria-labelledby="about-title">
+          <h2 id="about-title" data-reveal className="about-kicker">{t.about.kicker}</h2>
+          <div data-reveal className="about-copy">
+            <p className="about-body">{t.about.body}</p>
+            <p className="about-founded">{t.about.founded}</p>
           </div>
-          {t.products.map((p) => (
-            <article key={p.id} id={p.anchor} className={`product accent-${p.accent}`} aria-labelledby={`${p.anchor}-name`}>
-              <div aria-hidden="true" className="product-glow" />
-              <div data-reveal className="product-copy">
-                <div className="product-heading">
-                  {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="product-logo" />}
-                  <h3 id={`${p.anchor}-name`} className="product-name">{p.name}</h3>
-                </div>
-                <p className="product-tag">{p.tagline}</p>
-                <p className="product-desc">{p.description}</p>
-                <p className="sr-only">{p.category}</p>
-                <div className="product-actions">
-                  {p.links.map((l) => (
-                    <a key={l.href} href={l.href} target="_blank" rel="noopener" className={l.primary ? "pill pill-solid" : "pill pill-outline"}>
-                      {l.label}
-                    </a>
-                  ))}
-                  {p.alias && <span className="pill pill-muted">{p.alias}</span>}
-                  {p.status && <span className="pill pill-muted">{p.status}</span>}
-                </div>
-              </div>
-              {p.id === "voidisland" ? (
-                <IslandDemo lang={lang} content={getIslandDemoContent(lang)} />
-              ) : p.device === "mac" ? (
-                <div data-reveal data-phones className="phones phones-mac">
-                  {p.screens.length > 1 ? (
-                    <div className="mac-slot">
-                      <MacGallery screens={p.screens} label={p.name} sizes="(max-width: 1180px) 92vw, 1080px" />
-                    </div>
-                  ) : (
-                    p.screens.map((s) => (
-                      <div key={s.src} className="mac-slot">
-                        <MacFrame screen={s} sizes="(max-width: 1180px) 92vw, 1080px" />
-                      </div>
-                    ))
-                  )}
-                </div>
-              ) : (
-                <div data-reveal data-phones className={`phones phones-${p.screens.length}`}>
-                  {p.screens.map((s) => (
-                    <div key={s.src} className="phone-slot">
-                      <PhoneFrame screen={s} sizes={p.screens.length === 4 ? "(max-width: 900px) 168px, 238px" : "(max-width: 900px) 180px, 252px"} />
-                    </div>
-                  ))}
-                </div>
-              )}
-              {p.id !== "voidisland" && p.screenCaption && <p className="product-caption">{p.screenCaption}</p>}
-              {p.features && (
-                <div className="product-details container">
-                  <dl className="product-features">
-                    {p.features.map((f) => (
-                      <div key={f.title}>
-                        <dt>{f.title}</dt>
-                        <dd>{f.description}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  {p.connection && <p className="product-connection">{p.connection}</p>}
-                </div>
-              )}
-            </article>
-          ))}
         </section>
 
         <section id="team" className="team" aria-labelledby="team-title">
@@ -204,8 +162,26 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
           <div className="contact-copy">
             <h2 id="contact-title" data-reveal data-zoom-trigger>{t.contact.title}</h2>
-            <address data-reveal className="contact-cta">
-              <a href={`mailto:${company.email}`} className="btn-outline btn-lg"><span className="btn-label">{company.email}</span><span aria-hidden="true" className="btn-arrow">→</span></a>
+            <p data-reveal className="contact-sub">{t.contact.sub}</p>
+            <address data-reveal className="contact-cards">
+              {t.contact.cards.map((c) => (
+                <div key={c.kind} className={`contact-card contact-${c.kind}`}>
+                  <span className="contact-kicker">{c.kicker}</span>
+                  <h3>{c.title}</h3>
+                  <p>{c.body}</p>
+                  <div className="contact-links">
+                    <a href={mail(c.email ?? company.email, c.subject)} className="contact-mail">
+                      {c.email ?? company.email}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                    {c.link && (
+                      <a href={c.link.href} target="_blank" rel="noopener" className="contact-site">
+                        {c.link.label} ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
             </address>
             <div aria-hidden="true" className="contact-rule" />
           </div>
@@ -229,6 +205,45 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           )}
         </span>
       </footer>
+    </>
+  );
+}
+
+/** 弹出层里的内容：产品介绍、演示本身、特性与“虚构数据”说明。 */
+function DemoBody({ p, note, children }: { p: Product; note: string; children: ReactNode }) {
+  return (
+    <>
+      <header className={`demo-head accent-${p.accent}`}>
+        <div className="demo-title">
+          {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="demo-logo" />}
+          <h2>{p.name}</h2>
+        </div>
+        <p className="demo-tag">{p.tagline}</p>
+        <p className="demo-desc">{p.description}</p>
+        <div className="demo-actions">
+          {p.links.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noopener" className={l.primary ? "pill pill-solid" : "pill pill-outline"}>
+              {l.label}
+            </a>
+          ))}
+          {p.status && <span className="pill pill-muted">{p.status}</span>}
+        </div>
+      </header>
+      <div className="demo-stage">{children}</div>
+      {p.features && (
+        <div className="demo-details">
+          <dl className="demo-features">
+            {p.features.map((f) => (
+              <div key={f.title}>
+                <dt>{f.title}</dt>
+                <dd>{f.description}</dd>
+              </div>
+            ))}
+          </dl>
+          {p.connection && <p className="demo-connection">{p.connection}</p>}
+        </div>
+      )}
+      <p className="demo-note">{note}</p>
     </>
   );
 }

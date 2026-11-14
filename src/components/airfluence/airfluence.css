@@ -1,0 +1,644 @@
+/* Airfluence 展示区：官网首屏缩略预览 + 合作流程自动演示。沿用全站深色底与玫瑰色强调。 */
+/* --af-accent 定义在两块的根元素上：作品墙里的 .af-site 与弹出层里的 .af-story。 */
+.af-site,
+.af-story {
+  --af-accent: #edc7b7;
+}
+
+/* ---------- 官网预览：整块是一个链接 ---------- */
+.af-site {
+  display: block;
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 16px;
+}
+.af-window {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(220, 232, 248, 0.12);
+  border-radius: 16px;
+  background: #0d0f14;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  transition: transform 1.2s var(--ease), box-shadow 1.2s var(--ease), border-color 0.6s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .af-site:hover .af-window {
+    transform: translateY(-6px);
+    border-color: rgba(237, 199, 183, 0.35);
+    box-shadow: 0 44px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  }
+  .af-site:hover .af-open {
+    color: #0b0b0c;
+    background: var(--af-accent);
+    border-color: var(--af-accent);
+  }
+}
+.af-site:focus-visible {
+  outline: 2px solid var(--af-accent);
+  outline-offset: 6px;
+}
+.af-chrome {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 44px;
+  padding: 0 14px;
+  background: #16181e;
+  border-bottom: 1px solid rgba(220, 232, 248, 0.08);
+}
+.af-lights {
+  display: flex;
+  gap: 7px;
+}
+.af-lights i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.af-lights i:nth-child(2) { background: #febc2e; }
+.af-lights i:nth-child(3) { background: #28c840; }
+.af-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: min(320px, 40vw);
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  font: 500 12.5px/1 var(--sans);
+  color: #c9d0da;
+  letter-spacing: 0.01em;
+}
+.af-url svg { color: #7d8796; }
+.af-open {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border: 1px solid rgba(220, 232, 248, 0.16);
+  border-radius: 999px;
+  font: 500 12px/1 var(--cjk);
+  color: #c9d0da;
+  transition: color 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+/* 视口里的一切按 1440px 宽的官网等比缩小（cqw），看起来就是一张会动的截图。 */
+.af-viewport {
+  display: block;
+  container-type: inline-size;
+}
+.af-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 16 / 9.4;
+  overflow: hidden;
+  isolation: isolate;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-family: var(--sans);
+}
+.af-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.af-shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.64), rgba(0, 0, 0, 0.74) 52%, rgba(0, 0, 0, 0.66));
+}
+.af-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 2.6cqw 3.4cqw 0;
+}
+.af-lang {
+  justify-self: start;
+  padding: 0.7cqw 1.15cqw;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.44);
+  font-size: 1.05cqw;
+  line-height: 1;
+}
+.af-lockup {
+  height: 1.95cqw;
+  width: auto;
+}
+.af-menu {
+  justify-self: end;
+  display: grid;
+  gap: 0.32cqw;
+  width: 1.5cqw;
+}
+.af-menu i {
+  height: 0.14cqw;
+  min-height: 1px;
+  border-radius: 1px;
+  background: #fff;
+}
+.af-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6cqw;
+}
+.af-chips {
+  display: flex;
+  gap: 1.4cqw;
+  font-size: 1cqw;
+  color: #e3e5ea;
+}
+.af-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45cqw;
+}
+.af-chip img {
+  width: 1.1cqw;
+  height: 1.1cqw;
+}
+.af-dot {
+  width: 0.32cqw;
+  height: 0.32cqw;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* 四句标题叠在同一格，按 4.2 秒依次出现，与官网节奏一致。 */
+.af-headlines {
+  display: grid;
+  margin-top: 4.2cqw;
+  width: 100%;
+}
+.af-headline {
+  grid-area: 1 / 1;
+  font-weight: 700;
+  font-size: 5.4cqw;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  opacity: 0;
+  animation: af-headline calc(var(--n) * 4.2s) var(--ease) infinite;
+  animation-delay: calc(var(--i) * 4.2s);
+}
+@keyframes af-headline {
+  0% { opacity: 0; transform: translateY(0.25em); filter: blur(6px); }
+  2.5% { opacity: 1; transform: none; filter: blur(0); }
+  23.5% { opacity: 1; transform: none; filter: blur(0); }
+  25%, 100% { opacity: 0; transform: translateY(-0.15em); filter: blur(6px); }
+}
+.af-lede {
+  max-width: 50cqw;
+  margin-top: 3.6cqw;
+  font-family: var(--sans);
+  font-size: 1.32cqw;
+  line-height: 1.6;
+  color: #e3e5ea;
+}
+.af-actions {
+  display: flex;
+  gap: 1.1cqw;
+  margin-top: 3cqw;
+}
+.af-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  padding: 1.15cqw 2.3cqw;
+  font-size: 1.2cqw;
+  font-weight: 500;
+  line-height: 1;
+}
+.af-btn b { font-weight: 400; }
+.af-btn-solid {
+  background: #fff;
+  color: #14163a;
+}
+.af-btn-line {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.44);
+}
+.af-fine {
+  margin-top: 2cqw;
+  font-size: 0.95cqw;
+  color: #e3e5ea;
+}
+.af-links {
+  display: flex;
+  justify-content: center;
+  gap: 4cqw;
+  padding-bottom: 3cqw;
+  font-size: 1.15cqw;
+  font-weight: 500;
+}
+.af-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 3.4cqw;
+  padding: 1.6cqw 0 2cqw;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+.af-film {
+  font-size: 0.95cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e3e5ea;
+}
+.af-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  padding: 0.75cqw 1.2cqw;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.44);
+  font-size: 1cqw;
+}
+.af-play svg { width: 0.75cqw; height: 0.75cqw; }
+.af-play small {
+  font-size: 0.85cqw;
+  color: #c2c6cf;
+}
+
+/* 手机宽度上改成官网的竖屏首屏比例，文字放大到能读。 */
+@container (max-width: 620px) {
+  .af-stage { aspect-ratio: 4 / 5; }
+  .af-nav { padding: 5cqw 5cqw 0; }
+  .af-lang { font-size: 2.8cqw; padding: 1.6cqw 2.6cqw; }
+  .af-lockup { height: 4.6cqw; }
+  .af-menu { width: 4cqw; gap: 0.9cqw; }
+  .af-menu i { height: 0.35cqw; }
+  .af-copy { padding: 0 6cqw; }
+  .af-chips { font-size: 2.6cqw; gap: 3cqw; }
+  .af-chip img { width: 2.8cqw; height: 2.8cqw; }
+  .af-dot { width: 0.9cqw; height: 0.9cqw; }
+  .af-headline { font-size: 9.2cqw; white-space: normal; line-height: 1.08; }
+  .af-headlines { margin-top: 6cqw; }
+  .af-lede { max-width: none; font-size: 3.1cqw; margin-top: 5cqw; }
+  .af-actions { margin-top: 5.5cqw; gap: 2.6cqw; }
+  .af-btn { font-size: 3.1cqw; padding: 2.8cqw 4.8cqw; gap: 1.5cqw; }
+  .af-fine { font-size: 2.4cqw; margin-top: 4cqw; }
+  .af-links { display: none; }
+  .af-meta { margin: 0 5cqw; padding: 3.6cqw 0 4.4cqw; }
+  .af-film { font-size: 2.2cqw; }
+  .af-play { font-size: 2.4cqw; gap: 1.4cqw; padding: 1.8cqw 2.8cqw; }
+  .af-play svg { width: 1.8cqw; height: 1.8cqw; }
+  .af-play small { font-size: 2.1cqw; }
+}
+@media (max-width: 640px) {
+  .af-chrome { height: 38px; padding: 0 10px; }
+  .af-lights i { width: 9px; height: 9px; }
+  .af-url { min-width: 0; font-size: 11.5px; padding: 5px 10px; }
+  .af-open { padding: 5px 9px; font-size: 11px; }
+}
+
+/* ---------- 合作流程自动演示 ---------- */
+.af-story {
+  --p: 0;
+  width: 100%;
+  text-align: left;
+}
+.af-hud {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 16px;
+  align-items: end;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+.af-eyebrow {
+  font: 500 11px/1.5 var(--sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.af-hud p {
+  margin: 8px 0 0;
+  min-height: 1.5em;
+  font-family: var(--cjk);
+  font-size: clamp(17px, 1.8vw, 22px);
+  line-height: 1.5;
+  color: var(--fg);
+}
+.af-counter {
+  font: 500 13px/1.5 var(--sans);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.af-meter {
+  grid-column: 1 / -1;
+  height: 1px;
+  background: var(--line);
+}
+.af-meter i {
+  display: block;
+  height: 100%;
+  background: var(--af-accent);
+  transform: scaleX(var(--p));
+  transform-origin: left;
+}
+
+.af-columns {
+  --af-phone: 236px;
+  display: grid;
+  grid-template-columns: var(--af-phone) minmax(60px, 1fr) var(--af-phone) minmax(60px, 1fr) minmax(0, 330px);
+  align-items: center;
+  gap: 12px;
+}
+.af-col {
+  margin: 0;
+  text-align: center;
+  transition: opacity 0.6s var(--ease);
+}
+.af-col[data-focus="false"] {
+  opacity: 0.5;
+}
+.af-col figcaption {
+  margin-top: 18px;
+  font: 600 11px/16px var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+:root:lang(zh) .af-col figcaption {
+  font-family: var(--cjk);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+.af-col[data-focus="true"] figcaption {
+  color: var(--af-accent);
+}
+
+/* 手机屏幕里的多张截图叠放，切换时淡入。 */
+.af-phone-screen {
+  display: grid;
+  background: #f6f3ee;
+}
+.af-shot {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+}
+.af-shot[data-active] {
+  opacity: 1;
+}
+.af-tap {
+  position: absolute;
+  width: 15cqw;
+  height: 15cqw;
+  margin: -7.5cqw 0 0 -7.5cqw;
+  border-radius: 50%;
+  background: rgba(20, 22, 58, 0.22);
+  box-shadow: 0 0 0 1.4cqw rgba(20, 22, 58, 0.1);
+  opacity: 0;
+  pointer-events: none;
+}
+.af-tap-publish {
+  left: 82%;
+  top: 93.2%;
+  animation: af-tap 1.2s ease-out both;
+}
+.af-tap-discover {
+  left: 50%;
+  top: 28%;
+  width: 22cqw;
+  height: 22cqw;
+  margin: -11cqw 0 0 -11cqw;
+  animation: af-tap 1.4s ease-out 1.6s both;
+}
+@keyframes af-tap {
+  0%, 55% { opacity: 0; transform: scale(0.4); }
+  68% { opacity: 1; transform: scale(0.8); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+/* 连线：虚线底 + 随进度推进的实线与光点。 */
+.af-link {
+  --cp: clamp(0, (var(--p) - var(--a)) / (var(--b) - var(--a)), 1);
+  position: relative;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-17px);
+}
+.af-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px dashed rgba(220, 232, 248, 0.2);
+}
+.af-link-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: linear-gradient(90deg, rgba(237, 199, 183, 0), var(--af-accent));
+  transform: scaleX(var(--cp));
+  transform-origin: left;
+}
+.af-link-dot {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--cp) * 100%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--af-accent);
+  box-shadow: 0 0 12px var(--af-accent);
+  transform: translate(-50%, -50%);
+  opacity: clamp(0, var(--cp) * (1 - var(--cp)) * 14, 1);
+}
+.af-link-label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border: 1px solid rgba(220, 232, 248, 0.14);
+  border-radius: 999px;
+  background: #0d1016;
+  font: 500 11.5px/1 var(--sans);
+  color: #a3aebb;
+  white-space: nowrap;
+}
+.af-link-label b {
+  font-weight: 600;
+  color: var(--af-accent);
+}
+
+/* 受众：十五张人像从中心散开，铺满地球线框。 */
+.af-reach {
+  --spread: clamp(0, (var(--p) - 0.63) / 0.35, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: min(470px, 62vw);
+  padding: 26px 22px 18px;
+  border: 1px solid rgba(220, 232, 248, 0.1);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(237, 199, 183, 0.06), rgba(255, 255, 255, 0.02));
+}
+.af-reach-head > span {
+  display: block;
+  font: 600 10px/1.5 var(--sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+:root:lang(zh) .af-reach-head > span {
+  font-family: var(--cjk);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.af-reach-head b {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--cjk);
+  font-weight: 400;
+  font-size: clamp(21px, 2.1vw, 28px);
+  line-height: 1.25;
+  color: var(--fg);
+}
+.af-reach-people {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.af-globe {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  stroke: #dce8f8;
+  stroke-width: 0.7;
+  opacity: 0.12;
+}
+.af-face {
+  --r: clamp(0, (var(--p) - 0.64 - var(--i) * 0.009) / 0.18, 1);
+  position: absolute;
+  left: calc(50% + (var(--x) - 50) * var(--spread) * 1%);
+  top: calc(48% + (var(--y) - 48) * var(--spread) * 1%);
+  width: calc(var(--s) * 1%);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: #1a1d24;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  opacity: var(--r);
+  transform: translate(-50%, -50%) scale(calc(0.65 + var(--r) * 0.35));
+}
+.af-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.af-reach-note {
+  font: 11px/1.5 var(--cjk);
+  color: #5d6878;
+}
+
+.af-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+}
+.af-steps li {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+.af-steps button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 0 6px;
+  font: inherit;
+  font-family: var(--cjk);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  color: #7d8796;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.af-steps button:hover,
+.af-steps li[data-state="on"] button {
+  color: var(--fg);
+}
+.af-steps b {
+  font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.06em;
+  color: #5d6878;
+}
+.af-steps li[data-state="on"] b {
+  color: var(--af-accent);
+}
+.af-step-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1.5px;
+  height: 2px;
+  background: var(--af-accent);
+  transform-origin: left;
+  transform: scaleX(clamp(0, (var(--p) - var(--a)) / (var(--b) - var(--a)), 1));
+}
+.af-steps button:focus-visible {
+  outline: 2px solid var(--af-accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (max-width: 1080px) and (min-width: 901px) {
+  .af-columns { --af-phone: 200px; gap: 8px; }
+  .af-link-label { font-size: 10px; padding: 6px 8px; }
+}
+/* 窄屏：两部手机并排，受众面板放到下面，连线收起。 */
+@media (max-width: 900px) {
+  .af-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 16px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .af-link { display: none; }
+  .af-col-phone { width: min(100%, 220px); justify-self: center; }
+  .af-col-reach { grid-column: 1 / -1; }
+  .af-reach { height: min(440px, 112vw); }
+  .af-steps { gap: 12px; }
+  .af-steps button { font-size: 12.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .af-window,
+  .af-col,
+  .af-shot { transition: none; }
+  .af-headline { animation: none; }
+  .af-headline:first-child { opacity: 1; }
+  .af-tap { display: none; }
+}

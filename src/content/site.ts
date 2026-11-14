@@ -40,6 +40,10 @@ export type Product = {
   /** Former name, shown next to the store links while a listing still carries it. */
   alias?: string;
   screens: Screen[];
+  /** 产品墙用：一句话概括、首屏目录里的短分类与平台。 */
+  summary: string;
+  short: string;
+  platforms: string;
   /** Desktop products show one Mac window instead of a row of phones. */
   device?: "phone" | "mac";
   accent: "green" | "blue" | "rose" | "cyan";
@@ -56,16 +60,49 @@ export type Member = {
   bio: string;
 };
 
+/** Airfluence 展示区：官网首屏的缩略预览，以及“品牌发布 → 创作者发现 → 触达受众”的自动演示。 */
+export type AirfluenceDemo = {
+  site: {
+    /** Accessible name of the whole preview, which links to the live site. */
+    label: string;
+    open: string;
+    langSwitch: string;
+    chips: [string, string, string];
+    headlines: string[];
+    lede: string;
+    actions: [string, string];
+    fine: string;
+    links: string[];
+    film: string;
+    play: string;
+  };
+  story: {
+    label: string;
+    eyebrow: string;
+    stages: { label: string; line: string }[];
+    captions: [string, string, string];
+    reach: { kicker: string; title: [string, string]; note: string; alt: string };
+  };
+};
+
 export type Dictionary = {
   meta: { title: string; description: string; keywords: string[]; ogAlt: string };
-  nav: { products: string; team: string; contact: string; switchLabel: string; switchTo: string; home: string };
-  hero: { kicker: string; title: [string, string]; sub?: [string, string]; cta: string };
-  about: string;
-  stats: { value: string; label: string }[];
+  nav: { products: string; about: string; team: string; contact: string; switchLabel: string; switchTo: string; home: string };
+  /** 首屏标题就是公司使命。 */
+  hero: { kicker: string; title: [string, string]; sub: string; cta: string; indexLabel: string };
+  about: { kicker: string; body: string; founded: string };
   productsHeading: string;
+  productsNote: string;
+  work: { demo: string; close: string; demoNote: string };
   products: Product[];
+  airfluenceDemo: AirfluenceDemo;
   team: { title: string; sub: string; members: Member[] };
-  contact: { title: string };
+  contact: {
+    title: string;
+    sub: string;
+    /** `email` 不填时用公司邮箱；营销合作直接发到 Airfluence。 */
+    cards: { kind: "business" | "marketing"; kicker: string; title: string; body: string; subject: string; email?: string; link?: { label: string; href: string } }[];
+  };
   footer: { rights: string; privacy: string };
   privacy: {
     metaTitle: string;
@@ -82,7 +119,7 @@ export type Dictionary = {
   };
 };
 
-const W = { gb: [760, 1652], af: [804, 1748], ul: [780, 1696] } as const;
+const W = { ul: [780, 1696] } as const;
 
 const screens = {
   voidisland: (locale: Locale, shots: [label: string, alt: string][]): Screen[] =>
@@ -91,24 +128,24 @@ const screens = {
       width: 1200, height: 690, label: shots[i][0], alt: shots[i][1], bar: "none",
     })),
   voidcalendar: (locale: Locale, shots: [label: string, alt: string][]): Screen[] =>
-    (["canvas", "project", "tasks", "calendar"] as const).map((scene, i) => ({
-      src: `/images/screens/voido-${scene}-${locale}.webp`,
+    (["tasks", "canvas", "calendar", "project"] as const).map((scene, i) => ({
+      src: `/images/screens/voido-demo-${scene}-${locale}.webp`,
       width: 2880,
       height: 1800,
       label: shots[i][0],
       alt: shots[i][1],
       bar: "none",
     })),
-  voidbook: (alts: [string, string, string]): Screen[] =>
-    (["gb-following.jpg", "gb-explore.jpg", "gb-summary.jpg"] as const).map((f, i) => ({
-      src: `/images/screens/${f}`, width: W.gb[0], height: W.gb[1], alt: alts[i], bar: "auto",
+  // 两张图本身带手机外框，作品墙里直接叠放展示。
+  voidbook: (alts: [string, string]): Screen[] =>
+    (["voidbook-following.webp", "voidbook-transcript.webp"] as const).map((f, i) => ({
+      src: `/images/screens/${f}`, width: 590, height: 1223, alt: alts[i], bar: "none",
     })),
-  airfluence: (alts: [string, string, string, string]): Screen[] => [
-    { src: "/images/screens/af-onboarding.png", width: W.af[0], height: W.af[1], alt: alts[0], bar: "none", tone: "#c9a29a" },
-    { src: "/images/screens/af-discover.png", width: W.af[0], height: W.af[1], alt: alts[1], bar: "none" },
-    { src: "/images/screens/af-profile.png", width: W.af[0], height: W.af[1], alt: alts[2], bar: "none" },
-    { src: "/images/screens/af-messages.png", width: W.af[0], height: W.af[1], alt: alts[3], bar: "none", tone: "#f3efe9" },
-  ],
+  // 前五张是品牌端发布活动的连续步骤，最后一张是创作者端的发现页，顺序即演示顺序。
+  airfluence: (locale: Locale, alts: [string, string, string, string, string, string]): Screen[] =>
+    (["publish-brief", "publish-budget", "publish-schedule", "publish-preview", "brand-real-campaigns", "creator-real-campaigns"] as const).map((scene, i) => ({
+      src: `/images/airfluence/screens/${scene}-${locale}.webp`, width: 720, height: 1566, alt: alts[i], bar: "none",
+    })),
   unilinx: (alts: [string, string, string]): Screen[] => [
     { src: "/images/screens/ul-seniors.png", width: W.ul[0], height: W.ul[1], alt: alts[0], bar: "island", tone: "#f2f3f5" },
     { src: "/images/screens/ul-home.png", width: W.ul[0], height: W.ul[1], alt: alts[1], bar: "island", tone: "#bfe4ec" },
@@ -130,27 +167,52 @@ export const productUrls = {
   airfluence: { site: "https://airfluence.ai/" },
 } as const;
 
+/** airfluence.ai 英文首页的文案，中英文两页的预览共用。 */
+const airfluenceSiteEn: AirfluenceDemo["site"] = {
+  label: "Preview of the Airfluence homepage. Opens airfluence.ai",
+  open: "Visit site",
+  langSwitch: "中文",
+  chips: ["Across the Globe", "Instagram", "Xiaohongshu"],
+  headlines: ["Where Influence Flows Through AI", "Find creators. Build trust", "Your Story, Beyond Borders", "One Platform. From Match to Post"],
+  lede: "Airfluence AI finds the creators your audience already trusts, briefs them in their own culture, and tracks every post from booking to results.",
+  actions: ["I'm a brand", "I'm a creator"],
+  fine: "For brands, agencies and creators around the world.",
+  links: ["How it works", "Product tour", "Case studies", "Campaigns", "Contact"],
+  film: "Grand Talon creator night",
+  play: "Play with sound",
+};
+
 const zh: Dictionary = {
   meta: {
     title: "Void Vision · 让智能在使用中生长 | RSI",
     description:
-      "Void Vision 是一家成立于悉尼的 AI 产品公司，致力于推动 AI 在真实工作中递归自我改进（RSI）。旗下产品包括知识库 VoidBook、AI 日历 Voido，以及将 AI 会话工作流带入 macOS 刘海的 Void Island。",
+      "Void Vision 是悉尼的 AI 产品公司，把 AI 做进人们每天真正在用的产品里。我们的产品包括达人营销平台 Airfluence、AI 日历 Voido、Mac 刘海里的 Void Island、知识库 VoidBook 与留学生服务平台优渡 Unilinx。",
     keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 从虚空中看见未来",
   },
-  nav: { products: "产品", team: "团队", contact: "联系", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
-  hero: { kicker: "Sydney · Building toward RSI", title: ["从虚空中", "看见未来"], sub: ["See the unseen", "in the void"], cta: "查看产品" },
-  about:
-    "我们相信，智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。我们从 VoidBook 这个自带信息聚合功能的知识库出发，让每一次创造，都成为下一次进化的起点。",
-  stats: [
-    { value: "2026", label: "成立于悉尼" },
-    { value: String(company.productCount), label: "产品与项目" },
-  ],
+  nav: { products: "产品", about: "关于", team: "团队", contact: "联系我们", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
+  hero: {
+    kicker: "AI 产品公司 · 悉尼",
+    title: ["把 AI 做进人们每天", "真正在用的产品里。"],
+    sub: "Void Vision 是悉尼的 AI 产品公司。我们做知识库、AI 日历和 Mac 工具，也做达人营销与留学生服务。",
+    cta: "看看我们的产品",
+    indexLabel: "产品目录",
+  },
+  about: {
+    kicker: "我们相信",
+    body: "智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。",
+    founded: "成立于悉尼 · 2026",
+  },
   productsHeading: "我们的产品",
+  productsNote: "覆盖 iOS、Android、Web 与 macOS · 团队有亿级用户规模的项目经验",
+  work: { demo: "看演示", close: "关闭演示", demoNote: "演示使用虚构数据。" },
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
       tagline: "自带信息聚合功能的知识库。",
+      summary: "播客、视频与 newsletter 汇成一个信息流，AI 给出摘要和逐字稿。",
+      short: "知识库",
+      platforms: "iOS",
       description: "将你关注的视频、播客与 newsletter 汇集到自己的知识库，与笔记一起管理。用 AI 辅助理解、筛选和整理，在积累的内容上继续思考与创作，形成自己的观点、文章和方案。",
       category: "知识库 · 信息聚合 · AI 笔记 · iOS",
       alias: "原 GrainBook",
@@ -158,27 +220,33 @@ const zh: Dictionary = {
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
         { label: "grainbook.app", href: productUrls.voidbook.site },
       ],
-      screens: screens.voidbook(["VoidBook 关注信息流界面", "VoidBook 探索信息流界面", "VoidBook 视频转写与 AI 摘要阅读界面"]),
+      screens: screens.voidbook(["VoidBook 关注页：播客、视频等来源汇成一个信息流", "VoidBook 视频页：逐字稿与 AI 摘要"]),
     },
     {
       id: "voidcalendar", anchor: "vc", name: "Voido", accent: "blue", device: "mac",
       logo: "/images/voido.png",
       tagline: "把想法安排进时间。",
+      summary: "日程、任务、笔记与 AI 放在一起。交给 AI 的任务在列表里看得到进度，结果写回旁边的对话。",
+      short: "AI 日历与任务",
+      platforms: "macOS",
       description: "Mac 上的 AI 日历与时间盒应用，把日程、任务、笔记与专注放在一起。告诉 AI 要做什么，它会避开已有日程，把事情放进真正空着的时间；连接 Apple 日历、iCloud、Google 和 Outlook。",
       category: "AI 日历 · 时间盒 · macOS",
       status: "免费公开测试版",
       links: [{ label: "voido.ai", href: productUrls.voidcalendar.site.zh, primary: true }],
       screens: screens.voidcalendar("zh", [
-        ["并行任务", "Voido 画布：四个 AI 任务同时运行，展开的卡片列出搜索、读取笔记等执行步骤"],
-        ["项目对话", "Voido 项目对话：AI 思考 36 秒后改写项目大纲，右侧是目标、大纲、资源与 AI 产出"],
-        ["任务拆解", "Voido 任务列表：AI 按里程碑拆出的 12 个任务，右侧 AI 侧栏给出下一步建议"],
-        ["AI 日历", "Voido 周视图：AI 侧栏按要求把 6 个任务排进工作日的空档，日历上直接出现对应时间块"],
+        ["任务与 AI", "Voido 任务列表：进行中、待验收和待办的任务带着项目与 AI 状态，右侧 AI 面板给出竞品定价调研的结论（虚构数据）"],
+        ["画布", "Voido 画布：从发布目标出发，把调研、开发和测试任务连成一条发布流程（虚构数据）"],
+        ["AI 日历", "Voido 周视图：站会、开发任务和访谈排在一周的时间块里（虚构数据）"],
+        ["项目", "Voido 项目页：Nova 2.0 发布的里程碑、本周进展和 AI 自动更新（虚构数据）"],
       ]),
     },
     {
       id: "voidisland", anchor: "island", name: "Void Island", accent: "blue", device: "mac",
       logo: "/images/void-island.png",
       tagline: "AI 在工作，你继续专注。",
+      summary: "Claude、Codex 与 Cursor 的会话、授权和提问，收进 Mac 刘海。",
+      short: "AI 会话工作流",
+      platforms: "macOS",
       description: "把 Claude、Codex 和 Cursor 的会话状态、授权与提问，收进 Mac 顶部的刘海。少找一个窗口，多留一点思路。原生 macOS 应用，可独立运行。",
       category: "AI 会话工作流 · Git · 保持唤醒 · macOS",
       features: [
@@ -202,31 +270,58 @@ const zh: Dictionary = {
     {
       id: "airfluence", anchor: "af", name: "Airfluence", accent: "rose",
       tagline: "Where influence flows through AI.",
+      summary: "智能匹配博主、管理活动排期与合作沟通、追踪数据表现。",
+      short: "达人营销",
+      platforms: "iOS / Android / Web",
       description: "AI 驱动的达人与品牌合作平台——智能匹配博主、管理活动排期与合作沟通、追踪数据表现，一站完成。",
       category: "AI 达人营销平台",
       links: [{ label: "airfluence.ai", href: productUrls.airfluence.site, primary: true }],
-      screens: screens.airfluence(["Airfluence 登录界面", "Airfluence 博主发现与 AI 匹配界面", "Airfluence 博主主页与收益界面", "Airfluence 合作消息收件箱"]),
+      screens: screens.airfluence("zh", ["Airfluence 品牌端：填写活动说明", "Airfluence 品牌端：设置预算", "Airfluence 品牌端：安排日程", "Airfluence 品牌端：预览并发布活动", "Airfluence 品牌端：活动列表", "Airfluence 创作者端：发现合作活动"]),
     },
     {
       id: "unilinx", anchor: "ul", name: "优渡 Unilinx", accent: "cyan",
       tagline: "落地无忧，有人接你。",
+      summary: "新生落地套餐、海外翻译与旅游陪同，由认证学长姐一对一接应。",
+      short: "留学生服务",
+      platforms: "手机 App",
       description: "面向留学生的落地服务平台——新生落地无忧套餐、海外翻译与旅游陪同，由认证学长姐一对一接应，管家全程托管。",
       category: "留学生落地服务平台",
       links: [],
       screens: screens.unilinx(["优渡 Unilinx 认证学长姐大厅", "优渡 Unilinx 落地服务首页", "优渡 Unilinx 任务大厅"]),
     },
   ],
+  airfluenceDemo: {
+    // 预览画的是 airfluence.ai 的英文首页，中文页也照原样显示英文；只有窗口按钮和读屏名称用中文。
+    site: { ...airfluenceSiteEn, label: "Airfluence 官网首页预览，点击访问 airfluence.ai", open: "访问官网" },
+    story: {
+      label: "Airfluence 合作流程演示",
+      eyebrow: "一次合作的传播过程",
+      stages: [
+        { label: "品牌发布活动", line: "故事，从你的品牌开始。" },
+        { label: "创作者发现并创作", line: "创作者发现合作，用自己的方式讲述。" },
+        { label: "内容触达更广泛的受众", line: "他们的内容，让更多人看见你的品牌。" },
+      ],
+      captions: ["品牌发布", "创作者发现", "更广泛的受众"],
+      reach: { kicker: "让内容传播", title: ["一次活动。", "无数次连接。"], note: "受众传播示意", alt: "创作者内容触达更多人的传播示意" },
+    },
+  },
   team: {
     title: "我们是谁",
-    sub: "四个人的团队，工程与研究背景横跨 Hulu、微软、华为、迪士尼、Amazon、Atlassian 与戴尔。",
+    sub: "三个人的团队，工程与研究背景横跨 Hulu、微软、华为、迪士尼、Amazon 与 Atlassian。",
     members: [
       { image: "/images/team/team-1.png", name: "龙源", altName: "Yuan Long", role: "CEO · 产品与商业化", jobTitle: "CEO", chips: ["Hulu", "蔚来", "微软", "UNSW 硕士"], bio: "具备从 0 到 1 的完整产品开发与商业化经验，曾参与亿万级用户项目。注重用户体验研究，兼具审美判断与交互设计思维。" },
       { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · 全平台架构", jobTitle: "CTO", chips: ["华为", "迪士尼", "CJLU"], bio: "曾参与亿万级用户流媒体项目，具备复杂系统架构、移动端与大数据工程经验。负责 iOS、Android、Web 与 Chrome 插件的全平台架构，兼顾系统性能、稳定性与扩展能力。" },
       { image: "/images/team/team-3.png", name: "何溱扬", altName: "Zhenyang He", role: "AI · 模型与推荐", jobTitle: "AI 负责人", chips: ["Amazon", "Atlassian", "UW–Madison 博士"], bio: "威斯康星大学麦迪逊分校博士，现任 Amazon 应用科学家。专长模型训练与推荐算法，负责 AI 技术路线与能力评估，推动研究成果转化为实际产品能力。" },
-      { image: "/images/team/team-4.png", name: "钱易宇", altName: "Yiyu Qian", role: "工程 · 数据与训练", jobTitle: "工程师", chips: ["戴尔", "RMIT 博士"], bio: "皇家墨尔本理工大学计算机博士，曾任戴尔软件工程师。结合科研训练与工程实践，负责数据管线与模型训练工程，注重训练流程的可靠性、效率与可复用性。" },
     ],
   },
-  contact: { title: "一起看见未来" },
+  contact: {
+    title: "一起看见未来",
+    sub: "投资、合作、媒体，或者想用 Airfluence 做一次推广，都可以写信给我们。",
+    cards: [
+      { kind: "business", kicker: "商务合作", title: "投资、产品合作与媒体", body: "想了解我们在做的事，或者有合作的想法，直接写信给我们。", subject: "商务合作" },
+      { kind: "marketing", kicker: "营销合作", title: "让创作者讲你的品牌故事", body: "通过 Airfluence 匹配小红书、Instagram 等平台的创作者，从发布活动到追踪内容表现。", subject: "营销合作", email: "hello@airfluence.ai", link: { label: "airfluence.ai", href: productUrls.airfluence.site } },
+    ],
+  },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "隐私政策" },
   privacy: {
     metaTitle: "网站隐私声明 · Void Vision",
@@ -236,8 +331,8 @@ const zh: Dictionary = {
     title: "这个网站如何处理你的数据",
     intro:
       "本站是 Void Vision Pty Ltd 的公司官网。它不做统计分析、没有埋点，没有表单和账号，也不向任何第三方发起请求。我们参与开发的产品各自由其运营方发布隐私政策，见第 03 节。",
-    updated: "更新于 2026 年 11 月 12 日",
-    updatedISO: "2026-11-12",
+    updated: "更新于 2026 年 11 月 15 日",
+    updatedISO: "2026-11-15",
     entity: "Void Vision Pty Ltd · 悉尼",
     contactLabel: "隐私相关问询",
     back: "返回首页",
@@ -254,7 +349,7 @@ const zh: Dictionary = {
       { no: "03", h: "产品的隐私政策", p: [
         "VoidBook（App Store 内目前显示为 GrainBook）的隐私政策：https://grainbook.app/privacy。",
         "Voido 的隐私政策：https://voido.ai/privacy。",
-        "Airfluence 与优渡 Unilinx 的隐私政策由各自的运营方发布。Void Vision 参与了这两款产品的创办与开发，但不是其运营主体，也不控制其用户数据；与这两款产品相关的隐私问题，请联系对应的运营方。",
+        "Airfluence 与优渡 Unilinx 的隐私政策以各自产品内公布的为准，与这两款产品相关的隐私问题请联系对应的产品。",
       ] },
       { no: "04", h: "联系与变更", p: [
         "与本站有关的隐私问题，可以发邮件到 hello@voidvision.ai。",
@@ -268,23 +363,33 @@ const en: Dictionary = {
   meta: {
     title: "Void Vision · Intelligence that grows through use | RSI",
     description:
-      "Void Vision is a Sydney-founded AI company pursuing recursive self-improvement (RSI) through real work. Our products include the VoidBook knowledge base, Voido AI calendar, and Void Island for AI session workflows in the macOS notch.",
+      "Void Vision is an AI product company in Sydney that puts AI into the products people actually use every day. Our products include the Airfluence influencer platform, the Voido AI calendar, Void Island in the Mac notch, the VoidBook knowledge base and the Unilinx student services platform.",
     keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — See the unseen in the void",
   },
-  nav: { products: "Products", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
-  hero: { kicker: "Sydney · Building toward RSI", title: ["See the unseen", "in the void"], sub: ["从虚空中", "看见未来"], cta: "Explore" },
-  about:
-    "We believe intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works. We begin with VoidBook, a knowledge base with built-in content aggregation, so that every act of creation becomes the starting point for the next improvement.",
-  stats: [
-    { value: "2026", label: "Founded in Sydney" },
-    { value: String(company.productCount), label: "Products & projects" },
-  ],
+  nav: { products: "Products", about: "About", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
+  hero: {
+    kicker: "AI product company · Sydney",
+    title: ["Put AI into the products", "people actually use every day."],
+    sub: "Void Vision is an AI product company in Sydney. We make a knowledge base, an AI calendar and Mac tools, plus influencer marketing and student services.",
+    cta: "See our products",
+    indexLabel: "Our products",
+  },
+  about: {
+    kicker: "What we believe",
+    body: "Intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works.",
+    founded: "Founded in Sydney · 2026",
+  },
   productsHeading: "Our products",
+  productsNote: "Across iOS, Android, web and macOS · The team has worked on products used by hundreds of millions of people",
+  work: { demo: "See it in action", close: "Close demo", demoNote: "Demos use sample data." },
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
       tagline: "A knowledge base with built-in content aggregation.",
+      summary: "Podcasts, videos and newsletters in one feed, with AI summaries and transcripts.",
+      short: "Knowledge base",
+      platforms: "iOS",
       description: "Bring the videos, podcasts and newsletters you follow into your own knowledge base, alongside your notes. Use AI to understand, filter and organise your content, then build on what you have gathered to develop your own perspectives, articles and plans.",
       category: "Knowledge base · Content aggregation · AI notes · iOS",
       alias: "Formerly GrainBook",
@@ -292,27 +397,33 @@ const en: Dictionary = {
         { label: "App Store", href: productUrls.voidbook.appStore, primary: true },
         { label: "grainbook.app", href: productUrls.voidbook.site },
       ],
-      screens: screens.voidbook(["VoidBook Following feed", "VoidBook Explore feed", "VoidBook transcript and AI summary view"]),
+      screens: screens.voidbook(["VoidBook Following: podcasts, videos and other sources in one feed", "VoidBook video page with transcript and AI summary"]),
     },
     {
       id: "voidcalendar", anchor: "vc", name: "Voido", accent: "blue", device: "mac",
       logo: "/images/voido.png",
       tagline: "Turn ideas into time.",
+      summary: "Calendar, tasks, notes and AI in one place. Tasks handed to AI show their progress in the list, and results land in the chat beside it.",
+      short: "AI calendar & tasks",
+      platforms: "macOS",
       description: "An AI calendar and time-blocking app for Mac that brings events, tasks, notes and focus together. Tell the AI what needs doing and it plans around your existing events, into time that is genuinely free. Works with Apple Calendar, iCloud, Google and Outlook.",
       category: "AI calendar · Time blocking · macOS",
       status: "Free public beta",
       links: [{ label: "voido.ai", href: productUrls.voidcalendar.site.en, primary: true }],
       screens: screens.voidcalendar("en", [
-        ["Parallel runs", "Voido canvas with four AI tasks running at once; the expanded card lists steps such as searching and reading notes"],
-        ["Project chat", "Voido project chat: the AI thinks, rewrites the project outline, and the side panel shows goal, outline, resources and AI outputs"],
-        ["Task breakdown", "Voido task list with the tasks the AI broke out by milestone, and the AI sidebar suggesting the next step"],
-        ["AI calendar", "Voido week view: the AI sidebar time-boxes six tasks into free working hours, and the blocks appear on the calendar"],
+        ["Tasks & AI", "Voido task list with in-progress, in-review and to-do tasks carrying project and AI status, and the AI panel summarising a pricing study (sample data)"],
+        ["Canvas", "Voido canvas linking research, build and test tasks from a launch goal into one release flow (sample data)"],
+        ["AI calendar", "Voido week view with stand-ups, build tasks and interviews in time blocks (sample data)"],
+        ["Projects", "Voido project page for the Nova 2.0 launch with milestones, this week's progress and AI updates (sample data)"],
       ]),
     },
     {
       id: "voidisland", anchor: "island", name: "Void Island", accent: "blue", device: "mac",
       logo: "/images/void-island.png",
       tagline: "AI is working. Stay in your flow.",
+      summary: "Claude, Codex and Cursor sessions, approvals and questions, in the Mac notch.",
+      short: "AI session workflow",
+      platforms: "macOS",
       description: "Bring Claude, Codex and Cursor session status, approvals and questions into your Mac’s notch. Fewer windows. More room to think. A native macOS app that runs on its own.",
       category: "AI session workflows · Git · Keep awake · macOS",
       features: [
@@ -336,31 +447,57 @@ const en: Dictionary = {
     {
       id: "airfluence", anchor: "af", name: "Airfluence", accent: "rose",
       tagline: "Where influence flows through AI.",
+      summary: "Matches brands with creators, runs campaign schedules and conversations, and tracks results.",
+      short: "Influencer marketing",
+      platforms: "iOS / Android / Web",
       description: "An AI-powered creator–brand platform: match with the right creators, run campaigns and conversations, and track performance — all in one place.",
       category: "AI creator marketing platform",
       links: [{ label: "airfluence.ai", href: productUrls.airfluence.site, primary: true }],
-      screens: screens.airfluence(["Airfluence sign-in", "Airfluence creator discovery with AI Match", "Airfluence creator profile with earnings", "Airfluence campaign inbox"]),
+      screens: screens.airfluence("en", ["Airfluence brand app: campaign brief", "Airfluence brand app: budget", "Airfluence brand app: schedule", "Airfluence brand app: preview and publish", "Airfluence brand app: campaign list", "Airfluence creator app: discover campaigns"]),
     },
     {
       id: "unilinx", anchor: "ul", name: "Unilinx", accent: "cyan",
       tagline: "Land softly. Someone is there for you.",
+      summary: "Arrival packages, translation and travel companions for international students, with verified senior students on hand.",
+      short: "Student services",
+      platforms: "Mobile app",
       description: "Arrival services for international students — landing packages, translation and travel companionship, delivered one-on-one by verified senior students with full concierge support.",
       category: "Arrival services for international students",
       links: [],
       screens: screens.unilinx(["Unilinx verified senior-student hall", "Unilinx arrival services home", "Unilinx task hall"]),
     },
   ],
+  airfluenceDemo: {
+    site: airfluenceSiteEn,
+    story: {
+      label: "Airfluence collaboration walkthrough",
+      eyebrow: "How one campaign travels",
+      stages: [
+        { label: "Brands publish a campaign", line: "Your brand starts the story." },
+        { label: "Creators discover & create", line: "Creators discover it and make it their own." },
+        { label: "Content reaches a wider audience", line: "Their content reaches a wider audience." },
+      ],
+      captions: ["Brand publishes", "Creators discover", "The wider audience"],
+      reach: { kicker: "Content travels", title: ["One campaign.", "Many conversations."], note: "Audience illustration", alt: "Illustration of creator content reaching a wider audience" },
+    },
+  },
   team: {
     title: "Who we are",
-    sub: "A team of four, with engineering and research backgrounds across Hulu, Microsoft, Huawei, Disney, Amazon, Atlassian and Dell.",
+    sub: "A team of three, with engineering and research backgrounds across Hulu, Microsoft, Huawei, Disney, Amazon and Atlassian.",
     members: [
       { image: "/images/team/team-1.png", name: "Yuan Long", altName: "龙源", role: "CEO · Product & Growth", jobTitle: "CEO", chips: ["Hulu", "NIO", "Microsoft", "MSc UNSW"], bio: "End-to-end experience in product development and commercialisation, from zero to one, with contributions to projects serving hundreds of millions of users. Brings a focus on user experience research, a discerning eye for aesthetics and a thoughtful approach to interaction design." },
       { image: "/images/team/team-2.png", name: "Theo Chen", altName: "Theo Chen", role: "CTO · Platform Architecture", jobTitle: "CTO", chips: ["Huawei", "Disney", "CJLU"], bio: "Contributed to streaming projects serving hundreds of millions of users, with experience in complex system architecture, mobile development and big data engineering. Leads architecture across iOS, Android, Web and Chrome extensions, balancing performance, reliability and scalability." },
       { image: "/images/team/team-3.png", name: "Zhenyang He", altName: "何溱扬", role: "AI · Models & Recommendation", jobTitle: "Head of AI", chips: ["Amazon", "Atlassian", "PhD UW–Madison"], bio: "PhD from the University of Wisconsin–Madison and currently an Applied Scientist at Amazon. Specialises in model training and recommendation algorithms, leading AI technical direction and capability evaluation to turn research into practical product capabilities." },
-      { image: "/images/team/team-4.png", name: "Yiyu Qian", altName: "钱易宇", role: "Engineering · Data & Training", jobTitle: "Engineer", chips: ["Dell", "PhD RMIT"], bio: "PhD in Computer Science from RMIT and former software engineer at Dell. Combines research training with engineering practice to build data pipelines and model-training systems, with a focus on reliable, efficient and reusable training workflows." },
     ],
   },
-  contact: { title: "See the future with us" },
+  contact: {
+    title: "See the future with us",
+    sub: "Investment, partnerships, press, or a campaign with Airfluence: write to us.",
+    cards: [
+      { kind: "business", kicker: "Business", title: "Investment, partnerships and press", body: "Want to know what we're working on, or have an idea to explore together? Write to us.", subject: "Business enquiry" },
+      { kind: "marketing", kicker: "Marketing", title: "Let creators tell your brand's story", body: "Through Airfluence we match creators on Xiaohongshu, Instagram and more, from publishing the campaign to tracking how the content performs.", subject: "Marketing enquiry", email: "hello@airfluence.ai", link: { label: "airfluence.ai", href: productUrls.airfluence.site } },
+    ],
+  },
   footer: { rights: "© 2026 Void Vision Pty Ltd · Sydney", privacy: "Privacy" },
   privacy: {
     metaTitle: "Website Privacy Notice · Void Vision",
@@ -370,8 +507,8 @@ const en: Dictionary = {
     title: "How this website handles your data",
     intro:
       "This is the corporate website of Void Vision Pty Ltd. It runs no analytics, carries no tracking, has no forms or accounts, and makes no requests to third parties. The products we help build publish their own privacy policies — see section 03.",
-    updated: "Updated 12 November 2026",
-    updatedISO: "2026-11-12",
+    updated: "Updated 15 November 2026",
+    updatedISO: "2026-11-15",
     entity: "Void Vision Pty Ltd · Sydney",
     contactLabel: "Privacy enquiries",
     back: "Back to home",
@@ -388,7 +525,7 @@ const en: Dictionary = {
       { no: "03", h: "Product privacy policies", p: [
         "VoidBook, currently listed on the App Store as GrainBook: https://grainbook.app/privacy",
         "Voido: https://voido.ai/en/privacy",
-        "Airfluence and Unilinx publish their own privacy policies through their respective operators. Void Vision co-founded and helped build both products but does not operate them and does not control their user data; please direct privacy questions about those products to their operators.",
+        "Airfluence and Unilinx each publish their own privacy policy in the product; please direct privacy questions about those products to them.",
       ] },
       { no: "04", h: "Contact and changes", p: [
         "For privacy questions about this website, email hello@voidvision.ai.",
