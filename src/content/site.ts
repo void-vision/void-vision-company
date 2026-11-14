@@ -93,7 +93,7 @@ export type Dictionary = {
   about: { kicker: string; body: string; founded: string };
   productsHeading: string;
   productsNote: string;
-  work: { demo: string; close: string; demoNote: string };
+  work: { demo: string; close: string; visit: string };
   products: Product[];
   airfluenceDemo: AirfluenceDemo;
   team: { title: string; sub: string; members: Member[] };
@@ -138,7 +138,7 @@ const screens = {
     })),
   // 两张图本身带手机外框，作品墙里直接叠放展示。
   voidbook: (alts: [string, string]): Screen[] =>
-    (["voidbook-following.webp", "voidbook-transcript.webp"] as const).map((f, i) => ({
+    (["voidbook-phone-following.webp", "voidbook-phone-transcript.webp"] as const).map((f, i) => ({
       src: `/images/screens/${f}`, width: 590, height: 1223, alt: alts[i], bar: "none",
     })),
   // 前五张是品牌端发布活动的连续步骤，最后一张是创作者端的发现页，顺序即演示顺序。
@@ -184,10 +184,10 @@ const airfluenceSiteEn: AirfluenceDemo["site"] = {
 
 const zh: Dictionary = {
   meta: {
-    title: "Void Vision · 让智能在使用中生长 | RSI",
+    title: "Void Vision · 把 AI 做进每天在用的产品里",
     description:
       "Void Vision 是悉尼的 AI 产品公司，把 AI 做进人们每天真正在用的产品里。我们的产品包括达人营销平台 Airfluence、AI 日历 Voido、Mac 刘海里的 Void Island、知识库 VoidBook 与留学生服务平台优渡 Unilinx。",
-    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "优渡", "Unilinx", "RSI", "递归自我改进", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
+    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "优渡", "Unilinx", "知识库", "信息聚合", "AI 笔记", "AI 日历", "时间盒", "达人营销", "留学生落地服务", "悉尼 AI 公司"],
     ogAlt: "Void Vision — 把 AI 做进人们每天真正在用的产品里",
   },
   nav: { products: "产品", about: "关于", team: "团队", contact: "联系我们", switchLabel: "Switch to English", switchTo: "EN", home: "Void Vision 首页" },
@@ -200,12 +200,12 @@ const zh: Dictionary = {
   },
   about: {
     kicker: "我们相信",
-    body: "智能应该在使用中生长。Void Vision 致力于推动 AI 在真实工作中递归自我改进（RSI）：从信息与反馈中学习，持续改进自己的工作方法。",
+    body: "AI 的价值，要在每天的使用里兑现。所以我们做具体的产品：帮人整理信息、安排时间、照看 AI 的工作，也帮品牌找到合适的创作者，帮留学生在新的城市落地。",
     founded: "成立于悉尼 · 2026",
   },
   productsHeading: "我们的产品",
   productsNote: "覆盖 iOS、Android、Web 与 macOS · 团队有亿级用户规模的项目经验",
-  work: { demo: "看演示", close: "关闭演示", demoNote: "演示使用虚构数据。" },
+  work: { demo: "看演示", close: "关闭演示", visit: "访问官网" },
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
@@ -315,7 +315,7 @@ const zh: Dictionary = {
     ],
   },
   contact: {
-    title: "一起看见未来",
+    title: "和我们聊聊",
     sub: "投资、合作、媒体，或者想用 Airfluence 做一次推广，都可以写信给我们。",
     cards: [
       { kind: "business", kicker: "商务合作", title: "投资、产品合作与媒体", body: "想了解我们在做的事，或者有合作的想法，直接写信给我们。", subject: "商务合作" },
@@ -363,10 +363,10 @@ const zh: Dictionary = {
 
 const en: Dictionary = {
   meta: {
-    title: "Void Vision · Intelligence that grows through use | RSI",
+    title: "Void Vision · AI products people use every day",
     description:
       "Void Vision is an AI product company in Sydney that puts AI into the products people actually use every day. Our products include the Airfluence influencer platform, the Voido AI calendar, Void Island in the Mac notch, the VoidBook knowledge base and the Unilinx student services platform.",
-    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "Unilinx", "RSI", "recursive self-improvement", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
+    keywords: ["Void Vision", "VoidBook", "Voido", "Void Island", "Airfluence", "Unilinx", "knowledge base", "content aggregation", "AI notes", "AI calendar", "time blocking", "influencer marketing platform", "international student arrival services", "Sydney AI company"],
     ogAlt: "Void Vision — Put AI into the products people actually use every day.",
   },
   nav: { products: "Products", about: "About", team: "Team", contact: "Contact", switchLabel: "切换到中文", switchTo: "ZH", home: "Void Vision home" },
@@ -379,12 +379,12 @@ const en: Dictionary = {
   },
   about: {
     kicker: "What we believe",
-    body: "Intelligence should grow through use. Void Vision pursues recursive self-improvement (RSI) through real work: AI that learns from information and feedback to continually improve how it works.",
+    body: "AI earns its place in everyday use. So we build specific products: ones that organise what you follow, plan your time and keep an eye on AI at work, connect brands with the right creators, and help students settle into a new city.",
     founded: "Founded in Sydney · 2026",
   },
   productsHeading: "Our products",
   productsNote: "Across iOS, Android, web and macOS · The team has worked on products used by hundreds of millions of people",
-  work: { demo: "See it in action", close: "Close demo", demoNote: "Demos use sample data." },
+  work: { demo: "See it in action", close: "Close demo", visit: "Visit site" },
   products: [
     {
       id: "voidbook", anchor: "gb", name: "VoidBook", accent: "green",
@@ -493,7 +493,7 @@ const en: Dictionary = {
     ],
   },
   contact: {
-    title: "See the future with us",
+    title: "Let’s talk",
     sub: "Investment, partnerships, press, or a campaign with Airfluence: write to us.",
     cards: [
       { kind: "business", kicker: "Business", title: "Investment, partnerships and press", body: "Want to know what we're working on, or have an idea to explore together? Write to us.", subject: "Business enquiry" },

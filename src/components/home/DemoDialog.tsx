@@ -3,10 +3,23 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * 作品墙里的“看演示”：点开后用原生 <dialog> 盖在页面上，关掉回到原位置。
+ * 作品墙里的“看演示”：点开后用原生 <dialog> 盖在页面上，只放演示本身，关掉回到原位置。
  * 演示内容只在打开时挂载，所以每次打开都从头播放，关着时也不占计时器。
  */
-export function DemoDialog({ label, closeLabel, title, children }: { label: string; closeLabel: string; title: string; children: ReactNode }) {
+export function DemoDialog({
+  label,
+  closeLabel,
+  title,
+  cover = false,
+  children,
+}: {
+  label: string;
+  closeLabel: string;
+  title: string;
+  /** 按钮的点击区域铺满整张产品卡片。 */
+  cover?: boolean;
+  children: ReactNode;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -27,7 +40,7 @@ export function DemoDialog({ label, closeLabel, title, children }: { label: stri
 
   return (
     <>
-      <button type="button" className="work-demo" aria-haspopup="dialog" onClick={() => setOpen(true)}>
+      <button type="button" className={cover ? "work-demo work-cover" : "work-demo"} aria-haspopup="dialog" onClick={() => setOpen(true)}>
         {label}
       </button>
       <dialog

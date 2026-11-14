@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LangSwitch } from "@/components/LangSwitch";
@@ -92,24 +92,12 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
           <WorkGrid
             products={t.products}
-            labels={{ demo: t.work.demo, close: t.work.close }}
+            labels={t.work}
             media={{ airfluence: <AirfluenceSitePreview site={t.airfluenceDemo.site} href={productUrls.airfluence.site} /> }}
             demos={{
-              airfluence: (
-                <DemoBody p={product("airfluence")} note={t.work.demoNote}>
-                  <AirfluenceStory story={t.airfluenceDemo.story} screens={product("airfluence").screens} />
-                </DemoBody>
-              ),
-              voidcalendar: (
-                <DemoBody p={product("voidcalendar")} note={t.work.demoNote}>
-                  <MacGallery screens={product("voidcalendar").screens} label={product("voidcalendar").name} sizes="(max-width: 1240px) 92vw, 1120px" />
-                </DemoBody>
-              ),
-              voidisland: (
-                <DemoBody p={product("voidisland")} note={t.work.demoNote}>
-                  <IslandDemo lang={lang} content={getIslandDemoContent(lang)} />
-                </DemoBody>
-              ),
+              airfluence: <AirfluenceStory story={t.airfluenceDemo.story} screens={product("airfluence").screens} />,
+              voidcalendar: <MacGallery screens={product("voidcalendar").screens} label={product("voidcalendar").name} sizes="(max-width: 1240px) 92vw, 1200px" />,
+              voidisland: <IslandDemo lang={lang} content={getIslandDemoContent(lang)} />,
             }}
           />
         </section>
@@ -148,8 +136,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
         <section id="contact" className="contact" aria-labelledby="contact-title">
           <div aria-hidden="true" className="contact-decor">
-            <div data-zoomin className="contact-glow" />
-            <div data-hole className="contact-hole" />
             <div className="contact-stars">
               <div data-zoomin className="stars contact-field" />
               <div data-zoomin className="stars contact-core" />
@@ -210,40 +196,3 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 }
 
 /** 弹出层里的内容：产品介绍、演示本身、特性与“虚构数据”说明。 */
-function DemoBody({ p, note, children }: { p: Product; note: string; children: ReactNode }) {
-  return (
-    <>
-      <header className={`demo-head accent-${p.accent}`}>
-        <div className="demo-title">
-          {p.logo && <Image src={p.logo} alt="" width={80} height={80} className="demo-logo" />}
-          <h2>{p.name}</h2>
-        </div>
-        <p className="demo-tag">{p.tagline}</p>
-        <p className="demo-desc">{p.description}</p>
-        <div className="demo-actions">
-          {p.links.map((l) => (
-            <a key={l.href} href={l.href} target="_blank" rel="noopener" className={l.primary ? "pill pill-solid" : "pill pill-outline"}>
-              {l.label}
-            </a>
-          ))}
-          {p.status && <span className="pill pill-muted">{p.status}</span>}
-        </div>
-      </header>
-      <div className="demo-stage">{children}</div>
-      {p.features && (
-        <div className="demo-details">
-          <dl className="demo-features">
-            {p.features.map((f) => (
-              <div key={f.title}>
-                <dt>{f.title}</dt>
-                <dd>{f.description}</dd>
-              </div>
-            ))}
-          </dl>
-          {p.connection && <p className="demo-connection">{p.connection}</p>}
-        </div>
-      )}
-      <p className="demo-note">{note}</p>
-    </>
-  );
-}

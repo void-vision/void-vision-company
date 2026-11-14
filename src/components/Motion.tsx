@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * Progressive-enhancement motion layer ported from the Void Vision v2 design.
  * All content is server-rendered and visible without JS; this only hides
  * below-the-fold blocks until they scroll in, and drives the nav, progress
- * bar, phone parallax and contact zoom. Like the design, it runs for everyone.
+ * bar and contact zoom. Like the design, it runs for everyone.
  */
 export function Motion() {
   useEffect(() => {
@@ -51,8 +51,6 @@ export function Motion() {
     });
 
     const trigger = document.querySelector<HTMLElement>("[data-zoom-trigger]");
-    const hole = document.querySelector<HTMLElement>("[data-hole]");
-    const phoneRows = Array.from(document.querySelectorAll<HTMLElement>("[data-phones]"));
     let raf = 0;
 
     const frame = () => {
@@ -69,22 +67,6 @@ export function Motion() {
         if (r.top < vh * 0.72 && r.bottom > vh * 0.1) {
           zoomPending.splice(0).forEach((el) => el.classList.remove("is-zoom-pending"));
         }
-      }
-      if (hole) {
-        // The void widens over the last stretch of the page and is fully open at
-        // the bottom. The CSS reads --hole; it degrades to the resting size at 0.
-        const max = document.documentElement.scrollHeight - vh;
-        const span = Math.min(vh * 0.9, 700);
-        const p = max > 0 ? Math.min(1, Math.max(0, (y - (max - span)) / span)) : 1;
-        hole.style.setProperty("--hole", p.toFixed(3));
-      }
-      for (const row of phoneRows) {
-        const r = row.getBoundingClientRect();
-        if (r.bottom < -300 || r.top > vh + 300) continue;
-        const t = (vh - r.top) / (vh + r.height) - 0.5;
-        Array.from(row.children).forEach((el, i) => {
-          (el as HTMLElement).style.translate = `0 ${(-t * (i % 2 === 1 ? 0.16 : 0.06) * 190).toFixed(1)}px`;
-        });
       }
     };
     const schedule = () => {

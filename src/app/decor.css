@@ -59,27 +59,6 @@
 /* The star sheets stay clipped to the section: `vv-warp` scales them to 2.7x, and
    unclipped they would drift over the team block. Cutting a field of dots leaves
    no visible seam — only the continuous glow does, and that one is free to spill. */
-/* The void opening up as you reach the end of the page. `--hole` is driven from
-   the scroll position in Motion.tsx (0 well before the bottom, 1 at it); with no
-   JS it stays 0 and this is just the dark core the design already had.
-   Sits between the glow and the star sheets: it eats the glow's inner edge, but the
-   stars stay visible inside it. */
-.contact-hole {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  width: min(44vh, 50vw);
-  height: min(34vh, 38vw);
-  /* Centring goes on `translate`, not `transform`: individual transform
-     properties resolve translate -> rotate -> scale -> transform, so a -50%
-     inside `transform` would itself get multiplied by `scale` and drift. */
-  translate: -50% -50%;
-  scale: calc(0.62 + 0.88 * var(--hole, 0));
-  opacity: calc(0.45 + 0.55 * var(--hole, 0));
-  filter: blur(22px);
-  background: radial-gradient(ellipse closest-side, #04060c 0%, #04060c 78%, rgba(4,6,12,0) 100%);
-  z-index: 0;
-}
 .contact-stars {
   position: absolute;
   inset: 0;
@@ -96,19 +75,6 @@
   top: 46%;
   width: min(96vh, 104vw);
   height: min(96vh, 104vw);
-}
-.contact-glow {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  /* A touch wider than tall — a dead-round circle read as too rigid here, and a
-     box sized off the section came out ~2.7:1 flat, so the ratio is set by the
-     box itself. Free to overflow the section: nothing clips it any more. */
-  width: min(84vh, 92vw);
-  height: min(64vh, 70vw);
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse at 50% 50%, rgba(152,176,224,0) 0%, rgba(152,176,224,0) 33%, rgba(152,176,224,0.04) 37%, rgba(152,176,224,0.13) 40%, rgba(152,176,224,0.3) 42.5%, rgba(152,176,224,0.52) 45%, rgba(152,176,224,0.72) 47%, rgba(152,176,224,0.84) 48.8%, rgba(152,176,224,0.88) 50%, rgba(152,176,224,0.82) 51.5%, rgba(152,176,224,0.66) 53.5%, rgba(152,176,224,0.48) 56%, rgba(152,176,224,0.32) 59%, rgba(152,176,224,0.2) 62.5%, rgba(152,176,224,0.11) 67%, rgba(152,176,224,0.06) 72%, rgba(152,176,224,0.025) 78%, rgba(152,176,224,0.01) 84%, rgba(152,176,224,0) 90%);
-  filter: blur(52px);
 }
 .contact-field {
   position: absolute;
