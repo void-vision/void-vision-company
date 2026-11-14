@@ -86,7 +86,7 @@
   gap: 12px;
 }
 .intro-index {
-  flex: 1 1 340px;
+  flex: 1 1 400px;
   min-width: 0;
 }
 .intro-index ul {
@@ -105,14 +105,21 @@
   font-size: 15px;
 }
 .intro-index a {
+  flex-shrink: 0;
   font-family: var(--rounded);
   font-weight: 700;
   color: #f2f4f7;
+  white-space: nowrap;
 }
 .intro-index a:hover {
   color: #b6c4ff;
 }
+/* 分类与平台保持一行；极窄的屏幕上放不下时省略结尾，而不是折成两行。 */
 .intro-index span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-family: var(--cjk);
   font-size: 13px;
   color: #8a96a8;
@@ -139,24 +146,28 @@
   --tile-name: #f2f4f7;
   --tile-body: #c3c9d4;
   --tile-muted: #8a96a8;
+  --tile-pad: clamp(24px, 2.4vw, 30px);
   position: relative;
   overflow: hidden;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
   border-radius: 20px;
   border: 1px solid rgba(236, 235, 231, 0.08);
   background: var(--tile-bg);
   scroll-margin-top: 90px;
+  /* 保留 data-reveal 的入场过渡，再加上悬停时的边框与光晕。 */
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease), border-color 0.35s ease, box-shadow 0.35s ease;
 }
 .work-tile.accent-green { --tile-bg: #12251c; --tile-name: #9fe0bd; --tile-body: #c4d6cc; --tile-muted: #8fb8a2; }
 .work-tile.accent-blue { --tile-bg: #111728; --tile-name: #b6c4ff; --tile-body: #c3c9de; --tile-muted: #8f9bc7; }
 .work-tile.accent-cyan { --tile-bg: #0f1f24; --tile-name: #9adbe8; --tile-body: #c2d8dc; --tile-muted: #7fb3bf; }
 .work-tile.accent-rose { --tile-bg: #15100e; --tile-name: #edc7b7; --tile-body: #ddd3ce; --tile-muted: #b5a59e; }
 .work-copy {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 26px var(--tile-pad) var(--tile-pad);
 }
 .work-meta {
   margin: 0;
@@ -176,6 +187,7 @@
 .work-summary {
   margin: 0;
   max-width: 560px;
+  text-wrap: pretty;
   font-family: var(--cjk);
   font-size: 14.5px;
   line-height: 1.75;
@@ -190,8 +202,11 @@
   font-family: var(--cjk);
   font-size: 14px;
 }
-/* 只管作品块自己的链接：弹出层在 DOM 里也挂在这里，不能让样式漏进去。 */
+/* 只管作品块自己的链接：弹出层在 DOM 里也挂在这里，不能让样式漏进去。
+   这些链接压在整卡点击区之上，各自仍然可以单独点。 */
 .work-links > a {
+  position: relative;
+  z-index: 2;
   color: var(--tile-name);
   border-bottom: 1px solid currentColor;
   padding-bottom: 2px;
@@ -225,6 +240,66 @@
   color: var(--tile-muted);
 }
 
+/* 整卡点击：主操作（看演示或外链）的点击区用伪元素铺满整张卡片。 */
+.work-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+.work-links > a.work-cover {
+  position: static;
+}
+.work-tile:has(.work-cover:focus-visible) {
+  outline: 2px solid var(--tile-name);
+  outline-offset: 3px;
+}
+
+/* 悬停：边框按产品颜色亮起，右上角角标说明点了会发生什么，图片轻微错开。 */
+.work-chip {
+  position: absolute;
+  z-index: 2;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: 999px;
+  border: 1px solid var(--tile-name);
+  background: var(--tile-name);
+  color: #06080e;
+  font: 500 12.5px/1 var(--cjk);
+  opacity: 0;
+  translate: 0 -4px;
+  pointer-events: none;
+  transition: opacity 0.3s ease, translate 0.3s ease;
+}
+.work-media img,
+.work-media figure {
+  transition: transform 0.6s var(--ease), opacity 0.4s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .work-tile:has(.work-cover, .af-site):hover {
+    border-color: color-mix(in srgb, var(--tile-name) 45%, transparent);
+    box-shadow: 0 30px 80px -30px color-mix(in srgb, var(--tile-name) 35%, transparent);
+  }
+  .work-tile:hover .work-chip {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .work-tile:hover .work-phone-back { transform: translate(6%, -2%) rotate(4deg); opacity: 1; }
+  .work-tile:hover .work-phone-front { transform: translate(-6%, 1%) rotate(-3deg); }
+  .work-tile:hover .work-window-back { transform: translate(3%, -5%); opacity: 1; }
+  .work-tile:hover .work-window-front { transform: translate(-2%, 2%); }
+  .work-tile:hover .work-shot img { transform: scale(1.035); }
+  .work-tile:hover .work-unilinx-back figure { transform: translate(8%, -3%) rotate(5deg); }
+  .work-tile:hover .work-unilinx-front figure { transform: translate(-6%, 2%) rotate(-3deg); }
+}
+
 /* 产品卡片滚进视口时轻微放大（92% → 100%），只在进入视口的那一段完成。
    用独立的 scale 属性，不和 data-reveal 的 transform 位移互相覆盖。 */
 @supports (animation-timeline: view()) {
@@ -241,43 +316,51 @@
   to { scale: 1; }
 }
 
-/* Airfluence：上面是 airfluence.ai 首屏的动态预览（点击跳转），下面是介绍。 */
+/* Airfluence：airfluence.ai 首屏的动态预览贴满卡片宽度（点击跳转），下面是介绍。 */
 .work-feature {
   grid-column: span 4;
   grid-row: span 2;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 28px;
-  padding: clamp(24px, 2.4vw, 32px);
   background: #15100e;
+}
+.work-feature .af-site,
+.work-feature .af-window {
+  border-radius: 0;
+}
+.work-feature .af-window {
+  border: 0;
+  border-bottom: 1px solid rgba(237, 199, 183, 0.14);
+  box-shadow: none;
+}
+.work-feature .af-site:hover .af-window {
+  transform: none;
+  box-shadow: none;
+}
+.work-feature .af-site:focus-visible {
+  outline-offset: -2px;
 }
 .work-feature .work-name {
   font-size: clamp(30px, 3vw, 44px);
 }
 
-/* VoidBook：两张带外框的手机图前后叠放。 */
+/* VoidBook：两张带外框的手机图前后叠放，文字压在卡片底部。 */
 .work-tall {
   grid-column: span 2;
   grid-row: span 2;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 28px;
-  padding: 32px 26px;
+}
+.work-tall .work-copy {
+  margin-top: auto;
 }
 /* 高度跟着宽度走：前面那台手机（宽 52%，下移 9%）的底边正好落在容器内。 */
 .work-phones {
   position: relative;
-  width: min(100%, 380px);
-  margin: 0 auto;
+  width: min(100% - 52px, 380px);
+  margin: 32px auto 0;
   aspect-ratio: 1 / 1.2;
 }
 .work-phone {
   position: absolute;
   height: auto;
-  border-radius: 15% / 7.24%;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+  filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.5));
 }
 .work-phone-back {
   right: 2%;
@@ -291,62 +374,73 @@
   width: 52%;
 }
 
-/* Voido：文字在左，截图贴着右下角出血。 */
+/* Voido：文字在左，两张窗口截图叠放在右，贴着右下角出血。 */
 .work-wide {
   grid-column: span 6;
-  display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
-  gap: 40px;
-  padding: 40px 0 0 40px;
+  min-height: 500px;
 }
 .work-wide .work-copy {
-  flex: 1 1 280px;
-  padding: 0 20px 40px 0;
+  order: -1;
+  flex: 0 0 min(380px, 36%);
+  padding: 40px;
 }
-.work-wide .work-shot {
-  flex: 2 1 560px;
+.work-windows {
+  position: relative;
+  align-self: stretch;
+  flex: 1 1 auto;
   min-width: 0;
+}
+.work-window {
+  position: absolute;
+  width: 74%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 232, 248, 0.14);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+}
+.work-window-back {
+  width: 66%;
+  right: -4%;
+  top: 40px;
+  opacity: 0.75;
+}
+/* 前面那张贴着卡片底边往下出血，不管卡片多宽，底下都不会空出一截。 */
+.work-window-front {
+  left: 0;
+  bottom: -40px;
+}
+
+/* Void Island 与优渡：各占半行，图在上贴满卡片宽度，文字在下。 */
+.work-half {
+  grid-column: span 3;
+}
+/* 两张卡的图区同高（按 Void Island 截图的比例），分隔线才对得齐。 */
+.work-half .work-media {
+  aspect-ratio: 1200 / 690;
+  border-bottom: 1px solid color-mix(in srgb, var(--tile-name) 12%, transparent);
+}
+.work-shot {
+  overflow: hidden;
 }
 .work-shot img {
   display: block;
   width: 100%;
   height: auto;
 }
-.work-wide .work-shot img {
-  border-radius: 12px 0 0 0;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.35);
-}
-
-/* Void Island 与优渡：各占半行。 */
-.work-half {
-  grid-column: span 3;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 32px 32px 0;
-}
-.work-half .work-shot {
-  margin-top: auto;
-}
-.work-half .work-shot img {
-  border-radius: 10px 10px 0 0;
-}
-.work-half:has(.work-unilinx) {
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 32px;
-}
-.work-half:has(.work-unilinx) .work-copy {
-  flex: 1 1 220px;
-}
-/* 两台手机：后面那台小一点、靠右上，前面那台压在左下。 */
+/* 两台手机从卡片底边升起：后面那台小一点、靠右上，前面那台压在左下。 */
 .work-unilinx {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+/* 手机高度跟着图区走（图区高度由宽度和比例决定），往下沉 12%，底边被卡片裁掉一截。 */
+.work-unilinx-phones {
   position: relative;
-  width: 230px;
+  height: 100%;
   aspect-ratio: 230 / 330;
-  flex-shrink: 0;
+  translate: 0 12%;
 }
 .work-unilinx-back,
 .work-unilinx-front {
@@ -370,8 +464,22 @@
     grid-row: auto;
   }
   .work-wide {
-    padding: 32px 0 0 28px;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
   }
+  .work-wide .work-copy {
+    flex: none;
+    padding: 28px var(--tile-pad) 8px;
+  }
+  .work-windows {
+    aspect-ratio: 4 / 3;
+  }
+  .work-half .work-unilinx {
+    aspect-ratio: 4 / 3;
+  }
+  .work-window-back { width: 80%; right: -10%; top: 6%; }
+  .work-window-front { width: 88%; bottom: -8%; left: var(--tile-pad); }
 }
 
 .section-head {
@@ -442,8 +550,8 @@
   margin: 0;
   font-family: var(--cjk);
   font-weight: 300;
-  font-size: clamp(22px, 2.5vw, 32px);
-  line-height: 1.65;
+  font-size: clamp(18px, 2.1vw, 28px);
+  line-height: 1.7;
   color: #f2f4f7;
 }
 .about-founded {
@@ -473,6 +581,19 @@
   overflow: auto;
   overscroll-behavior: contain;
 }
+/* Voido 的截图轮播按 16:10 等比缩放：宽度同时受视口高度限制，整组截图加标签不用滚动就能看全。 */
+@media (min-width: 641px) {
+  .demo-dialog:has(.mac-gallery) {
+    width: min(1240px, calc(100vw - 32px), calc((100dvh - 166px) * 1.6 + 42px));
+  }
+}
+/* Void Island 的演示连同控制区约 944px 高、不随宽度缩放，在矮一点的屏幕上整体缩小，免得弹出层里还要滚动。 */
+@media (min-width: 641px) and (max-height: 1000px) { .demo-dialog .island-demo { zoom: 0.9; } }
+@media (min-width: 641px) and (max-height: 925px) { .demo-dialog .island-demo { zoom: 0.84; } }
+@media (min-width: 641px) and (max-height: 868px) { .demo-dialog .island-demo { zoom: 0.78; } }
+@media (min-width: 641px) and (max-height: 811px) { .demo-dialog .island-demo { zoom: 0.72; } }
+@media (min-width: 641px) and (max-height: 755px) { .demo-dialog .island-demo { zoom: 0.66; } }
+@media (min-width: 641px) and (max-height: 698px) { .demo-dialog .island-demo { zoom: 0.6; } }
 .demo-dialog::backdrop {
   background: rgba(2, 3, 7, 0.78);
   backdrop-filter: blur(6px);
@@ -489,15 +610,19 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 4vw, 44px);
-  padding: clamp(28px, 4vw, 56px) clamp(16px, 4vw, 56px) clamp(28px, 4vw, 48px);
+  padding: clamp(12px, 1.6vw, 20px);
+}
+/* 演示本身占满弹出层宽度（有的演示自带 margin: auto，会在 flex 里缩成内容宽）。 */
+.demo-dialog-body > :not(.demo-close) {
+  width: 100%;
+  min-width: 0;
 }
 .demo-close {
   position: sticky;
   top: 0;
   z-index: 5;
   align-self: flex-end;
-  margin: -12px -12px -56px 0;
+  margin: 0 0 -44px;
   display: grid;
   place-items: center;
   width: 44px;
@@ -517,90 +642,6 @@
   outline: 2px solid #b6c4ff;
   outline-offset: 3px;
 }
-.demo-head {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-width: 760px;
-  padding-right: 56px;
-  font-family: var(--cjk);
-}
-.demo-title {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.demo-logo {
-  width: 48px;
-  height: auto;
-  border-radius: 22%;
-}
-.demo-title h2 {
-  margin: 0;
-  font-family: var(--rounded);
-  font-weight: 700;
-  font-size: clamp(30px, 3.4vw, 44px);
-  line-height: 1.15;
-  color: #ffffff;
-}
-.demo-tag {
-  margin: 0;
-  font-size: clamp(17px, 1.6vw, 21px);
-  line-height: 1.5;
-}
-.demo-head.accent-blue .demo-tag { color: #b6c4ff; }
-.demo-head.accent-rose .demo-tag { color: #edc7b7; font-family: var(--sans); }
-.demo-desc {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 300;
-  line-height: 1.9;
-  color: var(--body);
-}
-.demo-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 6px;
-}
-.demo-stage {
-  min-width: 0;
-}
-.demo-details {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.demo-features {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  margin: 0;
-  font-family: var(--cjk);
-}
-.demo-features > div {
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-.demo-features dt {
-  font-size: 16px;
-  font-weight: 500;
-  color: #b6c4ff;
-}
-.demo-features dd {
-  margin: 10px 0 0;
-  font-size: 14px;
-  line-height: 1.8;
-  color: var(--body);
-}
-.demo-connection,
-.demo-note {
-  margin: 0;
-  font-family: var(--cjk);
-  font-size: 13px;
-  line-height: 1.8;
-  color: #7d8796;
-}
 @media (max-width: 640px) {
   .demo-dialog {
     width: 100vw;
@@ -609,15 +650,25 @@
     border-radius: 0;
     border: 0;
   }
-  .demo-features {
-    grid-template-columns: minmax(0, 1fr);
+  /* 手机上弹出层占满屏：关闭按钮贴在右上角（滚动时也跟着），演示在剩下的空间里垂直居中。 */
+  .demo-dialog-body {
+    min-height: 100%;
+    padding: 64px 12px 16px;
+  }
+  .demo-close {
+    top: 14px;
+    margin: -50px 2px 6px 0;
+  }
+  .demo-dialog-body > :not(.demo-close) {
+    margin-block: auto;
   }
 }
 
 /* ---------- Contact cards ---------- */
 .contact-sub {
   margin: 20px auto 0;
-  max-width: 560px;
+  max-width: 680px;
+  text-wrap: balance;
   font-family: var(--cjk);
   font-size: 16px;
   line-height: 1.8;
@@ -666,7 +717,7 @@
   margin: 0;
   font-size: 14.5px;
   line-height: 1.75;
-  color: #a7b0bd;
+  color: #a7b0bd;  text-wrap: pretty;
 }
 /* 按钮行压到卡片底部，两张卡的按钮在同一条线上；两种按钮同高、同字号。 */
 .contact-links {
