@@ -46,11 +46,15 @@ function localeFull(locale: Locale) {
     "",
     `> ${t.meta.description}`,
     "",
-    t.about,
+    t.hero.title.join(locale === "zh" ? "" : " "),
     "",
-    ...t.stats.map((s) => `- ${s.label}: ${s.value}`),
+    t.hero.sub,
+    "",
+    `${t.about.kicker}: ${t.about.body}`,
     "",
     `## ${t.productsHeading}`,
+    "",
+    t.productsNote,
     "",
   ];
   for (const p of t.products) {
@@ -66,7 +70,9 @@ function localeFull(locale: Locale) {
   for (const m of t.team.members) {
     lines.push(`### ${m.name} (${m.altName})`, "", `${m.role} — ${m.chips.join(", ")}`, "", m.bio, "");
   }
-  lines.push(`## ${t.nav.contact}`, "", `${t.contact.title} ${company.email}`, "");
+  lines.push(`## ${t.nav.contact}`, "", t.contact.sub, "");
+  for (const c of t.contact.cards) lines.push(`- ${c.kicker}: ${c.title}. ${c.body} ${c.email ?? company.email}${c.link ? ` · ${c.link.href}` : ""}`);
+  lines.push("");
 
   const p = t.privacy;
   lines.push(`## ${p.kicker}: ${p.title}`, "", `Source: ${absolute(localizedPath(locale, "/privacy"))}`, "", p.updated, "", p.intro, "");

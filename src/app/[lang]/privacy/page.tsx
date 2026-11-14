@@ -51,7 +51,7 @@ export default async function Privacy({ params }: PageProps<"/[lang]/privacy">) 
                 </div>
                 <div className="legal-paras">
                   {s.p.map((para) => (
-                    <p key={para}>{para}</p>
+                    <p key={para}>{linkify(para)}</p>
                   ))}
                 </div>
               </section>
@@ -73,4 +73,17 @@ export default async function Privacy({ params }: PageProps<"/[lang]/privacy">) 
       </footer>
     </div>
   );
+}
+
+/** 把文案里的网址和邮箱变成可以点的链接；结尾的句号等标点不算进链接。 */
+function linkify(text: string) {
+  return text.split(/(https?:\/\/[^\s，。、；）]+|[\w.+-]+@[\w-]+(?:\.[\w-]+)+)/).map((part, i) => {
+    if (i % 2 === 0) return part;
+    const href = part.includes("@") && !part.startsWith("http") ? `mailto:${part}` : part;
+    return (
+      <a key={i} href={href} {...(href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}>
+        {part}
+      </a>
+    );
+  });
 }
