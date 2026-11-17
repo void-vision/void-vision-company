@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { locales } from "@/content/i18n";
+import { companyBrand } from "@/lib/brand";
 
 export const alt = "Void Vision — Put AI into the products people actually use every day.";
 export const size = { width: 1200, height: 630 };
@@ -16,7 +17,7 @@ export function generateStaticParams() {
 
 export default async function OpenGraphImage() {
   const [mark, word, rounded] = await Promise.all([
-    readFile(join(process.cwd(), "public/images/vv-mark.png")),
+    readFile(join(process.cwd(), "public", companyBrand.mark.rasterSrc)),
     readFile(join(process.cwd(), "public/images/vv-wordmark.png")),
     readFile(join(process.cwd(), "src/fonts/HelveticaRoundedBold.otf")),
   ]);
@@ -36,8 +37,8 @@ export default async function OpenGraphImage() {
           color: "#f2f4f7",
         }}
       >
-        <img src={src(mark)} width={277} height={85} alt="" />
-        <img src={src(word)} width={433} height={34} alt="" style={{ marginTop: 34 }} />
+        <img src={src(mark)} width={220} height={Math.round(220 * companyBrand.mark.height / companyBrand.mark.width)} alt="" />
+        <img src={src(word)} width={433} height={34} alt="" style={{ marginTop: 24 }} />
         <div style={{ marginTop: 44, fontSize: 34, letterSpacing: -0.5, color: "#e6ebf2" }}>Put AI into the products people actually use every day.</div>
         <div style={{ marginTop: 52, display: "flex", gap: 34, fontFamily: "Rounded", fontSize: 26, color: "#99a4b1" }}>
           {PRODUCTS.map((name) => (

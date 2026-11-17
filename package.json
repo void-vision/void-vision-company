@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "brand:export": "node scripts/export-brand.mjs",
+    "brand:construction": "node scripts/export-brand-construction.mjs",
     "dev": "next dev --port 4820",
     "build": "next build",
     "start": "next start",

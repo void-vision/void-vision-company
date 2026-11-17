@@ -10,6 +10,7 @@ import { Motion } from "@/components/Motion";
 import { WorkGrid, WORK_ORDER } from "@/components/home/WorkGrid";
 import { company, getDictionary, getIslandDemoContent, hasLocale, localizedPath, productUrls, type Product } from "@/content/site";
 import { homeJsonLd, pageMetadata, serializeJsonLd } from "@/lib/seo";
+import { companyBrand } from "@/lib/brand";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
@@ -35,8 +36,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <nav data-nav className="site-nav" aria-label={lang === "zh" ? "主导航" : "Main"}>
         <div data-progress className="nav-progress" aria-hidden="true" />
         <a href="#top" className="brand" aria-label={t.nav.home}>
-          <Image src="/images/vv-mark.png" alt="" width={1108} height={340} className="brand-mark" priority />
-          <Image src="/images/vv-wordmark.png" alt={company.name} width={1083} height={86} className="brand-word" priority />
+          <Image src={companyBrand.mark.src} alt="" width={companyBrand.mark.width} height={companyBrand.mark.height} className="brand-mark" preload />
+          <Image src="/images/vv-wordmark.png" alt={company.name} width={1083} height={86} className="brand-word" preload />
         </a>
         <div className="nav-links">
           <a href="#products">{t.nav.products}</a>
