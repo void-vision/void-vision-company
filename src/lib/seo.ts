@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { companyBrand } from "@/lib/brand";
 import {
   company,
   getDictionary,
@@ -96,7 +97,7 @@ export function homeJsonLd(locale: Locale) {
     name: company.name,
     legalName: company.legalName,
     url: siteUrl,
-    logo: { "@type": "ImageObject", url: absolute("/images/vv-mark.png"), width: 1108, height: 340 },
+    logo: { "@type": "ImageObject", url: absolute(companyBrand.logo.src), width: companyBrand.logo.width, height: companyBrand.logo.height },
     image: absolute(localizedPath(locale, "/opengraph-image")),
     description: dict.meta.description,
     slogan: dict.hero.title.join(" "),

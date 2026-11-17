@@ -29,6 +29,12 @@ bun run build && bun run start
 
 The design source material (`raw/`) is kept out of git because it includes prototypes and internal documents.
 
+## 品牌资产
+
+官网采用方案 03 微调定稿版的白色流动错位标志，标准黑底矢量文件为 `public/images/void-vision-logo.svg`。导航与分享图使用同路径的透明底版本；图标使用黑底白标。资产尺寸与路径统一在 `src/lib/brand.ts` 中维护，执行 `bun run brand:export` 可重新生成导出文件。
+
+对应的几何构造图位于 `design/brand/void-vision-construction.svg`（另附 PNG），执行 `bun run brand:construction` 可从官网定稿重新生成，并校验三个连接点的切线关系。设计图保存在 `public/` 之外。
+
 ## Search engine and AI discoverability
 
 - Every page is prerendered HTML, so all text is readable without running JavaScript. Motion is a progressive enhancement and respects `prefers-reduced-motion`.

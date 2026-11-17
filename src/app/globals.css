@@ -161,11 +161,12 @@ address {
   gap: 12px;
 }
 .brand-mark {
-  height: 17px;
+  height: 32px;
   width: auto;
+  flex-shrink: 0;
 }
 .brand-word {
-  height: 12px;
+  height: 13px;
   width: auto;
 }
 .nav-links {
